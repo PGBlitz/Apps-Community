@@ -72,6 +72,7 @@
           PGID: 1000
 
     # MAIN SCRIPT ##############################################################
+
     - name: 'Deploying {{pgrole}}'
       docker_container:
         name: '{{pgrole}}'
