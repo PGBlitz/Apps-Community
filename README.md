@@ -17,10 +17,15 @@ _**Table of Contents**_
 
 ----
 # 1. General Intro
+
+**PG Box Community:** PG Community is a PG repo that collects and stores accepted user container writeups for community usage install. User can add programs such as Radarr4k or other unique programs that others may want to utlize.
+
 <p align="center"><kbd><img src="https://plexguide.com/wikipics/pglogo-move.gif" width="400""></kbd></p>
 <p align="center"><b>Manage PlexGuide - AnyTime, Anywhere!</b></p>
 
-**Mission Statement:** PlexGuide is an all-in-one media solution that deploys a Media Server through the use of your Local HD or Google Drive; serving as an unlimited back-end storage. PlexGuide utilizes Ansible and Docker to streamline your Media Server, while deploying multiple tools for your Server Operations.
+**WARNING: Wiki Under Construction**
+
+In order for apps show up under the Community App Store, users must select or push apps from within the app folder of this repo. Do not worry, the apps automatically show up under the community app store and are segerated from the official containers that are built and supported by PG.
  
 # 2. YouTube Video - Intro
 NOT READY
