@@ -13,7 +13,7 @@
 
     - name: 'Set Known Facts'
       set_fact:
-        pgrole: 'sonarr'
+        pgrole: 'sonarr4k'
         image: 'lsiodev/sonarr-preview'
 
     - name: 'Including cron job'
