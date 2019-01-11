@@ -29,7 +29,6 @@
     - name: 'Adding Traefik'
       set_fact:
         pg_labels:
-          traefik.protocol: 'https'
           traefik.frontend.auth.forward.address: '{{gauth}}'
           traefik.enable: 'true'
           traefik.port: '{{intport}}'
@@ -60,7 +59,6 @@
           - '{{ports.stdout}}{{extport}}:{{intport}}'
         volumes: '{{pg_volumes}}'
         env: '{{pg_env}}'
-        expose: 4242
         restart_policy: unless-stopped
         networks:
           - name: plexguide
