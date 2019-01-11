@@ -14,7 +14,7 @@
     - name: 'Set Known Facts'
       set_fact:
         pgrole: 'sonarr4k'
-        intport: '8984'
+        intport: '8989'
         extport: '8984'
         image: 'lsiodev/sonarr-preview'
 
