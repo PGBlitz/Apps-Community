@@ -23,6 +23,8 @@ _**Table of Contents**_
 <p align="center"><kbd><img src="https://plexguide.com/wikipics/pglogo-move.gif" width="400""></kbd></p>
 <p align="center"><b>Manage PlexGuide - AnyTime, Anywhere!</b></p>
 
+Forum Node for Community Box: [ CLICK HERE ](https://plexguide.com/forums/pg-app-community-box.191/)
+
 **WARNING: Wiki Under Construction**
 
 (BETTER EXAMPLES will be provided), but Radarr4k and Sonarr4k serve as general containers until posted!
