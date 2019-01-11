@@ -13,7 +13,7 @@
 
     - name: 'Set Known Facts'
       set_fact:
-        pgrole: 'tiagoad/suicide-linux'
+        pgrole: 'suicide-linux'
         intport: 'null'
         extport: 'null'
         image: 'tiagoad/suicide-linux'
