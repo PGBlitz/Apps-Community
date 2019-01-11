@@ -12,8 +12,6 @@
 _**Table of Contents**_
 
 1. [General Intro](#1-general-intro)
-2. [YouTube Video - Intro](#2-youtube-video---intro)
-3. [Summary](#3-summary)
 
 ----
 # 1. General Information
