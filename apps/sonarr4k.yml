@@ -14,6 +14,8 @@
     - name: 'Set Known Facts'
       set_fact:
         pgrole: 'sonarr4k'
+        intport: '8984'
+        extport: '8984'
         image: 'lsiodev/sonarr-preview'
 
     - name: 'Including cron job'
@@ -53,7 +55,7 @@
         pg_labels:
           traefik.frontend.auth.forward.address: '{{gauth}}'
           traefik.enable: 'true'
-          traefik.port: '8984'
+          traefik.port: '{{intport}}'
           traefik.frontend.rule: 'Host:{{pgrole}}.{{domain.stdout}},{{tldset}}'
 
     - name: 'Setting PG Volumes'
@@ -78,7 +80,7 @@
         image: '{{image}}'
         pull: yes
         published_ports:
-          - '{{ports.stdout}}8984:8984'
+          - '{{ports.stdout}}{{extport}}:{{intport}}'
         volumes: '{{pg_volumes}}'
         env: '{{pg_env}}'
         restart_policy: unless-stopped
