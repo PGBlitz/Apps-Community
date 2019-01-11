@@ -32,3 +32,12 @@ In order for apps show up under the Community App Store, users must select or pu
 # 2. YouTube Video - Intro
 NOT READY
 
+# 3. Summary
+
+PG Box Community Edition is dead simple to use! Have a container in mind? Push containers that benifit the community today!
+
+📂 [**Click Here**](http://usenetserver.com/partners/?a_aid=5a65169240efd&a_bid=5725b6ed) - NZB's from USENET Server - PG Members Receive a 60% Discount
+
+<p align="right">
+<a href="https://plexguide.com" target="_blank"><img src="https://plexguide.com/wikipics/logo.png" width="75"/>
+</p>
