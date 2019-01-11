@@ -18,11 +18,8 @@ _**Table of Contents**_
 
 To Access Gazee, utilizing the following to login:
 
-
 * User: admin
 * Pass: gazee
-
-📂 [**Click Here**](http://usenetserver.com/partners/?a_aid=5a65169240efd&a_bid=5725b6ed) - NZB's from USENET Server - PG Members Receive a 60% Discount
 
 <p align="right">
 <a href="https://plexguide.com" target="_blank"><img src="https://plexguide.com/wikipics/logo.png" width="75"/>
