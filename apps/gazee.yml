@@ -60,6 +60,7 @@
           - '{{ports.stdout}}{{extport}}:{{intport}}'
         volumes: '{{pg_volumes}}'
         env: '{{pg_env}}'
+        expose: 4242
         restart_policy: unless-stopped
         networks:
           - name: plexguide
