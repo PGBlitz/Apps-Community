@@ -25,7 +25,10 @@ _**Table of Contents**_
 
 **WARNING: Wiki Under Construction**
 
+(BETTER EXAMPLES will be provided), but Radarr4k and Sonarr4k serve as general containers until posted!
+
 In order for apps show up under the Community App Store, users must select or push apps from within the app folder of this repo. Do not worry, the apps automatically show up under the community app store and are segerated from the official containers that are built and supported by PG.
  
 # 2. YouTube Video - Intro
 NOT READY
+
