@@ -41,7 +41,7 @@
 
     - name: 'Copy scripts into directory for {{pgrole}}'
       copy:
-        src: /opt/plexguide/containers/templates/radarr/scripts/cleanup-sonarr.sh
+        src: /opt/plexguide/containers/templates/sonarr/scripts/cleanup-sonarr.sh
         dest: /opt/appdata/{{pgrole}}/scripts
         directory_mode: yes
         force: yes
