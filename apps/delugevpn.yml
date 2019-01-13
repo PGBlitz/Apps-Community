@@ -27,10 +27,6 @@
     - name: 'Including cron job'
       include_tasks: '/opt/plexguide/containers/_core.yml'
 
-    # FOLDER CREATION #############################################################
-    - name: 'Including folders'
-      include_tasks: '/opt/plexguide/containers/_folders.yml'
-
     - name: 'Checking for existing app data'
       stat:
         path: /opt/appdata/{{pgrole}}/core.conf
@@ -61,7 +57,7 @@
           VPN_ENABLED: yes
           VPN_USER: vpnuser
           VPN_PASS: vpnpass
-          VPN_PROV: vpnprov
+          VPN_PROV: custom
           ENABLE_PRIVOXY: no
           STRICT_PORT_FORWARD: no
           LAN_NETWORK: 192.168.1.1/24
