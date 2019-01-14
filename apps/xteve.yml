@@ -14,7 +14,7 @@
     - name: 'Set Known Facts'
       set_fact:
         pgrole: 'xteve'
-        intport: '32768'
+        intport: '34400'
         extport: '34400'
         image: 'crobibero/xteve'
 
