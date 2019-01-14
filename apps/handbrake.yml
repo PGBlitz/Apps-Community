@@ -28,9 +28,6 @@
         path: '{{path.stdout}}/{{pgrole}}'
       register: oldcheck
 
-    - name: 'Get home variable'
-      debug: homestorage=ansible_env.HOME
-
     # LABELS ######################################################################
     - name: 'Adding Traefik'
       set_fact:
@@ -38,7 +35,7 @@
           traefik.enable: 'true'
           traefik.port: '{{intport}}'
           traefik.frontend.auth.forward.address: '{{gauth}}'
-          traefik.frontend.rule: 'Host:{{pgrole}}.{{domain.stdout}},{{tldset}}''
+          traefik.frontend.rule: 'Host:{{pgrole}}.{{domain.stdout}},{{tldset}}'
 
     - name: 'Setting PG Volumes'
       set_fact:
