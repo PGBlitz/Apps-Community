@@ -18,6 +18,7 @@
         extport: '8984'
         image: 'lsiodev/sonarr-preview'
 
+    # CORE (MANDATORY) ############################################################
     - name: 'Including cron job'
       include_tasks: '/opt/plexguide/containers/_core.yml'
 
@@ -53,7 +54,6 @@
     - name: 'Adding Traefik'
       set_fact:
         pg_labels:
-          traefik.protocol: 'https'
           traefik.frontend.auth.forward.address: '{{gauth}}'
           traefik.enable: 'true'
           traefik.port: '{{intport}}'
