@@ -36,7 +36,7 @@
       set_fact:
         pg_volumes:
           - '/opt/appdata/{{pgrole}}:/home/xteve/xteve'
-          - '/opt/appdata/{{pgrole}}/temp:/temp/xteve'
+          - '/opt/appdata/{{pgrole}}/temp:/tmp/xteve'
           - '{{path.stdout}}:{{path.stdout}}'
           - '/etc/localtime:/etc/localtime:ro'
           - '/mnt:/mnt'
@@ -60,7 +60,7 @@
         env: '{{pg_env}}'
         restart_policy: unless-stopped
         networks:
-          - name: plexguide
+          - name: host
             aliases:
               - '{{pgrole}}'
         state: started
