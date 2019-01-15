@@ -52,7 +52,7 @@
           traefik.frontend.port: '{{intport}}'
           traefik.backend.port: '{{intport2}}'
           traefik.frontend.rule: 'Host:mcmyadmin.{{domain.stdout}},{{tldset}}'
-          traefik.backend.rule: 'Host:minecraft.{{domain.stdout}},{{tldset}}
+          traefik.backend.rule: 'Host:minecraft.{{domain.stdout}},{{tldset}}'
           traefik.backend: 'minecraft'
           traefik.frontend.entryPoints: 'https'
           traefik.backend.entryPoints: 'http'
