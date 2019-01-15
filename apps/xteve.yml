@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 # Title:      PlexGuide (Reference Title File)
-# Author(s):  Admin9705
+# Author(s):  TechButton
 # URL:        https://plexguide.com - http://github.plexguide.com
 # GNU:        General Public License v3.0
 ################################################################################
@@ -9,63 +9,37 @@
 - hosts: localhost
   gather_facts: false
   tasks:
-    # CORE (MANDATORY) DO NOT CHANGE ###########################################
+    # FACTS #######################################################################
 
     - name: 'Set Known Facts'
       set_fact:
-        pgrole: 'sonarr4k'
-        intport: '8989'
-        extport: '8984'
-        image: 'lsiodev/sonarr-preview'
+        pgrole: 'xteve'
+        intport: '34400'
+        extport: '34400'
+        image: 'crobibero/xteve'
 
     # CORE (MANDATORY) ############################################################
     - name: 'Including cron job'
       include_tasks: '/opt/plexguide/containers/_core.yml'
 
-    # EXTRA FUNCTIONS REQUIRED BY THE ROLE #####################################
+    # LABELS ######################################################################
 
-    - name: 'Create scripts directory for {{pgrole}}'
-      file:
-        path: /opt/appdata/{{pgrole}}/scripts
-        state: directory
-        owner: 1000
-        group: 1000
-        mode: 0755
-
-    - name: 'Create plugins directory for {{pgrole}}'
-      file:
-        path: /opt/appdata/{{pgrole}}/plugins
-        state: directory
-        owner: 1000
-        group: 1000
-        mode: 0755
-
-    - name: 'Copy scripts into directory for {{pgrole}}'
-      copy:
-        src: /opt/plexguide/containers/templates/sonarr/scripts/cleanup-sonarr.sh
-        dest: /opt/appdata/{{pgrole}}/scripts
-        directory_mode: yes
-        force: yes
-        owner: 1000
-        group: 1000
-        mode: 0755
-
-    # LABELS #### KEEPS BOTTOM CLEAN ###########################################
     - name: 'Adding Traefik'
       set_fact:
         pg_labels:
-          traefik.frontend.auth.forward.address: '{{gauth}}'
           traefik.enable: 'true'
           traefik.port: '{{intport}}'
+          traefik.frontend.auth.forward.address: '{{gauth}}'
           traefik.frontend.rule: 'Host:{{pgrole}}.{{domain.stdout}},{{tldset}}'
 
     - name: 'Setting PG Volumes'
       set_fact:
         pg_volumes:
-          - '/opt/appdata/{{pgrole}}:/config'
+          - '/opt/appdata/{{pgrole}}:/home/xteve/xteve'
+          - '/opt/appdata/{{pgrole}}/temp:/tmp/xteve'
           - '{{path.stdout}}:{{path.stdout}}'
-          - '/mnt:/mnt'
           - '/etc/localtime:/etc/localtime:ro'
+          - '/mnt:/mnt'
 
     - name: 'Setting PG ENV'
       set_fact:
@@ -73,7 +47,7 @@
           PUID: 1000
           PGID: 1000
 
-    # MAIN SCRIPT ##############################################################
+    # MAIN DEPLOYMENT #############################################################
 
     - name: 'Deploying {{pgrole}}'
       docker_container:

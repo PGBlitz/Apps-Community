@@ -13,12 +13,11 @@
 
     - name: 'Set Known Facts'
       set_fact:
-        pgrole: 'sonarr4k'
-        intport: '8989'
-        extport: '8984'
-        image: 'lsiodev/sonarr-preview'
+        pgrole: 'radarrhdr'
+        intport: '7878'
+        extport: '7877'
+        image: 'linuxserver/radarr'
 
-    # CORE (MANDATORY) ############################################################
     - name: 'Including cron job'
       include_tasks: '/opt/plexguide/containers/_core.yml'
 
@@ -42,7 +41,7 @@
 
     - name: 'Copy scripts into directory for {{pgrole}}'
       copy:
-        src: /opt/plexguide/containers/templates/sonarr/scripts/cleanup-sonarr.sh
+        src: /opt/plexguide/containers/templates/radarr/scripts/cleanup-radarr.sh
         dest: /opt/appdata/{{pgrole}}/scripts
         directory_mode: yes
         force: yes
