@@ -49,24 +49,13 @@
         pg_labels:
           traefik.frontend.auth.forward.address: '{{gauth}}'
           traefik.enable: 'true'
-          traefik.port: '{{intport}}'
+          traefik.frontend.port: '{{intport}}'
+          traefik.backend.port: '{{intport2}}'
           traefik.frontend.rule: 'Host:mcmyadmin.{{domain.stdout}},{{tldset}}'
-          
-    - name: 'Adding Traefik for Minecraft Server1'
-      set_fact:
-        pg_labels:
-#          traefik.frontend.auth.forward.address: '{{gauth}}'
-          traefik.enable: 'true'
-          traefik.port: '{{intport2}}'
-          traefik.frontend.rule: 'Host:minecraft.{{domain.stdout}},{{tldset}}'
-          
-    - name: 'Adding Traefik for Minecraft Server2'
-      set_fact:
-        pg_labels:
-#          traefik.frontend.auth.forward.address: '{{gauth}}'
-          traefik.enable: 'true'
-          traefik.port: '{{intport3}}'
-          traefik.frontend.rule: 'Host:minecraft2.{{domain.stdout}},{{tldset}}'
+          traefik.backend.rule: 'Host:minecraft.{{domain.stdout}},{{tldset}}
+          traefik.backend: 'minecraft'
+          traefik.frontend.entryPoints: 'https'
+          traefik.backend.entryPoints: 'http'
 
     - name: 'Setting PG Volumes'
       set_fact:
