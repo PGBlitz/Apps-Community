@@ -18,6 +18,8 @@
         extport: '8088'
         intport2: '25565'
         extport2: '25565'
+        intport3: '25566'
+        extport3: '25566'
         image: 'linuxserver/mcmyadmin2'
 
     - name: 'Including cron job'
@@ -42,13 +44,29 @@
         mode: 0755
 
     # LABELS #### KEEPS BOTTOM CLEAN ###########################################
-    - name: 'Adding Traefik'
+    - name: 'Adding Traefik for McMyAdmin'
       set_fact:
         pg_labels:
           traefik.frontend.auth.forward.address: '{{gauth}}'
           traefik.enable: 'true'
           traefik.port: '{{intport}}'
-          traefik.frontend.rule: 'Host:{{pgrole}}.{{domain.stdout}},{{tldset}}'
+          traefik.frontend.rule: 'Host:mcmyadmin.{{domain.stdout}},{{tldset}}'
+          
+    - name: 'Adding Traefik for Minecraft Server1'
+      set_fact:
+        pg_labels:
+#          traefik.frontend.auth.forward.address: '{{gauth}}'
+          traefik.enable: 'true'
+          traefik.port: '{{intport2}}'
+          traefik.frontend.rule: 'Host:minecraft.{{domain.stdout}},{{tldset}}'
+          
+    - name: 'Adding Traefik for Minecraft Server2'
+      set_fact:
+        pg_labels:
+#          traefik.frontend.auth.forward.address: '{{gauth}}'
+          traefik.enable: 'true'
+          traefik.port: '{{intport3}}'
+          traefik.frontend.rule: 'Host:minecraft2.{{domain.stdout}},{{tldset}}'
 
     - name: 'Setting PG Volumes'
       set_fact:
