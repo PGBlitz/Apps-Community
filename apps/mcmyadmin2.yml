@@ -16,8 +16,6 @@
         pgrole: 'mcmyadmin2'
         intport: '8080'
         extport: '8088'
-        intport2: '25565'
-        extport2: '25565'
         image: 'linuxserver/mcmyadmin2'
 
     - name: 'Including cron job'
@@ -48,12 +46,13 @@
           traefik.frontend.auth.forward.address: '{{gauth}}'
           traefik.enable: 'true'
           traefik.port: '{{intport}}'
-          traefik.frontend.rule: 'Host:minecraft.{{domain.stdout}},{{tldset}}'
+          traefik.frontend.rule: 'Host:mcmyadmin.{{domain.stdout}},{{tldset}}'
 
     - name: 'Setting PG Volumes'
       set_fact:
         pg_volumes:
-          - '/opt/appdata/{{pgrole}}:/minecraft'
+          - '/opt/appdata/{{pgrole}}/mcmyadmin:/minecraft'
+          - '/opt/appdata/{{pgrole}}/Minecraft:/Minecraft'
           - '{{path.stdout}}:{{path.stdout}}'
           - '/mnt:/mnt'
           - '/etc/localtime:/etc/localtime:ro'
@@ -75,6 +74,7 @@
           - '{{ports.stdout}}{{extport}}:{{intport}}'
           - '25565:25565/tcp'
           - '25566:25566/tcp'
+          - '25567:25567/tcp'
         volumes: '{{pg_volumes}}'
         env: '{{pg_env}}'
         restart_policy: unless-stopped
