@@ -14,7 +14,7 @@
     - name: 'Set Known Facts'
       set_fact:
         pgrole: 'mcmyadmin2'
-        intport: '8088'
+        intport: '8080'
         extport: '8088'
         intport2: '25565'
         extport2: '25565'
