@@ -21,21 +21,21 @@
     - name: 'Including cron job'
       include_tasks: '/opt/plexguide/containers/_core.yml'
 
-    - name: Checking {{pgrole}}'s json existance
+    - name: 'Checking {{pgrole}}'s json existance'
       stat:
         path: '/opt/plexguide/containers/templates/{{pgrole}}/config.json'
       register: jsoncheck
 
     - name: 'Copying file for {{pgrole}}'
       copy:
-        src: /opt/plexguide/containers/templates/{{pgrole}}.json
-        dest: /opt/appdata/{{pgrole}}/{{pgrole}}json
+        src: '/opt/plexguide/containers/templates/{{pgrole}}/config.json'
+        dest: '/opt/appdata/{{pgrole}}/{{pgrole}}/config.json'
         directory_mode: yes
         force: yes
         owner: 1000
         group: 1000
         mode: 0755
-      when: not nzbthrottle.stat.exists
+      when: not jsoncheck.stat.exists
 
     # LABELS ######################################################################
     - name: 'Adding Traefik'
