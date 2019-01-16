@@ -37,7 +37,7 @@
         pg_volumes:
           - '/opt/appdata/{{pgrole}}:/minecraft'
           - '/opt/appdata/{{pgrole}}/Minecraft:/minecraft/Minecraft'
-          - '/opt/appdata/{{pgrole}}/Minecraft/plugins:/minecraft/Minecraft/plugins'
+          - '/opt/appdata/{{pgrole}}/plugins:/minecraft/Minecraft/plugins'
           - '{{path.stdout}}:{{path.stdout}}'
           - '/mnt:/mnt'
           - '/etc/localtime:/etc/localtime:ro'
