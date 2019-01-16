@@ -13,7 +13,7 @@
 
     - name: 'Set Known Facts'
       set_fact:
-        pgrole: 'mcmyadmin2'
+        pgrole: 'mcmyadmin'
         intport: '8080'
         extport: '8088'
         image: 'linuxserver/mcmyadmin2'
@@ -35,7 +35,7 @@
     - name: 'Setting PG Volumes'
       set_fact:
         pg_volumes:
-          - '/opt/appdata/{{pgrole}}/mcmyadmin:/'
+          - '/opt/appdata/{{pgrole}}/:/'
           - '/opt/appdata/{{pgrole}}/Minecraft:/Minecraft'
           - '/opt/appdata/{{pgrole}}/Minecraft/plugins:/Minecraft/plugins'
           - '{{path.stdout}}:{{path.stdout}}'
