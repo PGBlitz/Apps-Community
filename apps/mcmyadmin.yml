@@ -23,22 +23,6 @@
 
     # EXTRA FUNCTIONS REQUIRED BY THE ROLE #####################################
 
-    - name: 'Create scripts directory for {{pgrole}}'
-      file:
-        path: /opt/appdata/{{pgrole}}/scripts
-        state: directory
-        owner: 1000
-        group: 1000
-        mode: 0755
-
-    - name: 'Create plugins directory for {{pgrole}}'
-      file:
-        path: /opt/appdata/{{pgrole}}/plugins
-        state: directory
-        owner: 1000
-        group: 1000
-        mode: 0755
-
     # LABELS #### KEEPS BOTTOM CLEAN ###########################################
     - name: 'Adding Traefik'
       set_fact:
@@ -51,8 +35,9 @@
     - name: 'Setting PG Volumes'
       set_fact:
         pg_volumes:
-          - '/opt/appdata/{{pgrole}}/mcmyadmin:/minecraft'
+          - '/opt/appdata/{{pgrole}}/mcmyadmin:/'
           - '/opt/appdata/{{pgrole}}/Minecraft:/Minecraft'
+          - '/opt/appdata/{{pgrole}}/Minecraft/plugins:/Minecraft/plugins'
           - '{{path.stdout}}:{{path.stdout}}'
           - '/mnt:/mnt'
           - '/etc/localtime:/etc/localtime:ro'
