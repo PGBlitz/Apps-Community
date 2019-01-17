@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Title:      McMyadmin2
+# Title:      McMyadmin (v2)
 # Author(s):  timekills
 # URL:        https://plexguide.com - http://github.plexguide.com
 # GNU:        General Public License v3.0
@@ -13,7 +13,7 @@
 
     - name: 'Set Known Facts'
       set_fact:
-        pgrole: 'mcmyadmin2'
+        pgrole: 'mcmyadmin'
         intport: '8080'
         extport: '8088'
         image: 'linuxserver/mcmyadmin2'
@@ -22,22 +22,6 @@
       include_tasks: '/opt/plexguide/containers/_core.yml'
 
     # EXTRA FUNCTIONS REQUIRED BY THE ROLE #####################################
-
-    - name: 'Create scripts directory for {{pgrole}}'
-      file:
-        path: /opt/appdata/{{pgrole}}/scripts
-        state: directory
-        owner: 1000
-        group: 1000
-        mode: 0755
-
-    - name: 'Create plugins directory for {{pgrole}}'
-      file:
-        path: /opt/appdata/{{pgrole}}/plugins
-        state: directory
-        owner: 1000
-        group: 1000
-        mode: 0755
 
     # LABELS #### KEEPS BOTTOM CLEAN ###########################################
     - name: 'Adding Traefik'
@@ -51,8 +35,9 @@
     - name: 'Setting PG Volumes'
       set_fact:
         pg_volumes:
-          - '/opt/appdata/{{pgrole}}/mcmyadmin:/minecraft'
-          - '/opt/appdata/{{pgrole}}/Minecraft:/Minecraft'
+          - '/opt/appdata/{{pgrole}}:/minecraft'
+          - '/opt/appdata/{{pgrole}}/Minecraft:/minecraft/Minecraft'
+          - '/opt/appdata/{{pgrole}}/plugins:/minecraft/Minecraft/plugins'
           - '{{path.stdout}}:{{path.stdout}}'
           - '/mnt:/mnt'
           - '/etc/localtime:/etc/localtime:ro'
