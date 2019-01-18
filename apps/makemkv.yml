@@ -1,8 +1,8 @@
 #!/bin/bash
 #
-# Title:      Jdownloader2 for PlexGuide (OAuth security)
-# Author(s):  timekills
-# URL:        https://plexguide.com - https://github.com/timekills/jdownloader2-for-Plexguide
+# Title:      MakeMKV for PlexGuide
+# Author(s):  rla999
+# URL:        https://plexguide.com - https://github.com/rla999/makemkv-for-plexguide/
 # GNU:        General Public License v3.0
 ################################################################################
 ---
@@ -13,14 +13,12 @@
 
     - name: 'Set Known Facts'
       set_fact:
-        pgrole: 'jdownloader2'
+        pgrole: 'makemkv'
         intport: '5800'
-        extport: '5802'
-        intport2: '5902'
-        extport2: '5902'
-        intport3: '3129'
-        extport3: '3129'
-        image: 'jlesage/jdownloader-2'
+        extport: '5801'
+        intport2: '5903'
+        extport2: '5903'
+        image: 'jlesage/makemkv'
 
     # CORE (MANDATORY) ############################################################
     - name: 'Including cron job'
@@ -71,23 +69,13 @@
         pg_env:
           UID: 1000
           GID: 1000
+          MAKEMKV_KEY: BETA
+          AUTO_DISC_RIPPER: 0
+          ENABLE_CJK_FONT: 1
+          CLEAN_TMP_DIR: 1
+          KEEP_APP_RUNNING: 1
 
     # MAIN DEPLOYMENT #############################################################
-    - name: 'Create scripts directory for {{pgrole}}'
-      file:
-        path: /opt/appdata/{{pgrole}}/scripts
-        state: directory
-        owner: 1000
-        group: 1000
-        mode: 0755
-
-#    - name: 'Create plugins directory for {{pgrole}}'
-#      file:
-#        path: /opt/appdata/{{pgrole}}/plugins
-#        state: directory
-#        owner: 1000
-#        group: 1000
-#        mode: 0755
 
     - name: 'Deploying {{pgrole}}'
       docker_container:
@@ -106,9 +94,9 @@
         state: started
         labels: '{{pg_labels}}'
 
-    - name: 'Wait 6 Seconds'
+    - name: 'Wait 7 Seconds'
       wait_for:
-        timeout: 6
+        timeout: 7
 
     - name: Stop Container
       docker_container:
@@ -128,13 +116,6 @@
           docker_container:
             name: '{{pgrole}}'
             state: stopped
-
-#       - name: Setting plugins directory
-#          lineinfile:
-#            path: '/opt/appdata/{{pgrole}}/core.conf'
-#            regexp: '"plugins_location"'
-#            line: '"plugins_location": "/config/plugins",'
-#            state: present
 
         - name: Restart Container
           docker_container:
