@@ -15,7 +15,7 @@
       set_fact:
         pgrole: 'jdownloader2'
         intport: '5802'
-        extport: '5802'
+        extport: '5800'
         intport2: '5902'
         extport2: '5902'
         intport3: '3129'
