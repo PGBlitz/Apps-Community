@@ -4,6 +4,13 @@
 # Author(s):  timekills
 # URL:        https://plexguide.com - https://github.com/timekills
 # GNU:        General Public License v3.0
+#
+# Sync will execute every day at 0400 local. Can be changed in line 61 by modifying the CRON settings:
+# See: https://tecadmin.net/crontab-in-linux-with-20-examples-of-cron-schedule/ for CRON examples
+#
+# To run manually execute ./cron-script from inside the docker container. e.g.:
+# 1. From the host type "docker exec -it plexsync /bin/bash" (without the quotes) to enter the docker container.
+# 2. From inside the docker container typer "./cron-script" (without the quotes) to execute the sync immediately.
 ################################################################################
 ---
 - hosts: localhost
@@ -49,13 +56,14 @@
           S1_SSH_HOST: "ssh.timekills.info"
           S1_SSH_PORT: "22"
           S1_SSH_PATH: "/config/Library/Application Support/Plex Media Server/Plug-in Support/Databases"
-          S1_START: "ssh -oStrictHostKeyChecking=no -i /sshkey root@ssh.timekills.info 'cd /; docker start plex'"
-          S1_STOP: "ssh -oStrictHostKeyChecking=no -i /sshkey root@ssh.timekills.info 'cd /; docker stop plex'"
+          S1_START: "ssh -oStrictHostKeyChecking=no -i /sshkey root@ssh.timekills.xyz 'cd /; docker start plex'"
+          S1_STOP: "ssh -oStrictHostKeyChecking=no -i /sshkey root@ssh.timekills.xyz 'cd /; docker stop plex'"
           S2_DB_PATH: "/mnt/DB2"
           S2_START: "cd /; docker start plex"
           S2_STOP: "cd /; docker stop plex"
           BACKUP: "true"
           DRYRUN: "true"
+          CRON: "0 4 * * *"
 
     # MAIN DEPLOYMENT #############################################################
 
