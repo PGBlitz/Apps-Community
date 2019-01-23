@@ -43,7 +43,7 @@
         pg_volumes:
           - '/opt/appdata/{{pgrole}}:/config:rw'
           - 'S1_SSH_KEY=/sshkey'
-          - '/config/Library/Application Support/Plex Media Server/Plug-in Support/Databases/:/mnt/DB2'
+          - '/opt/appdata/plex/database/Library/Application Support/Plex Media Server/Plug-in Support/Databases/:/mnt/DB2'
           - '/etc/localtime:/etc/localtime:ro'
 
     - name: 'Setting PG ENV'
@@ -55,7 +55,7 @@
           S1_SSH_USER: "root"
           S1_SSH_HOST: "ssh.timekills.info"
           S1_SSH_PORT: "22"
-          S1_SSH_PATH: "/config/Library/Application Support/Plex Media Server/Plug-in Support/Databases"
+          S1_SSH_PATH: "/opt/appdata/plex/database/Library/Application Support/Plex Media Server/Plug-in Support/Databases/"
           S1_START: "ssh -oStrictHostKeyChecking=no -i /sshkey root@ssh.timekills.xyz 'cd /; docker start plex'"
           S1_STOP: "ssh -oStrictHostKeyChecking=no -i /sshkey root@ssh.timekills.xyz 'cd /; docker stop plex'"
           S2_DB_PATH: "/mnt/DB2"
