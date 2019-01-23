@@ -14,8 +14,8 @@
     - name: 'Set Known Facts'
       set_fact:
         pgrole: 'plexsync'
-#        intport: '5800'
-#        extport: '5800'
+        intport: '1700'
+        extport: '1700'
         image: 'nowsci/plex-db-sync'
 
     # CORE (MANDATORY) ############################################################
@@ -23,13 +23,13 @@
       include_tasks: '/opt/plexguide/containers/_core.yml'
 
     # LABELS ######################################################################
-#    - name: 'Adding Traefik'
-#      set_fact:
-#        pg_labels:
-#          traefik.enable: 'true'
-#          traefik.port: '{{intport}}'
-#          traefik.frontend.auth.forward.address: '{{gauth}}'
-#          traefik.frontend.rule: 'Host:plexsync.{{domain.stdout}},{{tldset}}'
+    - name: 'Adding Traefik'
+      set_fact:
+        pg_labels:
+          traefik.enable: 'true'
+          traefik.port: '{{intport}}'
+          traefik.frontend.auth.forward.address: '{{gauth}}'
+          traefik.frontend.rule: 'Host:plexsync.{{domain.stdout}},{{tldset}}'
 
     - name: 'Setting PG Volumes'
       set_fact:
@@ -61,8 +61,8 @@
         name: '{{pgrole}}'
         image: '{{image}}'
         pull: yes
-#        published_ports:
-#          - '{{ports.stdout}}{{extport}}:{{intport}}'
+        published_ports:
+          - '{{ports.stdout}}{{extport}}:{{intport}}'
         volumes: '{{pg_volumes}}'
         env: '{{pg_env}}'
         restart_policy: unless-stopped
@@ -71,7 +71,7 @@
             aliases:
               - '{{pgrole}}'
         state: started
-#        labels: '{{pg_labels}}'
+        labels: '{{pg_labels}}'
 
     - name: 'Wait 7 Seconds'
       wait_for:
