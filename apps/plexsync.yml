@@ -52,8 +52,10 @@
         pg_env:
           USER_ID: 1000
           GROUP_ID: 1000
+          KEEP_APP_RUNNING: 1
 
     # MAIN DEPLOYMENT #############################################################
+
     - name: 'Deploying {{pgrole}}'
       docker_container:
         name: '{{pgrole}}'
@@ -71,16 +73,16 @@
         state: started
         labels: '{{pg_labels}}'
 
-    - name: 'Wait 6 Seconds'
+    - name: 'Wait 7 Seconds'
       wait_for:
-        timeout: 6
+        timeout: 7
 
     - name: Stop Container
       docker_container:
         name: '{{pgrole}}'
         state: stopped
 
-    # ENDING FOR HANDBRAKE ###########################################################
+    # ENDING FOR PLEXSYNC ###########################################################
 
 #    - name: 'Waiting for {{pgrole}} to initialize'
 #      wait_for:
