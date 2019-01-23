@@ -54,6 +54,8 @@
           S2_DB_PATH: "/mnt/DB2"
           S2_START: "cd /; docker start plex"
           S2_STOP: "cd /; docker stop plex"
+          BACKUP: "true"
+          DRYRUN: "true"
 
     # MAIN DEPLOYMENT #############################################################
 
