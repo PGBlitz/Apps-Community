@@ -71,7 +71,7 @@
             aliases:
               - '{{pgrole}}'
         state: started
-        labels: '{{pg_labels}}'
+#        labels: '{{pg_labels}}'
 
     - name: 'Wait 7 Seconds'
       wait_for:
