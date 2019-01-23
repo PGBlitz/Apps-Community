@@ -36,7 +36,7 @@
         pg_volumes:
           - '/opt/appdata/{{pgrole}}:/config:rw'
           - 'S1_SSH_KEY=/sshkey'
-          - '/config/Library/Application Support/Plex Media Server/Plug-in Support/Databases/:/mnt/DB2
+          - '/config/Library/Application Support/Plex Media Server/Plug-in Support/Databases/:/mnt/DB2'
           - '/etc/localtime:/etc/localtime:ro'
 
     - name: 'Setting PG ENV'
