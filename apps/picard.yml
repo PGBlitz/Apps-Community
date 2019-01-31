@@ -15,8 +15,10 @@
     - name: 'Set Known Facts'
       set_fact:
         pgrole: 'picard'
-        intport: '3031'
-        extport: '3031'
+        intport: '6060'
+        extport: '6060'
+        intport2: '13034'
+        extport2: '3031'
         expose: '3031       '
         image: 'metabrainz/picard-website'
 
@@ -26,6 +28,9 @@
 
     - name: 'Including folders'
       include_tasks: '/opt/plexguide/containers/_downloaders.yml'
+
+    - name: 'Including plugins'
+      include_tasks: '/opt/plexguide/containers/_plugins.yml'
 
     - name: 'Checking for existing app data'
       stat:
