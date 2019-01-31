@@ -15,7 +15,7 @@
     - name: 'Set Known Facts'
       set_fact:
         pgrole: 'picard'
-        intport: '13034'
+        intport: '3031'
         extport: '3031'
         expose: '3031       '
         image: 'metabrainz/picard-website'
