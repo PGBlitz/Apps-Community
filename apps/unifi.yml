@@ -1,0 +1,81 @@
+#!/bin/bash
+#
+# Title:      Unifi Controller
+# Author(s):  JRS83
+# URL:        https://plexguide.com - http://github.plexguide.com
+# GNU:        General Public License v3.0
+################################################################################
+---
+- hosts: localhost
+  gather_facts: false
+  tasks:
+    # FACTS #######################################################################
+    - name: 'Set Known Facts'
+      set_fact:
+        pgrole: 'unifi'
+        intport: '8443'
+        extport: '8443'
+        image: 'goofball222/unifi'
+
+    # CORE (MANDATORY) ############################################################
+    - name: 'Including cron job'
+      include_tasks: '/opt/plexguide/containers/_core.yml'
+
+    # LABELS ######################################################################
+    - name: 'Adding Traefik'
+      set_fact:
+        pg_labels:
+          traefik.frontend.auth.forward.address: '{{gauth}}'
+          traefik.enable: 'true'
+          traefik.port: '{{intport}}'
+          traefik.frontend.rule: 'Host:{{pgrole}}.{{domain.stdout}},{{tldset}}'
+          traefik.protocol: 'https'
+
+    - name: 'Setting PG Volumes'
+      set_fact:
+        pg_volumes:
+          - '/opt/appdata/unifi:/config:rw'
+          - '/etc/localtime:/etc/localtime:ro'
+          - '/opt/appdata/unifi/cert:/usr/lib/unifi/cert'
+          - '/opt/appdata/unifi/data:/usr/lib/unifi/data'
+          - '/opt/appdata/unifi/logs:/usr/lib/unifi/logs'
+
+    - name: 'Setting PG ENV'
+      set_fact:
+        pg_env:
+          PUID: 1000
+          PGID: 1000
+
+    # MAIN DEPLOYMENT #############################################################
+    - name: 'Deploying {{pgrole}}'
+      docker_container:
+        name: '{{pgrole}}'
+        image: '{{image}}'
+        pull: yes
+        capabilities:
+        published_ports:
+          - '{{ports.stdout}}{{extport}}:{{intport}}'
+          - '3478:3478/udp'
+          - '8080:8080/tcp'
+          - '8880:8880/tcp'
+          - '8843:8843/tcp'
+          - '27117:27117/tcp'
+          - '10001:10001/udp'
+          - '1900:1900/udp'
+          - '6789:6789/tcp'
+        volumes: '{{pg_volumes}}'
+        env: '{{pg_env}}'
+        restart_policy: unless-stopped
+        networks:
+          - name: plexguide
+            aliases:
+              - '{{pgrole}}'
+        security_opts:    
+#          - apparmor:unconfined
+        state: started
+        labels: '{{pg_labels}}'
+##PG-Core
+
+##PG-Community
+
+##PG-Community
