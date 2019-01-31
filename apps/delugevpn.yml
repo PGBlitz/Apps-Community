@@ -27,6 +27,9 @@
     - name: 'Including cron job'
       include_tasks: '/opt/plexguide/containers/_core.yml'
 
+    - name: 'Including folders'
+      include_tasks: '/opt/plexguide/containers/_downloaders.yml'
+
     - name: 'Checking for existing app data'
       stat:
         path: /opt/appdata/{{pgrole}}/core.conf
@@ -281,7 +284,7 @@
             line: '"seed_time_ratio_limit": 1.0,'
             state: present
 
-        #when: not confcheck.stat.exists
+      when: not confcheck.stat.exists
 
     - name: Restart {{pgrole}}
       docker_container:
