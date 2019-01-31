@@ -73,7 +73,9 @@
         image: '{{image}}'
         pull: yes
         published_ports:
-          - '{{ports.stdout}}{{extport}}:{{intport}}'
+#          - '{{ports.stdout}}{{extport}}:{{intport}}'
+          - '13034:3031/tcp'
+          - '6060:6060/tcp'
         volumes: '{{pg_volumes}}'
         env: '{{pg_env}}'
         restart_policy: unless-stopped
