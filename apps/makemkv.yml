@@ -24,23 +24,6 @@
     - name: 'Including cron job'
       include_tasks: '/opt/plexguide/containers/_core.yml'
 
-    # MIGRATIONS (REMOVE SECTION ON MARCH 1st) #############################################################
-    - name: 'Check for old volumes'
-      stat:
-        path: '{{path.stdout}}/{{pgrole}}'
-      register: oldcheck
-
-    - name: 'Migrations'
-      block:
-        - name: 'Creating new downloads location'
-          command: 'mkdir -p {{path.stdout}}/downloads/{{pgrole}}'
-
-    - name: 'Chown download folder'
-      shell: 'chown -R 1000:1000 {{path.stdout}}/downloads/{{pgrole}}/'
-
-    - name: 'Chmod download folder'
-      shell: 'chmod -R 775 {{path.stdout}}/downloads/{{pgrole}}/'
-
     - name: 'Ini Check'
       stat:
         path: /opt/appdata/{{pgrole}}/core.conf

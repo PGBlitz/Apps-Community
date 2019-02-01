@@ -48,7 +48,7 @@
           - '/opt/appdata/{{pgrole}}/config:/config'
           - '/opt/appdata/{{pgrole}}/sync:/sync'
           - '/mnt:/mnt'
-
+          - '{{path.stdout}}:{{path.stdout}}'
 
     - name: 'Setting PG ENV'
       set_fact:
