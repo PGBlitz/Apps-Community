@@ -19,7 +19,7 @@
         extport: '5805'
         intport2: '5900'
         extport2: '5905'
-        expose: '5905      
+        expose: '5905'
         image: 'jlesage/mkvtoolnix'
 
     # CORE (MANDATORY) ############################################################
