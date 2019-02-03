@@ -12,10 +12,10 @@
     # FACTS #######################################################################
     - name: 'Set Known Facts'
       set_fact:
-        pgrole: 'ubooquity'
-        intport: '2202'
-        extport: '2202'
-        image: 'linuxserver/ubooquity'
+        pgrole: 'nowshowing'
+        intport: '6878'
+        extport: '6878'
+        image: 'ninthwalker/nowshowing:v2'
 
     # CORE (MANDATORY) ############################################################
     - name: 'Including cron job'
@@ -34,9 +34,7 @@
       set_fact:
         pg_volumes:
           - '/opt/appdata/{{pgrole}}:/config'
-          - '{{path.stdout}}:{{path.stdout}}'
           - '/etc/localtime:/etc/localtime:ro'
-          - '/mnt:/mnt'
 
     - name: 'Setting PG ENV'
       set_fact:

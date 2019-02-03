@@ -12,10 +12,10 @@
     # FACTS #######################################################################
     - name: 'Set Known Facts'
       set_fact:
-        pgrole: 'ubooquity'
-        intport: '2202'
-        extport: '2202'
-        image: 'linuxserver/ubooquity'
+        pgrole: 'bazarr'
+        intport: '6767'
+        extport: '6767'
+        image: 'linuxserver/bazarr:latest'
 
     # CORE (MANDATORY) ############################################################
     - name: 'Including cron job'
@@ -25,17 +25,17 @@
     - name: 'Adding Traefik'
       set_fact:
         pg_labels:
-          traefik.frontend.auth.forward.address: '{{gauth}}'
           traefik.enable: 'true'
           traefik.port: '{{intport}}'
+          traefik.frontend.auth.forward.address: '{{gauth}}'
           traefik.frontend.rule: 'Host:{{pgrole}}.{{domain.stdout}},{{tldset}}'
 
     - name: 'Setting PG Volumes'
       set_fact:
         pg_volumes:
+          - '/etc/localtime:/etc/localtime:ro'
           - '/opt/appdata/{{pgrole}}:/config'
           - '{{path.stdout}}:{{path.stdout}}'
-          - '/etc/localtime:/etc/localtime:ro'
           - '/mnt:/mnt'
 
     - name: 'Setting PG ENV'
