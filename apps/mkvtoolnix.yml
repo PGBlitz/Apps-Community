@@ -53,7 +53,7 @@
           - '{{path.stdout}}:{{path.stdout}}'
           - '/etc/localtime:/etc/localtime:ro'
           - '/mnt:/mnt'
-          - '/mnt/downloads/storage:/storage:rw
+          - '/mnt/downloads/storage:/storage:rw'
 
     - name: 'Setting default ENV'
       set_fact:
