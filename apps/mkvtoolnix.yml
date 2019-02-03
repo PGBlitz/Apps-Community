@@ -17,9 +17,6 @@
         pgrole: 'mkvtoolnix'
         intport: '5800'
         extport: '5805'
-        intport2: '5900'
-        extport2: '5905'
-        expose: '5905'
         image: 'jlesage/mkvtoolnix'
 
     # CORE (MANDATORY) ############################################################
@@ -70,9 +67,7 @@
         image: '{{image}}'
         pull: yes
         published_ports:
-#          - '{{ports.stdout}}{{extport}}:{{intport}}'
-          - '5800:5805/tcp'
-          - '5900:5905/tcp'
+          - '{{ports.stdout}}{{extport}}:{{intport}}'
         volumes: '{{pg_volumes}}'
         env: '{{pg_env}}'
         restart_policy: unless-stopped
