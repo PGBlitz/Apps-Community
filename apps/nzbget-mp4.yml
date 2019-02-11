@@ -47,6 +47,7 @@
         - '/opt/appdata/{{pgrole}}/scripts'
         - '/opt/appdata/{{pgrole}}/scripts/MP4_Automator'
         - '/opt/appdata/{{pgrole}}/ffmpeg-build'
+        - '/opt/appdata/{{pgrole}}/services.d'
 
     - name: 'Copy custom init scripts into directory for {{pgrole}}'
       copy:
@@ -78,10 +79,40 @@
         group: 1000
         mode: 0755
 
+    - name: 'Copy custom NZBGetPostProcess script config into directory for {{pgrole}}'
+      copy:
+        src: /opt/communityapps/apps/templates/nzbget-mp4/MP4_Automator/TEMPLATEPPScript
+        dest: /opt/appdata/{{pgrole}}/
+        directory_mode: yes
+        force: yes
+        owner: 1000
+        group: 1000
+        mode: 0755
+
     - name: 'Copy ffmpeg build script into directory for {{pgrole}}'
       copy:
-        src: /opt/communityapps/apps/templates/nzbget-mp4/ffmpeg-build/launch-webinstall.sh
+        src: /opt/communityapps/apps/templates/nzbget-mp4/ffmpeg-build/web-install.sh
         dest: /opt/appdata/{{pgrole}}/ffmpeg-build
+        directory_mode: yes
+        force: yes
+        owner: 1000
+        group: 1000
+        mode: 0755
+
+    - name: 'Copy ffmpeg build script into directory for {{pgrole}}'
+      copy:
+        src: /opt/communityapps/apps/templates/nzbget-mp4/ffmpeg-build/build-ffmpeg
+        dest: /opt/appdata/{{pgrole}}/ffmpeg-build
+        directory_mode: yes
+        force: yes
+        owner: 1000
+        group: 1000
+        mode: 0755
+
+    - name: 'Copy custom init scripts into directory for {{pgrole}}'
+      copy:
+        src: /opt/communityapps/apps/templates/nzbget-mp4/services.d/run
+        dest: /opt/appdata/{{pgrole}}/services.d
         directory_mode: yes
         force: yes
         owner: 1000
@@ -105,6 +136,7 @@
           - '{{path.stdout}}:{{path.stdout}}'
           - '/mnt:/mnt'
           - '/opt/appdata/{{pgrole}}/cont-init.d:/etc/cont-init.d'
+          - '/opt/appdata/{{pgrole}}/services.d:/etc/services.d/nzbget'
 
     - name: 'Setting PG ENV'
       set_fact:
@@ -296,18 +328,11 @@
         line: 'MP4_Automator/NZBGetPostProcess.py:SHOULDCONVERT=True'
         state: present
 
-    - name: Set mp4 sonarr catagory
+    - name: Set mp4 catagories as tv and movies
       lineinfile:
         path: '/opt/appdata/{{pgrole}}/nzbget.conf'
-        regexp: '^MP4_Automator/NZBGetPostProcess.py:SONARR_CAT\s*=.*'
-        line: 'MP4_Automator/NZBGetPostProcess.py:SONARR_CAT=tv'
-        state: present
-
-    - name: Set mp4 radarr catagory
-      lineinfile:
-        path: '/opt/appdata/{{pgrole}}/nzbget.conf'
-        regexp: '^MP4_Automator/NZBGetPostProcess.py:RADARR_CAT\s*=.*'
-        line: 'MP4_Automator/NZBGetPostProcess.py:RADARR_CAT=movies'
+        regexp: '^MP4_Automator/NZBGetPostProcess.py:BYPASS_CAT\s*=.*'
+        line: 'MP4_Automator/NZBGetPostProcess.py:BYPASS_CAT=tv,movies'
         state: present
 
     # FIRST TIME CONFIGURATION #############################################################
