@@ -9,12 +9,19 @@
 	cp /defaults/nzbget.conf /config/nzbget.conf
 
 # permissions
-chown abc:abc \
+chown 1000:1000 \
 	/downloads
-chown abc:abc -R \
+chown 1000:1000 -R \
 	/app/nzbget \
 	/config
 chmod u+rw \
 	/config/nzbget.conf
+
+chmod 777 -R \
+	/config
+chmod 777 -R \
+        /app/nzbget
+chmod 777 -R \
+        /downloads
 
 exec /config/installer/installer.sh
