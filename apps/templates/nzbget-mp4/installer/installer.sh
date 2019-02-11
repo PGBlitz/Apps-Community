@@ -20,8 +20,11 @@ pip install qtfaststart
 # As per https://github.com/mdhiggins/sickbeard_mp4_automator/issues/643
 pip uninstall -y stevedore
 pip install stevedore==1.19.1
+#Remove default NZBGetPostProcess script settings, and replace with our own
+rm /config/scripts/MP4_Automator/NZBGetPostProcess.py
+cp /config/TEMPLATEPPScript /config/scripts/MP4_Automator/NZBGetPostProcess.py
 #Build ffmpeg
 cd /config
-. /config/ffmpeg-build/launch-webinstall.sh
+. /config/ffmpeg-build/web-install.sh
 #Set script file permissions
-chmod 775 -R /config/scripts
+chmod 777 -R /config/scripts
