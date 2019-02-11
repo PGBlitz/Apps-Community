@@ -1,5 +1,9 @@
 #!/bin/bash
 #
+# NzbGet, with build in sickbeard_mp4_automator and ffmpeg build script
+# Built for PlexGuide version 8.1
+# Some further changes required for version 8.3 soon
+#
 # Title:      PlexGuide (Reference Title File)
 # Author(s):  Admin9705
 # URL:        https://plexguide.com - http://github.plexguide.com
