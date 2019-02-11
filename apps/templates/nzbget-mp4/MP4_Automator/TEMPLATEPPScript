@@ -35,7 +35,7 @@
 #SICKRAGE_CAT=Sickrage
 
 # Category list (comma seperated) for bypassing any further processing but still converting
-#BYPASS_CAT=Bypass
+#BYPASS_CAT=tv,movies
 
 # Custom output_directory setting
 #OUTPUT_DIR=
