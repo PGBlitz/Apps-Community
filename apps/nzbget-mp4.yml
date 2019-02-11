@@ -328,13 +328,6 @@
         line: 'MP4_Automator/NZBGetPostProcess.py:SHOULDCONVERT=True'
         state: present
 
-    - name: Set mp4 catagories as tv and movies
-      lineinfile:
-        path: '/opt/appdata/{{pgrole}}/nzbget.conf'
-        regexp: '^MP4_Automator/NZBGetPostProcess.py:BYPASS_CAT\s*=.*'
-        line: 'MP4_Automator/NZBGetPostProcess.py:BYPASS_CAT=tv,movies'
-        state: present
-
     # FIRST TIME CONFIGURATION #############################################################
     - name: 'Configuring {{pgrole}} for first time use'
       block:
