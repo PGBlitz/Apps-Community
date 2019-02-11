@@ -113,7 +113,7 @@ if 'NZBOP_SCRIPTDIR' in os.environ and not os.environ['NZBOP_VERSION'][0:5] < '1
     sickragecat = os.environ['NZBPO_SICKRAGE_CAT'].lower()
     bypass = os.environ['NZBPO_BYPASS_CAT'].lower().replace(' ','').split(',')
 
-    categories = [sickbeardcat, couchcat, sonarrcat, radarrcat, sickragecat, bypass]
+    categories = [sickbeardcat, couchcat, sonarrcat, radarrcat, sickragecat]
 
     log.debug("Path: %s" % path)
     log.debug("NZB: %s" % nzb)
