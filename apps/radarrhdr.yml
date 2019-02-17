@@ -19,7 +19,7 @@
         image: 'linuxserver/radarr'
 
     - name: 'Including cron job'
-      include_tasks: '/opt/plexguide/containers/_core.yml'
+      include_tasks: '/opt/communityapps/apps/_core.yml'
 
     # LABELS #### KEEPS BOTTOM CLEAN ###########################################
     - name: 'Adding Traefik'

@@ -21,13 +21,13 @@
 
     # CORE (MANDATORY) ############################################################
     - name: 'Including cron job'
-      include_tasks: '/opt/plexguide/containers/_core.yml'
+      include_tasks: '/opt/communityapps/apps/_core.yml'
 
     - name: 'Including folders'
-      include_tasks: '/opt/plexguide/containers/_downloaders.yml'
+      include_tasks: '/opt/communityapps/apps/_downloaders.yml'
 
     - name: 'Including plugins'
-      include_tasks: '/opt/plexguide/containers/_plugins.yml'
+      include_tasks: '/opt/communityapps/apps/_plugins.yml'
 
     - name: 'Checking for existing app data'
       stat:

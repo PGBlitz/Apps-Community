@@ -20,12 +20,12 @@
 
     # CORE (MANDATORY) ############################################################
     - name: 'Including cron job'
-      include_tasks: '/opt/plexguide/containers/_core.yml'
+      include_tasks: '/opt/communityapps/apps/_core.yml'
 
     # FOR ALLTUBE #################################################################
     - name: Install autoProcess.ini
       template:
-        src: /opt/plexguide/containers/templates/alltube.js2
+        src: /opt/communityapps/apps/templates/alltube.js2
         dest: /opt/appdata/{{pgrole}}/config.json
         force: yes
         mode: 0775

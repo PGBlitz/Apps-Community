@@ -19,16 +19,16 @@
 
     # CORE (MANDATORY) ############################################################
     - name: 'Including cron job'
-      include_tasks: '/opt/plexguide/containers/_core.yml'
+      include_tasks: '/opt/communityapps/apps/_core.yml'
 
     - name: 'Checking {{pgrole}}'s json existance'
       stat:
-        path: '/opt/plexguide/containers/templates/{{pgrole}}/config.json'
+        path: '/opt/communityapps/apps/templates/{{pgrole}}/config.json'
       register: jsoncheck
 
     - name: 'Copying file for {{pgrole}}'
       copy:
-        src: '/opt/plexguide/containers/templates/{{pgrole}}/config.json'
+        src: '/opt/communityapps/apps/templates/{{pgrole}}/config.json'
         dest: '/opt/appdata/{{pgrole}}/{{pgrole}}/config.json'
         directory_mode: yes
         force: yes
