@@ -55,8 +55,8 @@
     - name: 'Setting PG ENV'
       set_fact:
         pg_env:
-          PUID: 1000
-          PGID: 1000
+          PUID: '1000'
+          PGID: '1000'
           VPN_ENABLED: yes
           VPN_USER: vpnuser
           VPN_PASS: vpnpass

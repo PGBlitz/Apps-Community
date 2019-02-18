@@ -48,8 +48,8 @@
     - name: 'Setting PG ENV'
       set_fact:
         pg_env:
-          USER_ID: 1000
-          GROUP_ID: 1000
+          USER_ID: '1000'
+          GROUP_ID: '1000'
           AUTOMATED_CONVERSION_PRESET: "Very Fast 1080p30"
           AUTOMATED_CONVERSION_FORMAT: "mp4"
           AUTOMATED_CONVERSION_PRESET_2: "HQ 1080p30 Surround"

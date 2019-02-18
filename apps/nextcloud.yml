@@ -44,8 +44,8 @@
     - name: 'Setting PG ENV'
       set_fact:
         pg_env:
-          PUID: 1000
-          PGID: 1000
+          PUID: '1000'
+          PGID: '1000'
 
     - name: Create and start nextcloud container
       docker_container:
@@ -55,8 +55,8 @@
         published_ports:
           - '127.0.0.0.1:4645:443'
         env:
-          PUID: 1000
-          PGID: 1000
+          PUID: '1000'
+          PGID: '1000'
         volumes: '{{pg_volumes}}'
         networks:
           - name: plexguide
