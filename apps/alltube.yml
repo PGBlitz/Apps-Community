@@ -29,8 +29,8 @@
         dest: /opt/appdata/{{pgrole}}/config.json
         force: yes
         mode: 0775
-        owner: 1000
-        group: 1000
+        owner: '1000'
+        group: '1000'
 
     # LABELS ######################################################################
     - name: 'Adding Traefik'

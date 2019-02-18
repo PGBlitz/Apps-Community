@@ -63,8 +63,8 @@
       file:
         path: '{{path.stdout}}/handbrake/watch'
         state: directory
-        owner: 1000
-        group: 1000
+        owner: '1000'
+        group: '1000'
         mode: 0755
         recurse: yes
 
@@ -72,8 +72,8 @@
       file:
         path: '{{path.stdout}}/handbrake/complete'
         state: directory
-        owner: 1000
-        group: 1000
+        owner: '1000'
+        group: '1000'
         mode: 0755
         recurse: yes
 
