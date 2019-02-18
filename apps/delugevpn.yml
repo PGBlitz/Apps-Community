@@ -100,6 +100,7 @@
       wait_for:
         path: '/opt/appdata/{{pgrole}}/core.conf'
         state: present
+        delay: 5
 
     - name: Setting plugins directory
       lineinfile:
@@ -108,11 +109,18 @@
         line: '"plugins_location": "/config/plugins",'
         state: present
 
+    - name: Set move completed location
+      lineinfile:
+        path: '/opt/appdata/{{pgrole}}/core.conf'
+        regexp: '"move_completed_path".*'
+        line: '"move_completed_path": "{{path.stdout}}/downloads/{{pgrole}}",'
+        state: present
+
     - name: Set download location
       lineinfile:
         path: '/opt/appdata/{{pgrole}}/core.conf'
         regexp: '"download_location".*'
-        line: '"download_location": "{{path.stdout}}/downloads/{{pgrole}}",'
+        line: '"download_location": "{{path.stdout}}/incomplete/{{pgrole}}",'
         state: present
 
     - name: Setting torrent file directory
@@ -129,11 +137,11 @@
         line: '"autoadd_location": "{{path.stdout}}/torrent/watch",'
         state: present
 
-    - name: Setting move_completed when incomplete is undefined
+    - name: Setting move_completed
       lineinfile:
         path: '/opt/appdata/{{pgrole}}/core.conf'
         regexp: '"move_completed".*'
-        line: '"move_completed": false,'
+        line: '"move_completed": true,'
         state: present
 
     - name: Setting extractor folder
@@ -150,16 +158,16 @@
         line: '"extract_path": "{{path.stdout}}/downloads/deluge"'
         state: present
 
-    - name: set enabled_plugins
-      lineinfile:
-        path: '/opt/appdata/{{pgrole}}/core.conf'
-        regexp: '"enabled_plugins".*'
-        line: '"enabled_plugins": ["Extractor", "Label"],'
-        state: present
-
     # FIRST TIME CONFIGURATION ####################################################
     - name: 'Configuring {{pgrole}} for first time use'
       block:
+        - name: set enabled_plugins
+          lineinfile:
+            path: '/opt/appdata/{{pgrole}}/core.conf'
+            regexp: '"enabled_plugins".*'
+            line: '"enabled_plugins": ["Extractor", "Label"],'
+            state: present
+
         - name: set compact_allocation
           lineinfile:
             path: '/opt/appdata/{{pgrole}}/core.conf'
@@ -257,7 +265,6 @@
             regexp: '"seed_time_ratio_limit".*'
             line: '"seed_time_ratio_limit": 1.0,'
             state: present
-
       when: not confcheck.stat.exists
 
     - name: Restart {{pgrole}}
