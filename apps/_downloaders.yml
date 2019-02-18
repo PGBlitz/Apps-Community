@@ -7,11 +7,3 @@
   file: 'path={{item}} state=directory mode=0775 owner=1000 group=1000'
   with_items:
     - '{{path.stdout}}/incomplete/{{pgrole}}'
-  when: incomplete.stdout | length == 0
-
-- name: Creating incomplete paths
-  file: 'path={{item}} state=directory mode=0775 owner=1000 group=1000'
-  with_items:
-    - '{{incomplete.stdout}}/{{pgrole}}'
-  when: incomplete.stdout | length > 0
-  ignore_errors: yes
