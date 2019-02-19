@@ -20,7 +20,7 @@ question1 () {
 image=$(cat /tmp/program_var)
 
 # Checks Image List
-file="/opt/coreapps/apps/image/$image"
+file="/opt/communityapps/apps/image/$image"
 if [ ! -e "$file" ]; then exit; fi
 
 tee <<-EOF
@@ -36,7 +36,7 @@ while read p; do
   echo "$count - $p"
   echo "$p" > /tmp/display$count
   count=$[count+1]
-done </opt/coreapps/apps/image/$image
+done </opt/communityapps/apps/image/$image
 echo ""
 read -p '🚀  Type Number | PRESS [ENTER]: ' typed < /dev/tty
 
