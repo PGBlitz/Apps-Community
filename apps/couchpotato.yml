@@ -63,9 +63,3 @@
               - '{{pgrole}}'
         state: started
         labels: '{{pg_labels}}'
-
-    # POST DEPLOYMENT ##############################################################
-
-    - name: 'Post Deployment Notes'
-      debug:
-        msg: "\n* Login: root:plexguide *\n"
