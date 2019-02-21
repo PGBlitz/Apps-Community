@@ -73,14 +73,14 @@
         pg_env:
           PUID: '1000'
           PGID: '1000'
-          VPN_ENABLED: no
+          VPN_ENABLED: 'no'
           VPN_USER: 'vpnuser'
           VPN_PASS: 'vpnpass'
           VPN_PROV: 'custom'
-          STRICT_PORT_FORWARD: no
-          ENABLE_PRIVOXY: no
+          STRICT_PORT_FORWARD: 'no'
+          ENABLE_PRIVOXY: 'no'
           ENABLE_FLOOD: 'both'
-          ENABLE_AUTODL_IRSSI: no
+          ENABLE_AUTODL_IRSSI: 'no'
           LAN_NETWORK: 172.18.0.0/16
 
     # MAIN DEPLOYMENT #############################################################
