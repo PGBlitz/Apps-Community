@@ -49,10 +49,6 @@
           UID: 1000
           GID: 1000
           DOMAIN: {{pgrole}}.{{domain.stdout}}
-          autoJoin: true
-          autoJoinServer: {{pgrole}}.{{domain.stdout}}
-          serverroot: slserver
-          webroot: slweb
 
     # MAIN DEPLOYMENT #############################################################
     - name: 'Deploying {{pgrole}}'
