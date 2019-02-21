@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Title:      ruTorrent with VPN
+# Title:      rTorrent (with ruTorrent, Flood, VPN)
 # Author(s):  Jari Sundell (rakshasa), Novik, binhex
 # URL:        https://rakshasa.github.io/rtorrent/ - https://github.com/binhex/arch-rtorrentvpn
 # GNU:        General Public License v3.0
@@ -73,7 +73,7 @@
         pg_env:
           PUID: '1000'
           PGID: '1000'
-          VPN_ENABLED: yes
+          VPN_ENABLED: no
           VPN_USER: 'vpnuser'
           VPN_PASS: 'vpnpass'
           VPN_PROV: 'custom'
@@ -81,7 +81,7 @@
           ENABLE_PRIVOXY: no
           ENABLE_FLOOD: 'both'
           ENABLE_AUTODL_IRSSI: no
-          LAN_NETWORK: 192.168.1.1/24
+          LAN_NETWORK: 172.18.0.0/16
 
     # MAIN DEPLOYMENT #############################################################
     - name: "Deploying {{pgrole}}"
