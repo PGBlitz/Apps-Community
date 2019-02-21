@@ -29,8 +29,8 @@
         dest: /opt/appdata/{{pgrole}}/config.json
         force: yes
         mode: 0775
-        owner: 1000
-        group: 1000
+        owner: '1000'
+        group: '1000'
 
     # LABELS ######################################################################
     - name: 'Adding Traefik'
@@ -49,8 +49,8 @@
     - name: 'Setting PG ENV'
       set_fact:
         pg_env:
-          PUID: 1000
-          PGID: 1000
+          PUID: '1000'
+          PGID: '1000'
 
     # MAIN DEPLOYMENT #############################################################
     - name: 'Deploying {{pgrole}}'

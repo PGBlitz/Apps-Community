@@ -32,8 +32,8 @@
         dest: '/opt/appdata/{{pgrole}}/{{pgrole}}/config.json'
         directory_mode: yes
         force: yes
-        owner: 1000
-        group: 1000
+        owner: '1000'
+        group: '1000'
         mode: 0755
       when: not jsoncheck.stat.exists
 
@@ -56,8 +56,8 @@
     - name: 'Setting PG ENV'
       set_fact:
         pg_env:
-          PUID: 1000
-          PGID: 1000
+          PUID: '1000'
+          PGID: '1000'
 
     # MAIN DEPLOYMENT #############################################################
     - name: 'Deploying {{pgrole}}'

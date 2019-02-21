@@ -55,8 +55,8 @@
     - name: 'Setting default ENV'
       set_fact:
         pg_env:
-          USER_ID: 1000
-          GROUP_ID: 1000
+          USER_ID: '1000'
+          GROUP_ID: '1000'
 #          SECURE_CONNECTION: 1
 
     # MAIN DEPLOYMENT #############################################################

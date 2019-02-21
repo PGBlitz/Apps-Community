@@ -15,7 +15,7 @@
     dest: /opt/appdata
     directory_mode: yes
     force: yes
-    owner: 1000
-    group: 1000
+    owner: '1000'
+    group: '1000'
     mode: 0755
   when: copycheck.stat.exists
