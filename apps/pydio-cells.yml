@@ -1,0 +1,73 @@
+#!/bin/bash
+#
+# Title:      Pydio Cells
+# Author(s):  Pydio
+# URL:        https://pydio.com
+# GNU:        General Public License v3.0
+################################################################################
+---
+- hosts: localhost
+  gather_facts: false
+  tasks:
+# CORE (MANDATORY) DO NOT CHANGE ###########################################
+
+    - name: 'Set Known Facts'
+      set_fact:
+        pgrole: "pydio-cells"
+        intport: "8080"
+        extport: "8585"
+        image: "pydio/cells:latest"
+
+    - name: 'Including cron job'
+      include_tasks: '/opt/communityapps/apps/_core.yml'
+
+# LABELS ################################################################
+    - name: 'Adding Traefik'
+      set_fact:
+        pg_labels:
+          traefik.frontend.auth.forward.address: '{{gauth}}'
+          traefik.enable: 'true'
+          traefik.port: '{{intport}}'
+          traefik.frontend.rule: 'Host:{{pgrole}}.{{domain.stdout}},{{tldset}}'
+
+    - name: 'Setting PG Volumes'
+      set_fact:
+        pg_volumes:
+          - '/opt/appdata/{{pgrole}}/pydio.json:/root/.config/pydio/cells/pydio.json'
+          - '/opt/appdata/{{pgrole}}/data:/root/.config/pydio/cells/data'
+          - '/opt/appdata/{{pgrole}}/logs:/root/.config/pydio/cells/logs'
+          - '/opt/appdata/{{pgrole}}/services:/root/.config/pydio/cells/services'
+          - '/mnt:/mnt'
+          - '/etc/localtime:/etc/localtime:ro'
+
+    - name: 'Setting PG ENV'
+      set_fact:
+        pg_env:
+          CELLS_BIND: localhost:8080
+          CELLS_EXTERNAL: '{{pgrole}}.{{domain.stdout}},{{tldset}}'
+
+
+    # MAIN DEPLOYMENT ##############################################################
+
+    - name: 'Deploying {{pgrole}}'
+      docker_container:
+        name: '{{pgrole}}'
+        image: '{{image}}'
+        pull: yes
+        published_ports:
+          - '{{ports.stdout}}{{extport}}:{{intport}}'
+        volumes: '{{pg_volumes}}'
+        env: '{{pg_env}}'
+        restart_policy: unless-stopped
+        networks:
+          - name: plexguide
+            aliases:
+              - '{{pgrole}}'
+        state: started
+        labels: '{{pg_labels}}'
+
+    # POST DEPLOYMENT ##############################################################
+
+    - name: 'Post Deployment Notes'
+      debug:
+        msg: "\n* Pydio Cells requires a MySQL or MariaDB database (not included) *\n* Version 5.6 or higher (or MariaDB equivalent) *\n"
