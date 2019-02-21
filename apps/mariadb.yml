@@ -15,7 +15,7 @@
       set_fact:
         pgrole: "mariadb"
         intport: "3306"
-        extport: "9191"
+        extport: "6603"
         image: "mariadb:latest"
 
     - name: 'Including cron job'

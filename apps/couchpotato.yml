@@ -97,6 +97,6 @@
     - name: Setting Movies directory
       lineinfile:
         path: '/opt/appdata/{{pgrole}}/config.ini'
-        regexp: '\[manage\]\nstartup_scan.*\nlibrary_refresh_interval.*\ncleanup.*\nenabled.*\nlibrary.*\'
+        regexp: '\[manage\]\nstartup_scan.*\nlibrary_refresh_interval.*\ncleanup.*\nenabled.*\nlibrary.*'
         line: '\[manage\]\nstartup_scan = True\nlibrary_refresh_interval = 0\ncleanup = True\nenabled = 1\nlibrary = \movies'
         state: present
