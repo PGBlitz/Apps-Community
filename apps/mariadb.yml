@@ -64,4 +64,12 @@
 
     - name: 'Post Deployment Notes'
       debug:
-        msg: "\n* Login: root:plexguide *\n"
+        msg: "*************************"
+        msg: "*                       *"
+        msg: "*   Login Information   *"
+        msg: "*                       *"
+        msg: "*************************"
+        msg: "*                       *"
+        msg: "*    root:plexguide     *"
+        msg: "*                       *"
+        msg: "*************************"
