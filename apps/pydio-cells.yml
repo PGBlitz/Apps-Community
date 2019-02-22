@@ -33,6 +33,7 @@
     - name: 'Setting PG Volumes'
       set_fact:
         pg_volumes:
+          - '/opt/appdata/{{pgrole}}:/root/.config'
           - '/opt/appdata/{{pgrole}}/pydio.json:/root/.config/pydio/cells/pydio.json'
           - '/opt/appdata/{{pgrole}}/data:/root/.config/pydio/cells/data'
           - '/opt/appdata/{{pgrole}}/logs:/root/.config/pydio/cells/logs'
@@ -71,4 +72,10 @@
 
     - name: 'Post Deployment Notes'
       debug:
-        msg: "\n* Pydio Cells requires a MySQL or MariaDB database (not included) *\n* Version 5.6 or higher (or MariaDB equivalent) *\n"
+        msg: >
+          *******************************************************************
+          *                                                                 *
+          * Pydio Cells requires a MySQL or MariaDB database (not included) *
+          * Version 5.6 or higher (or MariaDB equivalent)                   *
+          *                                                                 *
+          *******************************************************************
