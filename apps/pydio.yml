@@ -68,4 +68,10 @@
 
     - name: 'Post Deployment Notes'
       debug:
-        msg: "\n* You must create a user and database for pydio to use in a mysql/mariadb or postgresql server.\n* You can use sqlite with no further config needed, but this should only be considered for testing purposes.\n* In the setup page for database, use the ip address rather than hostname..."
+        msg: "**********************************************************************"
+        msg: ""
+        msg: " You must create a user and database for pydio to use in a mysql/mariadb or postgresql server."
+        msg: " You can use sqlite with no further config needed, but this should only be considered for testing purposes *"
+        msg: " In the setup page for database, use the ip address rather than hostname..."
+        msg: ""
+        msg: "***********************************************************************"
