@@ -29,7 +29,6 @@
           traefik.enable: 'true'
           traefik.port: '{{intport}}'
           traefik.frontend.rule: 'Host:{{pgrole}}.{{domain.stdout}},{{tldset}}'
-          traefik.protocol: 'https'
 
     - name: 'Setting PG Volumes'
       set_fact:
@@ -44,7 +43,8 @@
     - name: 'Setting PG ENV'
       set_fact:
         pg_env:
-          CELLS_BIND: localhost:8080
+          CELLS_NO_SSL: '1'
+          CELLS_BIND: 0.0.0.0:8080
           CELLS_EXTERNAL: '{{pgrole}}.{{domain.stdout}},{{tldset}}'
 
 
