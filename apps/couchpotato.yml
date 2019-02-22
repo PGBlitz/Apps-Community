@@ -74,47 +74,41 @@
         labels: '{{pg_labels}}'
 
 # CONFIGURATION ###########################################################
-    - name: 'Waiting for {{pgrole}} to initialize'
-      wait_for:
-        timeout: 10
+    # - name: 'Waiting for {{pgrole}} to initialize'
+    #   wait_for:
+    #     timeout: 10
 
-    - name: Stopping {{pgrole}}
-      docker_container:
-        name: '{{pgrole}}'
-        state: stopped
+    # - name: Stopping {{pgrole}}
+    #   docker_container:
+    #     name: '{{pgrole}}'
+    #     state: stopped
 
-    - name: 'Checking for appdata'
-      wait_for:
-        path: '/opt/appdata/{{pgrole}}/config.ini'
-        state: present
-        delay: 5
-
-    - name: "Configuring {{pgrole}} for first time use"
-      block:
-      - name: 'Configure rTorrent'
-        lineinfile:
-          path: '/opt/appdata/{{pgrole}}/config.ini'
-          regexp: '\[rtorrent\]\nusername.*\nrpc_url.*\nmanual.*\nenabled.*\nauthentication.*\nlabel.*\npaused.*\nssl.*\nhost.*'
-          line: '\[rtorrent\]\nusername =\nrpc_url = RPC2\nmanual = 0\nenabled = 1\nauthentication = basic\nlabel = couchpotato\npaused = False\nssl = 0\nhost = httprpc://rutorrent'
-          state: present
+    # - name: 'Configuring {{pgrole}} for first time use'
+    #   block:
+    #     - name: 'Configure rTorrent'
+    #       lineinfile:
+    #         path: '/opt/appdata/{{pgrole}}/config.ini'
+    #         regexp: '\[rtorrent\]\nusername.*\nrpc_url.*\nmanual.*\nenabled.*\nauthentication.*\nlabel.*\npaused.*\nssl.*\nhost.*'
+    #         line: '\[rtorrent\]\nusername =\nrpc_url = RPC2\nmanual = 0\nenabled = 1\nauthentication = basic\nlabel = couchpotato\npaused = False\nssl = 0\nhost = httprpc://rutorrent'
+    #         state: present
         
-      - name: 'Setting up plex notificaions'
-        lineinfile:
-          path: '/opt/appdata/{{pgrole}}/config.ini'
-          regexp: '\[plex\]\nusername.*\non_snatch.*\nauth_token.*\nclients.*\nenabled.*\nmedia_server.*'
-         line: '\[plex\]\nusername =\non_snatch = 0\nauth_token =\nclients =\nenabled = 1\nmedia_server = plex:32400'
-         state: present
+    #     - name: 'Setting up plex notificaions'
+    #       lineinfile:
+    #         path: '/opt/appdata/{{pgrole}}/config.ini'
+    #         regexp: '\[plex\]\nusername.*\non_snatch.*\nauth_token.*\nclients.*\nenabled.*\nmedia_server.*'
+    #         line: '\[plex\]\nusername =\non_snatch = 0\nauth_token =\nclients =\nenabled = 1\nmedia_server = plex:32400'
+    #         state: present
     
-      - name: Setting Movies directory
-        lineinfile:
-          path: '/opt/appdata/{{pgrole}}/config.ini'
-          regexp: '\[manage\]\nstartup_scan.*\nlibrary_refresh_interval.*\ncleanup.*\nenabled.*\nlibrary.*'
-          line: '\[manage\]\nstartup_scan = True\nlibrary_refresh_interval = 0\ncleanup = True\nenabled = 1\nlibrary = \movies'
-          state: present
+    #    - name: Setting Movies directory
+    #       lineinfile:
+    #         path: '/opt/appdata/{{pgrole}}/config.ini'
+    #         regexp: '\[manage\]\nstartup_scan.*\nlibrary_refresh_interval.*\ncleanup.*\nenabled.*\nlibrary.*'
+    #         line: '\[manage\]\nstartup_scan = True\nlibrary_refresh_interval = 0\ncleanup = True\nenabled = 1\nlibrary = \movies'
+    #         state: present
 
-      when: not ccheck.stat.exists
+    #   when: not ccheck.stat.exists
 
-    - name: Restart Docker Container
-      docker_container:
-        name: "{{pgrole}}"
-        state: started
+    # - name: Restart Docker Container
+    #   docker_container:
+    #     name: "{{pgrole}}"
+    #     state: started
