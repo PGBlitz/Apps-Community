@@ -36,6 +36,8 @@
           - '/opt/appdata/{{pgrole}}:/config'
           - '{{path.stdout}}/unionfs/{{pgrole}}/:/tv'
           - '{{path.stdout}}/downloads/{{pgrole}}/:/downloads'
+          - '{{path.stdout}}:{{path.stdout}}'
+          - '/mnt:/mnt'
           - '/etc/localtime:/etc/localtime:ro'
 
     - name: 'Setting PG ENV'
