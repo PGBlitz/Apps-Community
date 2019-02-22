@@ -68,7 +68,7 @@
 
     - name: 'Post Deployment Notes'
       debug:
-        msg: >
+        msg: |-
           **********************************************************************
           
           You must create a user and database for pydio to use in a mysql/mariadb or postgresql server.
