@@ -314,7 +314,7 @@
 
         - name: overwrite uploaded Torrents
           lineinfile:
-            path: "/opt/appdata/{{pgrole}}/rutorrent/settings/config.php"
+            path: "/opt/appdata/{{pgrole}}/rutorrent/conf/config.php"
             regexp: '\$overwriteUploadedTorrents\s*=.*'
             line: "$overwriteUploadedTorrents = true;"
             state: present
