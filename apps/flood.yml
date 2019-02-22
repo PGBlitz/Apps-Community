@@ -15,7 +15,7 @@
         pgrole: 'flood'
         intport: '3000'
         extport: '3333'
-        image: 'lusky3\rtorrent-flood'
+        image: 'lusky3\flood'
 
     # CORE (MANDATORY) ############################################################
     - name: 'Including cron job'
