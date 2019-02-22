@@ -37,6 +37,7 @@
           - '{{path.stdout}}/unionfs/{{pgrole}}/:/movies'
           - '{{path.stdout}}/downloads/{{pgrole}}/:/downloads'
           - '/etc/localtime:/etc/localtime:ro'
+          - '{{path.stdout}}:{{path.stdout}}'
 
     - name: 'Setting PG ENV'
       set_fact:
