@@ -68,11 +68,15 @@
 
     - name: 'Post Deployment Notes'
       debug:
-        msg: |-
+        msg: >
           **********************************************************************
           
+          
           You must create a user and database for pydio to use in a mysql/mariadb or postgresql server.
+
           You can use sqlite with no further config needed, but this should only be considered for testing purposes.
+
           In the setup page for database, use the ip address rather than hostname...
+
 
           ***********************************************************************
