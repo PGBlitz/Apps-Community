@@ -65,20 +65,4 @@
     - name: 'Post Deployment Notes'
       debug:
         msg: >
-          *************************
-
-          *                       *
-
-          *   Login Information   *
-
-          *                       *
-
-          *************************
-
-          *                       *
-
-          *    root:plexguide     *
-
-          *                       *
-          
-          *************************
+          * Login Information * root:plexguide * This should be changed *
