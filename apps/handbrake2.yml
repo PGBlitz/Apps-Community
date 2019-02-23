@@ -28,7 +28,7 @@
         pg_labels:
           traefik.enable: 'true'
           traefik.port: '{{intport}}'
-          traefik.frontend.auth.basic: "plex:$apr1$tosnCNtX$XKXnDaIiW7f0y1nwmd.KL0"
+          traefik.frontend.auth.basic.users: "plex:$apr1$tosnCNtX$XKXnDaIiW7f0y1nwmd.KL0"
           traefik.frontend.rule: 'Host:handbrake.{{domain.stdout}},{{tldset}}'
 
     - name: 'Setting PG Volumes'
