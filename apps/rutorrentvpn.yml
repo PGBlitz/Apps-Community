@@ -307,7 +307,7 @@
 
         - name: Do not save uploaded Torrents
           lineinfile:
-            path: "/opt/appdata/{{pgrole}}/rutorrent/settings/config.php"
+            path: "/opt/appdata/{{pgrole}}/rutorrent/conf/config.php"
             regexp: '\$saveUploadedTorrents\s*=.*'
             line: "$saveUploadedTorrents = false;"
             state: present
