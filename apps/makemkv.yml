@@ -45,8 +45,8 @@
     - name: 'Setting PG ENV'
       set_fact:
         pg_env:
-          UID: 1000
-          GID: 1000
+          UID: '1000'
+          GID: '1000'
           MAKEMKV_KEY: BETA
           AUTO_DISC_RIPPER: 0
           ENABLE_CJK_FONT: 1

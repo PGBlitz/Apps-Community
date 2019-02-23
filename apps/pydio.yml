@@ -1,28 +1,27 @@
 #!/bin/bash
 #
-# Title:      PlexGuide (Reference Title File)
-# Author(s):  Admin9705
-# URL:        https://plexguide.com - http://github.plexguide.com
+# Title:      Pydio (formerly AjaXplorer)
+# Author(s):  Pydio, linuxserver
+# URL:        https://pydio.com
 # GNU:        General Public License v3.0
 ################################################################################
 ---
 - hosts: localhost
   gather_facts: false
   tasks:
-    # CORE (MANDATORY) DO NOT CHANGE ###########################################
+# CORE (MANDATORY) DO NOT CHANGE ###########################################
 
     - name: 'Set Known Facts'
       set_fact:
-        pgrole: 'sonarrhdr'
-        intport: '8989'
-        extport: '8987'
-        image: 'lsiodev/sonarr-preview'
+        pgrole: "pydio"
+        intport: "443"
+        extport: "9149"
+        image: "linuxserver/pydio:latest"
 
-    # CORE (MANDATORY) ############################################################
     - name: 'Including cron job'
       include_tasks: '/opt/communityapps/apps/_core.yml'
 
-    # LABELS #### KEEPS BOTTOM CLEAN ###########################################
+# LABELS ################################################################
     - name: 'Adding Traefik'
       set_fact:
         pg_labels:
@@ -30,22 +29,23 @@
           traefik.enable: 'true'
           traefik.port: '{{intport}}'
           traefik.frontend.rule: 'Host:{{pgrole}}.{{domain.stdout}},{{tldset}}'
+          traefik.protocol: 'https'
 
     - name: 'Setting PG Volumes'
       set_fact:
         pg_volumes:
-          - '/opt/appdata/{{pgrole}}:/config'
-          - '{{path.stdout}}:{{path.stdout}}'
+          - '/opt/appdata/{{pgrole}}/config:/config'
+          - '/opt/appdata/{{pgrole}}/data:/data'
           - '/mnt:/mnt'
           - '/etc/localtime:/etc/localtime:ro'
 
     - name: 'Setting PG ENV'
       set_fact:
         pg_env:
-          PUID: '1000'
-          PGID: '1000'
+          PUID: 1000
+          PGID: 1000
 
-    # MAIN SCRIPT ##############################################################
+    # MAIN DEPLOYMENT ##############################################################
 
     - name: 'Deploying {{pgrole}}'
       docker_container:
@@ -63,3 +63,10 @@
               - '{{pgrole}}'
         state: started
         labels: '{{pg_labels}}'
+
+    # POST DEPLOYMENT ##############################################################
+
+    #- name: 'Post Deployment Notes'
+    #  debug:
+    #    msg: >
+    #      You must create a user and database for pydio to use in a mysql/mariadb or postgresql server. You can use sqlite with no further config needed, but this should only be considered for testing purposes. In the setup page for database, use the ip address rather than hostname...

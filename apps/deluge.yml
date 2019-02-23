@@ -56,8 +56,8 @@
     - name: 'Setting PG ENV'
       set_fact:
         pg_env:
-          PUID: 1000
-          PGID: 1000
+          PUID: '1000'
+          PGID: '1000'
 
     # MAIN DEPLOYMENT #############################################################
     - name: 'Deploying {{pgrole}}'
@@ -108,7 +108,6 @@
         regexp: '"move_completed_path".*'
         line: '"move_completed_path": "{{path.stdout}}/downloads/{{pgrole}}",'
         state: present
-      when: incomplete.stdout | length == 0   
 
     - name: Set download location
       lineinfile:
@@ -116,15 +115,6 @@
         regexp: '"download_location".*'
         line: '"download_location": "{{path.stdout}}/incomplete/{{pgrole}}",'
         state: present
-      when: incomplete.stdout | length == 0
-
-    - name: Set download location
-      lineinfile:
-        path: '/opt/appdata/{{pgrole}}/core.conf'
-        regexp: '"download_location".*'
-        line: '"download_location": "{{incomplete.stdout}}/{{pgrole}}",'
-        state: present
-      when: incomplete.stdout | length > 0
 
     - name: Setting torrent file directory
       lineinfile:

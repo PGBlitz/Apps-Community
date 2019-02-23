@@ -1,28 +1,27 @@
 #!/bin/bash
 #
-# Title:      PlexGuide (Reference Title File)
-# Author(s):  Admin9705
-# URL:        https://plexguide.com - http://github.plexguide.com
+# Title:      sickrage
+# Author(s):  echel0n, linuxserver
+# URL:        https://www.sickrage.ca/ - https://git.sickrage.ca/SiCKRAGE/sickrage
 # GNU:        General Public License v3.0
 ################################################################################
 ---
 - hosts: localhost
   gather_facts: false
   tasks:
-    # CORE (MANDATORY) DO NOT CHANGE ###########################################
+# CORE (MANDATORY) DO NOT CHANGE ###########################################
 
     - name: 'Set Known Facts'
       set_fact:
-        pgrole: 'sonarrhdr'
-        intport: '8989'
-        extport: '8987'
-        image: 'lsiodev/sonarr-preview'
+        pgrole: "sickrage"
+        intport: "8081"
+        extport: "9191"
+        image: "linuxserver/sickrage:latest"
 
-    # CORE (MANDATORY) ############################################################
     - name: 'Including cron job'
       include_tasks: '/opt/communityapps/apps/_core.yml'
 
-    # LABELS #### KEEPS BOTTOM CLEAN ###########################################
+# LABELS ################################################################
     - name: 'Adding Traefik'
       set_fact:
         pg_labels:
@@ -35,6 +34,8 @@
       set_fact:
         pg_volumes:
           - '/opt/appdata/{{pgrole}}:/config'
+          - '{{path.stdout}}/unionfs/{{pgrole}}/:/tv'
+          - '{{path.stdout}}/downloads/{{pgrole}}/:/downloads'
           - '{{path.stdout}}:{{path.stdout}}'
           - '/mnt:/mnt'
           - '/etc/localtime:/etc/localtime:ro'
@@ -42,10 +43,11 @@
     - name: 'Setting PG ENV'
       set_fact:
         pg_env:
-          PUID: '1000'
-          PGID: '1000'
+          PUID: 1000
+          PGID: 1000
+          
 
-    # MAIN SCRIPT ##############################################################
+    # MAIN DEPLOYMENT ##############################################################
 
     - name: 'Deploying {{pgrole}}'
       docker_container:
