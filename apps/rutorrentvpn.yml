@@ -120,7 +120,7 @@
         labels: "{{pg_labels}}"
 
     # CONFIGURATION ####################################################
-    - name: "Waiting for {{pgrole}} to initialize"
+    - name: "Waiting for {{pgrole}} to initialize (this may take awhile)"
       wait_for:
         path: "/opt/appdata/{{pgrole}}/rtorrent/config/rtorrent.rc"
         state: present
