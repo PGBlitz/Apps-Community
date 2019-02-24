@@ -14,7 +14,7 @@
       set_fact:
         pgrole: 'flexget'
         intport: '5050'
-        extport: '5050'
+        extport: '6060'
         image: 'cpoppema/docker-flexget:latest'
 
     # CORE (MANDATORY) ############################################################
