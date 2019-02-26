@@ -66,17 +66,17 @@
         labels: '{{pg_labels}}'
 
     # CONFIGURATION #############################################################
-    - name: Checking for existing app data
-      stat:
-        path: "/opt/appdata/{{pgrole}}/config.yml"
-      register: cfcheck
-    
-    - name: "Configuring {{pgrole}} for first time use"
-      block:
-      - name: Creating config file
-        shell: 'touch /opt/appdata/{{pgrole}}/config.yml'
-      - name: Populate example config
-        shell: 'echo -e ''web_server:\n  bind: 0.0.0.0\n  port: {{intport}}\n\ntasks:\n  example-task:\n    rss: hxxp://example.com/feed.xml\n    download: /download\n    series:\n      - some series 1\n      - some series 2'' > /opt/appdata/{{pgrole}}/config.yml'
-      - name: Fix permissions
-        shell: 'chown {{PUID}}:{{PGID}} /opt/appdata/{{pgrole}}/config.yml'
-      when: not cfcheck.stat.exists
+    #- name: Checking for existing app data
+    #  stat:
+    #    path: "/opt/appdata/{{pgrole}}/config.yml"
+    #  register: cfcheck
+    #
+    #- name: "Configuring {{pgrole}} for first time use"
+    #  block:
+    #  - name: Creating config file
+    #    shell: 'touch /opt/appdata/{{pgrole}}/config.yml'
+    #  - name: Populate example config
+    #    shell: 'echo -e ''web_server:\n  bind: 0.0.0.0\n  port: {{intport}}\n\ntasks:\n  example-task:\n    rss: hxxp://example.com/feed.xml\n    download: /download\n    series:\n      - some series 1\n      - some series 2'' > /opt/appdata/{{pgrole}}/config.yml'
+    #  - name: Fix permissions
+    #    shell: 'chown {{PUID}}:{{PGID}} /opt/appdata/{{pgrole}}/config.yml'
+    #  when: not cfcheck.stat.exists
