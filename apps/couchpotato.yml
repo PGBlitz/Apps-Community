@@ -41,8 +41,6 @@
       set_fact:
         pg_volumes:
           - '/opt/appdata/{{pgrole}}:/config'
-          - '{{path.stdout}}/unionfs/{{pgrole}}/:/movies'
-          - '{{path.stdout}}/downloads/{{pgrole}}/:/downloads'
           - '/etc/localtime:/etc/localtime:ro'
           - '{{path.stdout}}:{{path.stdout}}'
           - '/mnt:/mnt'

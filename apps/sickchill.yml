@@ -34,8 +34,11 @@
       set_fact:
         pg_volumes:
           - '/opt/appdata/{{pgrole}}:/config'
+<<<<<<< HEAD
           - '{{path.stdout}}/downloads/{{pgrole}}:/data'
           - '/mnt:/media'
+=======
+>>>>>>> staging
           - '/mnt:/mnt'
           - '{{path.stdout}}:{{path.stdout}}'
           - '/etc/localtime:/etc/localtime:ro'

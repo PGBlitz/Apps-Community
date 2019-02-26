@@ -34,8 +34,11 @@
       set_fact:
         pg_volumes:
           - '/opt/appdata/{{pgrole}}:/config'
+<<<<<<< HEAD
           - '{{path.stdout}}/unionfs/{{pgrole}}/:/tv'
           - '{{path.stdout}}/downloads/{{pgrole}}/:/downloads'
+=======
+>>>>>>> staging
           - '{{path.stdout}}:{{path.stdout}}'
           - '/mnt:/mnt'
           - '/etc/localtime:/etc/localtime:ro'

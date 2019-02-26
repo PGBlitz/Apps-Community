@@ -46,8 +46,13 @@
 
     - name: Checking for existing app data
       stat:
-        path: "/opt/appdata/{{pgrole}}/rutorrent/rtorrent/rtorrent.rc"
+        path: "/opt/appdata/{{pgrole}}/rtorrent/conf/rtorrent.rc"
       register: rccheck
+
+    - name: Checking for existing conf
+      stat:
+        path: "/opt/appdata/{{pgrole}}/rutorrent/conf/config.php"
+      register: cfcheck
 
     # LABELS ######################################################################
     - name: "Adding Traefik"
@@ -81,7 +86,11 @@
           ENABLE_PRIVOXY: 'no'
           ENABLE_FLOOD: 'both'
           ENABLE_AUTODL_IRSSI: 'no'
-          LAN_NETWORK: 172.18.0.0/16
+          LAN_NETWORK: '172.18.0.0/16'
+          NAME_SERVERS: '1.1.1.1,37.235.1.174,209.222.18.222,8.8.8.8'
+          UMASK: '000'
+          VPN_OPTIONS:
+
 
     # MAIN DEPLOYMENT #############################################################
     - name: "Deploying {{pgrole}}"
@@ -99,6 +108,8 @@
         volumes: "{{pg_volumes}}"
         env: "{{pg_env}}"
         restart_policy: unless-stopped
+        capabilities:
+          - NET_ADMIN
         networks:
           - name: plexguide
             aliases:
@@ -109,7 +120,7 @@
         labels: "{{pg_labels}}"
 
     # CONFIGURATION ####################################################
-    - name: "Waiting for {{pgrole}} to initialize"
+    - name: "Waiting for {{pgrole}} to initialize (this may take awhile)"
       wait_for:
         path: "/opt/appdata/{{pgrole}}/rtorrent/config/rtorrent.rc"
         state: present
@@ -305,6 +316,10 @@
             line: "throttle.max_peers.seed.set = -1"
             state: present
 
+      when: not rccheck.stat.exists
+
+    - name: "Configuring {{pgrole}} for first time use"
+      block:
         - name: Do not save uploaded Torrents
           lineinfile:
             path: "/opt/appdata/{{pgrole}}/rutorrent/conf/config.php"
@@ -319,7 +334,7 @@
             line: "$overwriteUploadedTorrents = true;"
             state: present
 
-      when: not rccheck.stat.exists
+      when: not cfcheck.stat.exists
 
     - name: Restart Docker Container
       docker_container:

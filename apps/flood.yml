@@ -1,35 +1,30 @@
 #!/bin/bash
 #
-# Title:      PlexGuide (Reference Title File)
-# Author(s):  Admin9705
-# URL:        https://plexguide.com - http://github.plexguide.com
+# Title:      Flood (WebUI for rTorrent)
+# Author(s):  John Furrow (jfurrow)
+# URL:        github.com/jfurrow/flood
 # GNU:        General Public License v3.0
 ################################################################################
 ---
 - hosts: localhost
   gather_facts: false
   tasks:
-# CORE (MANDATORY) DO NOT CHANGE ###########################################
-
+    # FACTS #######################################################################
     - name: 'Set Known Facts'
       set_fact:
-        pgrole: "medusa"
-        intport: "8081"
-        extport: "8081"
-        image: "linuxserver/medusa"
+        pgrole: 'flood'
+        intport: '3000'
+        extport: '3333'
+        image: 'lusky3/flood:latest'
 
+    # CORE (MANDATORY) ############################################################
     - name: 'Including cron job'
       include_tasks: '/opt/communityapps/apps/_core.yml'
 
-# EXTRA FUNCTIONS REQUIRED BY THE ROLE #####################################
-
-##### NOTHING REQUIRED
-
-# LABELS #### KEEPS BOTTOM CLEAN ###########################################
+    # LABELS ######################################################################
     - name: 'Adding Traefik'
       set_fact:
         pg_labels:
-          traefik.protocol: 'http'
           traefik.frontend.auth.forward.address: '{{gauth}}'
           traefik.enable: 'true'
           traefik.port: '{{intport}}'
@@ -38,19 +33,17 @@
     - name: 'Setting PG Volumes'
       set_fact:
         pg_volumes:
-          - '/opt/appdata/{{pgrole}}:/config'
-          - '{{path.stdout}}:{{path.stdout}}'
-          - '/mnt:/mnt'
           - '/etc/localtime:/etc/localtime:ro'
+          - '/opt/appdata/{{pgrole}}:/data'
+          - '/opt/appdata/rutorrent/sock/.rtorrent.sock:/data/rtorrent.sock'
 
     - name: 'Setting PG ENV'
       set_fact:
         pg_env:
-          PUID: '1000'
-          PGID: '1000'
+          RTORRENT_SCGI_HOST: 'rutorrent'
+          RTORRENT_SOCK: 'true'
 
-    # MAIN SCRIPT ##############################################################
-
+    # MAIN DEPLOYMENT #############################################################
     - name: 'Deploying {{pgrole}}'
       docker_container:
         name: '{{pgrole}}'

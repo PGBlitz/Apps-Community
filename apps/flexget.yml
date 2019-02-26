@@ -1,0 +1,82 @@
+#!/bin/bash
+#
+# Title:      FlexGet
+# Author(s):  paranoidi, Chase Sterling, cpoppema
+# URL:        https://flexget.com/ | https://github.com/cpoppema/docker-flexget
+# GNU:        MIT
+################################################################################
+---
+- hosts: localhost
+  gather_facts: false
+  tasks:
+    # FACTS #######################################################################
+    - name: 'Set Known Facts'
+      set_fact:
+        pgrole: 'flexget'
+        intport: '5050'
+        extport: '6060'
+        image: 'cpoppema/docker-flexget:latest'
+
+    # CORE (MANDATORY) ############################################################
+    - name: 'Including cron job'
+      include_tasks: '/opt/communityapps/apps/_core.yml'
+
+    # LABELS ######################################################################
+    - name: 'Adding Traefik'
+      set_fact:
+        pg_labels:
+          traefik.frontend.auth.forward.address: '{{gauth}}'
+          traefik.enable: 'true'
+          traefik.port: '{{intport}}'
+          traefik.frontend.rule: 'Host:{{pgrole}}.{{domain.stdout}},{{tldset}}'
+
+    - name: 'Setting PG Volumes'
+      set_fact:
+        pg_volumes:
+          - '/etc/localtime:/etc/localtime:ro'
+          - '/opt/appdata/{{pgrole}}:/config'
+          - '/mnt/downloads/{{pgrole}}:/downloads'
+          - '{{path.stdout}}:{{path.stdout}}'
+          - '/mnt:/mnt'
+
+    - name: 'Setting PG ENV'
+      set_fact:
+        pg_env:
+          PUID: '1000'
+          PGID: '1000'
+
+
+
+    # MAIN DEPLOYMENT #############################################################
+    - name: 'Deploying {{pgrole}}'
+      docker_container:
+        name: '{{pgrole}}'
+        image: '{{image}}'
+        pull: yes
+        published_ports:
+          - '{{ports.stdout}}{{extport}}:{{intport}}'
+        volumes: '{{pg_volumes}}'
+        env: '{{pg_env}}'
+        restart_policy: unless-stopped
+        networks:
+          - name: plexguide
+            aliases:
+              - '{{pgrole}}'
+        state: started
+        labels: '{{pg_labels}}'
+
+    # CONFIGURATION #############################################################
+    #- name: Checking for existing app data
+    #  stat:
+    #    path: "/opt/appdata/{{pgrole}}/config.yml"
+    #  register: cfcheck
+    #
+    #- name: "Configuring {{pgrole}} for first time use"
+    #  block:
+    #  - name: Creating config file
+    #    shell: 'touch /opt/appdata/{{pgrole}}/config.yml'
+    #  - name: Populate example config
+    #    shell: 'echo -e ''web_server:\n  bind: 0.0.0.0\n  port: {{intport}}\n\ntasks:\n  example-task:\n    rss: hxxp://example.com/feed.xml\n    download: /download\n    series:\n      - some series 1\n      - some series 2'' > /opt/appdata/{{pgrole}}/config.yml'
+    #  - name: Fix permissions
+    #    shell: 'chown {{PUID}}:{{PGID}} /opt/appdata/{{pgrole}}/config.yml'
+    #  when: not cfcheck.stat.exists
