@@ -35,7 +35,7 @@
         pg_volumes:
           - '/etc/localtime:/etc/localtime:ro'
           - '/opt/appdata/{{pgrole}}:/data'
-          - '/opt/appdata/rutorrent/sock/php-fpm-rutorrent.sock:/data/rtorrent.sock'
+          - '/opt/appdata/rutorrent/sock/.rtorrent.sock:/data/rtorrent.sock'
 
     - name: 'Setting PG ENV'
       set_fact:
