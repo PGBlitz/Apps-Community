@@ -21,7 +21,7 @@ _**Table of Contents**_
 **PG Box Community:** PG Community is a PG repo that collects and stores accepted user container writeups for community usage install. User can add programs such as Radarr4k or other unique programs that others may want to utlize.
 
 <p align="center"><kbd><img src="https://pgblitz.com/wikipics/pglogo-move.gif" width="400""></kbd></p>
-<p align="center"><b>Manage PlexGuide - AnyTime, Anywhere!</b></p>
+<p align="center"><b>Manage PGBlitz - AnyTime, Anywhere!</b></p>
 
 Forum Node for Community Box: [ CLICK HERE ](https://pgblitz.com/forums/pg-app-community-box.191/)
 

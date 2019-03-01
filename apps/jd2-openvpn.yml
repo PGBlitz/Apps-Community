@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Title:      Jdownloader2 for PlexGuide (OAuth security) with OpenVPN integration
+# Title:      Jdownloader2 for PGBlitz (OAuth security) with OpenVPN integration
 # Author(s):  timekills (mod. h1f0x)
 # URL:        https://hub.docker.com/r/h1f0x/jd2-openvpn
 # GNU:        General Public License v3.0
