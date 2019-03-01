@@ -25,10 +25,15 @@
     - name: 'Including cron job'
       include_tasks: '/opt/communityapps/apps/_core.yml'
 
+    - name: Checking for existing rss folder
+      stat:
+        path: "/opt/appdata/{{pgrole}}/rss"
+      register: rsscheck
+
     - name: Checking for existing rss config
       stat:
         path: "/opt/appdata/{{pgrole}}/rss/transmission-rss.conf"
-      register: rsscheck
+      register: cfgcheck
 
     #- name: Checking for existing blocklist
     #  stat:
@@ -117,11 +122,17 @@
     #    shell: "curl -s http://john.bitsurge.net/public/biglist.p2p.gz | gunzip > /config/home/biglist.p2p"
     #  when: not blcheck.stat.exists
 
-    - name: 'RSS feed configuration'
+    - name: 'RSS feed configuration - Folder'
       block:
-        - name: 'Creating configuration'
-          shell: "touch /etc/transmission-rss.conf && chown 1000:1000 /etc/transmission-rss.conf && echo see https://git.io/fhAm2 to configure > /etc/transmission-rss.conf"
+        - name: 'Creating RSS folder'
+          shell: "mkdir /opt/appdata/{{pgrole}}/rss"
       when: not rsscheck.stat.exists
+
+    - name: 'RSS feed configuration - Config'
+      block:
+        - name: 'Creating configuration file'
+          shell: "touch /opt/appdata/{{pgrole}}/rss/transmission-rss.conf && chown -R 1000:1000 /opt/appdata/{{pgrole}}/rss/ && echo see https://git.io/fhAm2 to configure > /opt/appdata/{{pgrole}}/rss/transmission-rss.conf"
+      when: not cfgcheck.stat.exists
 
     - name: 'Deploying {{pgrole2}}'
       docker_container:
