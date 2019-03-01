@@ -10,45 +10,41 @@
   gather_facts: false
   tasks:
     # FACTS #######################################################################
-
     - name: 'Set Known Facts'
       set_fact:
-        pgrole: 'synclounge'
-        intport: '8088'
-        extport: '8088'
-        intport2: '8089'
-        extport2: '8089'
-        image: 'starbix/synclounge'
+        pgrole: 'dockergc'
+        intport: '1'
+        extport: '1'
+        image: 'clockworksoul/docker-gc-cron'
 
     # CORE (MANDATORY) ############################################################
     - name: 'Including cron job'
       include_tasks: '/opt/communityapps/apps/_core.yml'
 
-    # LABELS ######################################################################
-    - name: 'Adding Traefik'
-      set_fact:
-        pg_labels:
-          traefik.enable: 'true'
-          traefik.web.frontend.redirect.entryPoint: 'https'
-          traefik.web.frontend.rule: 'Host:web.{{domain.stdout}},{{pgrole}}.{{domain.stdout}},{{tldset}}'
-          traefik.web.port: '{{intport}}'
-          traefik.server.frontend.redirect.entryPoint: 'https'
-          traefik.server.frontend.rule: 'Host:server.{{domain.stdout}}'
-          traefik.server.port: '{{intport2}}'
-          traefik.frontend.auth.forward.address: '{{gauth}}'
+    # MANDATORY DOCKERGC ##########################################################
+    - name: Install docker-gc-exclude
+      template:
+        src: /opt/communityapps/apps/templates/docker-gc-exclude
+        dest: /opt/appdata/{{pgrole}}/docker-gc-exclude
+        force: yes
+        mode: 0775
+        owner: '1000'
+        group: '1000'
 
+    # LABELS ######################################################################
     - name: 'Setting PG Volumes'
       set_fact:
         pg_volumes:
-          - '/opt/appdata/{{pgrole}}/config:/config'
-          - '/opt/appdata/{{pgrole}}/sync:/sync'
+          - /opt/appdata/dockergc/docker-gc-exclude:/etc/docker-gc-exclude
+          - /var/run/docker.sock:/var/run/docker.sock
+          - /etc/localtime:/etc/localtime:ro
 
     - name: 'Setting PG ENV'
       set_fact:
         pg_env:
-          UID: '1000'
-          GID: '1000'
-          DOMAIN: {{pgrole}}.{{domain.stdout}}
+          PUID: '1000'
+          PGID: '1000'
+          CLEAN_UP_VOLUMES: 1
 
     # MAIN DEPLOYMENT #############################################################
     - name: 'Deploying {{pgrole}}'
@@ -56,8 +52,6 @@
         name: '{{pgrole}}'
         image: '{{image}}'
         pull: yes
-        published_ports:
-          - '{{ports.stdout}}{{extport}}:{{intport}}'
         volumes: '{{pg_volumes}}'
         env: '{{pg_env}}'
         restart_policy: unless-stopped
@@ -66,4 +60,5 @@
             aliases:
               - '{{pgrole}}'
         state: started
-        labels: '{{pg_labels}}'
+        labels:
+          traefik.enabled: 'false'
