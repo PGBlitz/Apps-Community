@@ -1,0 +1,111 @@
+#!/bin/bash
+#
+# Title:      Transmissionbt (with OpenVPN, WebProxy, RSS)
+# Author(s):  Eric Petit, Josh Elsasser, Bryan Varner, Charles Kerr, Kristian Haugene, nning
+# URL:        https://transmissionbt.com/ - https://github.com/haugene/docker-transmission-openvpn
+# GNU:        General Public License v2.0, v3.0
+################################################################################
+---
+- hosts: localhost
+  gather_facts: false
+  tasks:
+    # FACTS #######################################################################
+    - name: 'Set Known Facts'
+      set_fact:
+        pgrole: 'transmission'
+        pgrole2: 'transmission-rss'
+        intport: '9091'
+        extport: '9091'
+        intport2: '9092'
+        extport2: '9092'
+        intport3: '8888'
+        extport3: '8888'
+        image: 'haugene/transmission-openvpn:latest'
+        image2: 'haugene/transmission-rss:latest'
+
+    # CORE (MANDATORY) ############################################################
+    - name: 'Including cron job'
+      include_tasks: '/opt/communityapps/apps/_core.yml'
+
+    # LABELS ######################################################################
+    - name: 'Adding Traefik'
+      set_fact:
+        pg_labels:
+          traefik.enable: 'true'
+          traefik.port: '{{intport}}'
+          traefik.frontend.auth.forward.address: '{{gauth}}'
+          traefik.frontend.rule: 'Host:{{pgrole}}.{{domain.stdout}},{{tldset}}'
+
+    - name: 'Setting PG Volumes'
+      set_fact:
+        pg_volumes:
+          - '/etc/localtime:/etc/localtime:ro'
+          - '/opt/appdata/{{pgrole}}:/config'
+          - '{{path.stdout}}:{{path.stdout}}'
+          - '/mnt:/mnt'
+
+    - name: 'Setting {{pgrole}} ENV'
+      set_fact:
+        pg_env:
+          PUID: '1000'
+          PGID: '1000'
+          OPENVPN_PROVIDER: 'see https://git.io/fpCSF'
+          OPENVPN_CONFIG: 'see https://git.io/fpCSF'
+          OPENVPN_USERNAME: 'vpnuser'
+          OPENVPN_PASSWORD: 'vpnpass'
+          OPENVPN_OPTS: '--inactive 3600 --ping 10 --ping-exit 60'
+          WEBPROXY_ENABLED: 'true'
+          WEBPROXY_PORT: '{{extport3}}'
+          LOCAL_NETWORK: 172.18.0.0/24
+          TRANSMISSION_WEB_HOME: '/config/webui-theme'
+          TRANSMISSION_WEB_UI: 'combustion'
+          TRANSMISSION_BLOCKLIST_ENABLED: 'true'
+          TRANSMISSION_BLOCKLIST_URL: 'http://john.bitsurge.net/public/biglist.p2p.gz'
+          TRANSMISSION_DHT_ENABLED: 'false'
+          TRANSMISSION_DOWNLOAD_DIR: '/mnt/downloads/{{pgrole}}'
+          TRANSMISSION_INCOMPLETE_DIR: '/mnt/incomplete/{{pgrole}}'
+          TRANSMISSION_RPC_PORT: '{{intport2}}'
+          TRANSMISSION_WATCH_DIR: '/config/watch'
+          TRANSMISSION_WATCH_DIR_ENABLED: 'false'
+
+    - name: 'Setting {{pgrole2}} ENV'
+      set_fact:
+        pg_env2:
+          RSS_URL: 'http://your.rss'
+
+    # MAIN DEPLOYMENT #############################################################
+    - name: 'Deploying {{pgrole}}'
+      docker_container:
+        name: '{{pgrole}}'
+        image: '{{image}}'
+        pull: yes
+        published_ports:
+          - '{{ports.stdout}}{{extport}}:{{intport}}'
+          - '{{ports.stdout}}{{extport2}}:{{intport2}}'
+          - '{{ports.stdout}}{{extport3}}:{{intport3}}'
+        volumes: '{{pg_volumes}}'
+        env: '{{pg_env}}'
+        restart_policy: unless-stopped
+        capabilities:
+          - NET-ADMIN
+        networks:
+          - name: plexguide
+            aliases:
+              - '{{pgrole}}'
+        state: started
+        labels: '{{pg_labels}}'
+
+    - name: 'Deploying {{pgrole2}}'
+      docker_container:
+        name: '{{pgrole2}}'
+        image: '{{image2}}'
+        pull: yes
+        env: '{{pg_env2}}'
+        links:
+          - '{{pgrole}}:transmission'
+        restart_policy: unless-stopped
+        networks:
+          - name: plexguide
+            aliases:
+              - '{{pgrole2}}'
+        state: started
