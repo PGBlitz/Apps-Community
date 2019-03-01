@@ -3,10 +3,10 @@
 📂 [**Click Here**](https://controlpanel.newshosting.com/signup/index.php?promo=partners&a_aid=5a65169240efd&a_bid=5ecfe99b) - NZB's with from NewsHost - PG Members Receive a 58% Discount
 
 <p align="center">
-  <a href="https://plexguide.com/forums" target="_blank"><img src="https://plexguide.com/wikipics/logo-forums.png" width="160"/>   
-  <a href="https://github.com/Admin9705/PlexGuide.com-The-Awesome-Plex-Server/wiki" target="_blank"><img src="https://plexguide.com/wikipics/logo-wiki.png" width="160"/>
-  <a href="https://plexguide.com/threads/plexguide-install-instructions.243/" target="_blank"><img src="https://plexguide.com/wikipics/logo-pg-install.png" width="160"/>
-  <a href="https://plexguide.com/account/upgrades" target="_blank"><img src="https://plexguide.com/wikipics/logo-donate.png" width="160"/>
+  <a href="https://pgblitz.com/forums" target="_blank"><img src="https://pgblitz.com/wikipics/logo-forums.png" width="160"/>   
+  <a href="https://github.com/PGBlitz/PGBlitz.com/wiki" target="_blank"><img src="https://pgblitz.com/wikipics/logo-wiki.png" width="160"/>
+  <a href="https://pgblitz.com/threads/plexguide-install-instructions.243/" target="_blank"><img src="https://pgblitz.com/wikipics/logo-pg-install.png" width="160"/>
+  <a href="https://pgblitz.com/account/upgrades" target="_blank"><img src="https://pgblitz.com/wikipics/logo-donate.png" width="160"/>
 </p> 
  
 _**Table of Contents**_
@@ -20,10 +20,10 @@ _**Table of Contents**_
 
 **PG Box Community:** PG Community is a PG repo that collects and stores accepted user container writeups for community usage install. User can add programs such as Radarr4k or other unique programs that others may want to utlize.
 
-<p align="center"><kbd><img src="https://plexguide.com/wikipics/pglogo-move.gif" width="400""></kbd></p>
+<p align="center"><kbd><img src="https://pgblitz.com/wikipics/pglogo-move.gif" width="400""></kbd></p>
 <p align="center"><b>Manage PlexGuide - AnyTime, Anywhere!</b></p>
 
-Forum Node for Community Box: [ CLICK HERE ](https://plexguide.com/forums/pg-app-community-box.191/)
+Forum Node for Community Box: [ CLICK HERE ](https://pgblitz.com/forums/pg-app-community-box.191/)
 
 **WARNING: Wiki Under Construction**
 
@@ -41,5 +41,5 @@ PG Box Community Edition is dead simple to use! Have a container in mind? Push c
 📂 [**Click Here**](http://usenetserver.com/partners/?a_aid=5a65169240efd&a_bid=5725b6ed) - NZB's from USENET Server - PG Members Receive a 60% Discount
 
 <p align="right">
-<a href="https://plexguide.com" target="_blank"><img src="https://plexguide.com/wikipics/logo.png" width="75"/>
+<a href="https://pgblitz.com" target="_blank"><img src="https://pgblitz.com/wikipics/logo.png" width="75"/>
 </p>
