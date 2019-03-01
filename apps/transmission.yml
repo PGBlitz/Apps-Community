@@ -135,7 +135,7 @@
         state: started
 
     - name: 'Wait for {{pgrole}} to initialize'
-      - wait_for: timeout=30
+      wait_for: timeout=30
     
     - name: 'Stopping {{pgrole}}. Go configure ENV values.'
       docker_container:
