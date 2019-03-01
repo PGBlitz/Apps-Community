@@ -87,7 +87,7 @@
         env: '{{pg_env}}'
         restart_policy: unless-stopped
         capabilities:
-          - NET-ADMIN
+          - NET_ADMIN
         networks:
           - name: plexguide
             aliases:
