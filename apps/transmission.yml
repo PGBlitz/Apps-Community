@@ -52,7 +52,7 @@
           - '{{path.stdout}}:{{path.stdout}}'
           - '/mnt:/mnt'
 
-    - name: 'Setting {{pgrole2}} Volumes'
+    - name: 'Setting additional volumes'
       set_facts:
         pg_volumes2:
           - '/opt/appdata/{{pgrole}}/rss:/etc/transmission-rss.conf:ro'
