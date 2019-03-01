@@ -117,9 +117,10 @@
     #    shell: "curl -s http://john.bitsurge.net/public/biglist.p2p.gz | gunzip > /config/home/biglist.p2p"
     #  when: not blcheck.stat.exists
 
-    - name: 'Creating RSS feed configuration'
+    - name: 'RSS feed configuration'
       block:
-        shell: "touch /etc/transmission-rss.conf && chown 1000:1000 /etc/transmission-rss.conf && echo see https://git.io/fhAm2 to configure > /etc/transmission-rss.conf"
+        - name: 'Creating configuration'
+          shell: "touch /etc/transmission-rss.conf && chown 1000:1000 /etc/transmission-rss.conf && echo see https://git.io/fhAm2 to configure > /etc/transmission-rss.conf"
       when: not rsscheck.stat.exists
 
     - name: 'Deploying {{pgrole2}}'
