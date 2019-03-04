@@ -35,11 +35,6 @@
         path: "/opt/appdata/{{pgrole}}/rss/transmission-rss.conf"
       register: cfgcheck
 
-    #- name: Checking for existing blocklist
-    #  stat:
-    #    path: "/opt/appdata/{{pgrole}}/home/biglist.p2p"
-    #  register: blcheck
-
     # LABELS ######################################################################
     - name: 'Adding Traefik'
       set_fact:
@@ -116,11 +111,6 @@
               - '{{pgrole}}'
         state: started
         labels: '{{pg_labels}}'
-
-    #- name: 'Downloading blocklist'
-    #  block:
-    #    shell: "curl -s http://john.bitsurge.net/public/biglist.p2p.gz | gunzip > /config/home/biglist.p2p"
-    #  when: not blcheck.stat.exists
 
     - name: 'RSS feed configuration - Folder'
       block:
