@@ -1,0 +1,82 @@
+#!/bin/bash
+#
+# Title:      PlexGuide (Reference Title File)
+# Author(s):  TechButton
+# URL:        https://plexguide.com - http://github.plexguide.com
+# GNU:        General Public License v3.0
+################################################################################
+---
+- hosts: localhost
+  gather_facts: false
+  tasks:
+    # FACTS #######################################################################
+
+    - name: 'Set Known Facts'
+      set_fact:
+        pgrole: 'unifi'
+        intport: '8080'
+        extport: '8081'
+        intport2: '8443'
+        extport2: '8443'
+        intport3: '8880'
+        extport3: '8880'
+        intport4: '8843'
+        extport4: '8843'
+        intport5: '3478'
+        extport5: '3478'
+        image: 'goofball222/unifi:sc'
+
+    # CORE (MANDATORY) ############################################################
+    - name: 'Including cron job'
+      include_tasks: '/opt/plexguide/containers/_core.yml'
+
+    
+    # LABELS ######################################################################
+
+    - name: 'Adding Traefik'
+      set_fact:
+        pg_labels:
+          traefik.frontend.auth.forward.address: '{{gauth}}'
+          traefik.enable: 'true'
+          traefik.port: '{{intport}}'
+          traefik.frontend.rule: 'Host:{{pgrole}}.{{domain.stdout}},{{tldset}}'
+
+    - name: 'Setting PG Volumes'
+      set_fact:
+        pg_volumes:
+          - /etc/localtime:/etc/localtime:ro
+          - /opt/appdata/{{pgrole}}/cert:/usr/lib/unifi/cert
+          - /opt/appdata/{{pgrole}}/data:/usr/lib/unifi/data
+          - /opt/appdata/{{pgrole}}/logs:/usr/lib/unifi/logs
+
+    - name: 'Setting PG ENV'
+      set_fact:
+        pg_env:
+          PUID: 1000
+          PGID: 1000
+          TZ: 'CST'
+
+    # MAIN DEPLOYMENT #############################################################
+    
+    - name: 'Configuring {{pgrole}} for first time use'
+      block:
+        - name: 'Deploying {{pgrole}}'
+          docker_container:
+            name: 'unifi'
+            image: '{{image}}'
+            pull: yes
+            published_ports:
+              - '{{ports.stdout}}{{extport}}:{{intport}}'
+              - '{{ports.stdout}}{{extport2}}:{{intport2}}'
+              - '{{ports.stdout}}{{extport3}}:{{intport3}}'
+              - '{{ports.stdout}}{{extport4}}:{{intport4}}'
+              - '{{ports.stdout}}{{extport5}}:{{intport5}}/udp'
+            volumes: '{{pg_volumes}}'
+            env: '{{pg_env}}'
+            restart_policy: unless-stopped
+            networks:
+              - name: plexguide
+                aliases:
+                  - '{{pgrole}}'
+            state: started
+            labels: '{{pg_labels}}'
