@@ -17,9 +17,9 @@
 
     - name: 'Set Known Facts'
       set_fact:
-        pgrole: 'nzbget-mp4'
-        intport: '6790'
-        extport: '6790'
+        pgrole: 'nzbget'
+        intport: '6789'
+        extport: '6789'
         image: 'linuxserver/nzbget'
 
     # CORE (MANDATORY) ############################################################
