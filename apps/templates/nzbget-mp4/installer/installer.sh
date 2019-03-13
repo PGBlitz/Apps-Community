@@ -5,7 +5,7 @@ apk add --no-cache git
 apk add build-base gcc wget diffutils perl
 apk add curl
 git clone https://github.com/mdhiggins/sickbeard_mp4_automator.git /config/scripts/MP4_Automator/tmp
-mv /config/scripts/MP4_Automator/tmp/* /config/scripts/MP4_Automator/
+cp -r /config/scripts/MP4_Automator/tmp/* /config/scripts/MP4_Automator
 rm -rf /config/scripts/MP4_Automator/tmp
 git unstage
 apk add --no-cache py-setuptools py-pip python-dev libffi-dev gcc musl-dev openssl-dev
