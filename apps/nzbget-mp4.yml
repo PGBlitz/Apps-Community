@@ -176,7 +176,7 @@
         path: '/opt/appdata/{{pgrole}}/nzbget.conf'
         state: present
         delay: 5
-        
+
     - name: 'Stopping {{pgrole}}'
       docker_container:
         name: '{{pgrole}}'
@@ -311,33 +311,33 @@
             line: 'Category5.DestDir='
             state: present
 
-    - name: Set Global Extensions
-      lineinfile:
-        path: '/opt/appdata/{{pgrole}}/nzbget.conf'
-        regexp: '^Extensions\s*=.*'
-        line: 'Extensions=unzip.py'
-        state: present
+        - name: Set Global Extensions
+          lineinfile:
+            path: '/opt/appdata/{{pgrole}}/nzbget.conf'
+            regexp: '^Extensions\s*=.*'
+            line: 'Extensions=unzip.py'
+            state: present
 
-    - name: Set ScriptOrder
-      lineinfile:
-        path: '/opt/appdata/{{pgrole}}/nzbget.conf'
-        regexp: '^ScriptOrder\s*=.*'
-        line: 'ScriptOrder=unzip.py, MP4_Automator/NZBGetPostProcess.py'
-        state: present
+        - name: Set ScriptOrder
+          lineinfile:
+            path: '/opt/appdata/{{pgrole}}/nzbget.conf'
+            regexp: '^ScriptOrder\s*=.*'
+            line: 'ScriptOrder=unzip.py, MP4_Automator/NZBGetPostProcess.py'
+            state: present
 
-    - name: Set mp4 script location
-      lineinfile:
-        path: '/opt/appdata/{{pgrole}}/nzbget.conf'
-        regexp: '^MP4_Automator/NZBGetPostProcess.py:MP4_FOLDER\s*=.*'
-        line: 'MP4_Automator/NZBGetPostProcess.py:MP4_FOLDER=/config/scripts/MP4_Automator/'
-        state: present
+        - name: Set mp4 script location
+          lineinfile:
+            path: '/opt/appdata/{{pgrole}}/nzbget.conf'
+            regexp: '^MP4_Automator/NZBGetPostProcess.py:MP4_FOLDER\s*=.*'
+            line: 'MP4_Automator/NZBGetPostProcess.py:MP4_FOLDER=/config/scripts/MP4_Automator/'
+            state: present
 
-    - name: Set mp4 conversion true
-      lineinfile:
-        path: '/opt/appdata/{{pgrole}}/nzbget.conf'
-        regexp: '^MP4_Automator/NZBGetPostProcess.py:SHOULDCONVERT\s*=.*'
-        line: 'MP4_Automator/NZBGetPostProcess.py:SHOULDCONVERT=True'
-        state: present
+        - name: Set mp4 conversion true
+          lineinfile:
+            path: '/opt/appdata/{{pgrole}}/nzbget.conf'
+            regexp: '^MP4_Automator/NZBGetPostProcess.py:SHOULDCONVERT\s*=.*'
+            line: 'MP4_Automator/NZBGetPostProcess.py:SHOULDCONVERT=True'
+            state: present
 
         - name: Default User
           lineinfile:
