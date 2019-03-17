@@ -15,7 +15,7 @@
       set_fact:
         pgrole: 'mcmyadmin'
         intport: '8080'
-        extport: '8088'
+        extport: '8087'
         image: 'linuxserver/mcmyadmin2'
 
     - name: 'Including cron job'
