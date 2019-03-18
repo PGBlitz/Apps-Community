@@ -14,7 +14,7 @@
       set_fact:
         pgrole: 'logarr'
         intport: '80'
-        extport: '7555'
+        extport: '7755'
         image: 'monitorr/logarr:develop'
 
     # CORE (MANDATORY) ############################################################

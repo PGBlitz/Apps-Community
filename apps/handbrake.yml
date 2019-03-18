@@ -65,7 +65,7 @@
         state: directory
         owner: '1000'
         group: '1000'
-        mode: 0755
+        mode: 0775
         recurse: yes
 
     - name: 'Create complete directory for {{pgrole}}'
@@ -74,7 +74,7 @@
         state: directory
         owner: '1000'
         group: '1000'
-        mode: 0755
+        mode: 0775
         recurse: yes
 
     - name: 'Deploying {{pgrole}}'
