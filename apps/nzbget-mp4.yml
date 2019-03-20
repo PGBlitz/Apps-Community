@@ -57,7 +57,7 @@
 
     - name: 'Copy custom init scripts into directory for {{pgrole}}'
       copy:
-        src: /opt/communityapps/apps/templates/nzbget-mp4/cont-init.d/30-config
+        src: /opt/communityapps/apps/templates/{{pgrole}}/cont-init.d/30-config
         dest: /opt/appdata/{{pgrole}}/cont-init.d
         directory_mode: yes
         force: yes
@@ -67,7 +67,7 @@
 
     - name: 'Copy custom install scripts into directory for {{pgrole}}'
       copy:
-        src: /opt/communityapps/apps/templates/nzbget-mp4/installer/installer.sh
+        src: /opt/communityapps/apps/templates/{{pgrole}}/installer/installer.sh
         dest: /opt/appdata/{{pgrole}}/installer
         directory_mode: yes
         force: yes
@@ -77,7 +77,7 @@
 
     - name: 'Copy custom mp4 config into directory for {{pgrole}}'
       copy:
-        src: /opt/communityapps/apps/templates/nzbget-mp4/MP4_Automator/autoProcess.ini
+        src: /opt/communityapps/apps/templates/{{pgrole}}/MP4_Automator/autoProcess.ini
         dest: /opt/appdata/{{pgrole}}/scripts/MP4_Automator
         directory_mode: yes
         force: yes
@@ -87,7 +87,7 @@
 
     - name: 'Copy custom NZBGetPostProcess script config into directory for {{pgrole}}'
       copy:
-        src: /opt/communityapps/apps/templates/nzbget-mp4/MP4_Automator/TEMPLATEPPScript
+        src: /opt/communityapps/apps/templates/{{pgrole}}/MP4_Automator/TEMPLATEPPScript
         dest: /opt/appdata/{{pgrole}}/
         directory_mode: yes
         force: yes
@@ -97,7 +97,7 @@
 
     - name: 'Copy ffmpeg build script into directory for {{pgrole}}'
       copy:
-        src: /opt/communityapps/apps/templates/nzbget-mp4/ffmpeg-build/web-install.sh
+        src: /opt/communityapps/apps/templates/{{pgrole}}/ffmpeg-build/web-install.sh
         dest: /opt/appdata/{{pgrole}}/ffmpeg-build
         directory_mode: yes
         force: yes
@@ -107,7 +107,7 @@
 
     - name: 'Copy ffmpeg build script into directory for {{pgrole}}'
       copy:
-        src: /opt/communityapps/apps/templates/nzbget-mp4/ffmpeg-build/build-ffmpeg
+        src: /opt/communityapps/apps/templates/{{pgrole}}/ffmpeg-build/build-ffmpeg
         dest: /opt/appdata/{{pgrole}}/ffmpeg-build
         directory_mode: yes
         force: yes
@@ -117,7 +117,7 @@
 
     - name: 'Copy custom init scripts into directory for {{pgrole}}'
       copy:
-        src: /opt/communityapps/apps/templates/nzbget-mp4/services.d/run
+        src: /opt/communityapps/apps/templates/{{pgrole}}/services.d/run
         dest: /opt/appdata/{{pgrole}}/services.d
         directory_mode: yes
         force: yes
