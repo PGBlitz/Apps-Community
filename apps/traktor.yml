@@ -61,7 +61,5 @@
             aliases:
               - '{{pgrole}}'
         privileged: yes
-        devices:
-          - '/dev/net/tun'
         state: started
         labels: '{{pg_labels}}'
