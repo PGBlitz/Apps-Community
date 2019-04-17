@@ -14,7 +14,7 @@
     - name: 'Set Known Facts'
       set_fact:
         pgrole: "embystats"
-        intport: "80"
+        intport: "5432"
         extport: "9049"
         image: "uping/embystat:beta-linux"
 
