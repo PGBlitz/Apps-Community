@@ -16,7 +16,7 @@
         intport: '5800'
         extport: '5806'
         intport2: '5900'
-        extport2: '5907''
+        extport2: '5907'
         image: 'jlesage/mediainfo:latest'
 
     # CORE (MANDATORY) ############################################################
