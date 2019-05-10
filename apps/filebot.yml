@@ -15,7 +15,7 @@
         pgrole: 'filebot'
         intport: '5900'
         extport: '5903'
-        image: 'jlesage/filebot:latest'
+        image: 'jlesage/filebot'
 
     # CORE (MANDATORY) ############################################################
     - name: 'Including cron job'
