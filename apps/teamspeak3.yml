@@ -44,7 +44,7 @@
           traefik.frontend.rule: 'Host:{{pgrole}}.{{domain.stdout}},{{tldset}}'
     # VOLUMES #########
 
-   - name: 'Setting PG Volumes'
+    - name: 'Setting PG Volumes'
       set_fact:
         pg_volumes:
           - '/opt/appdata/{{pgrole}}/data:/data'
