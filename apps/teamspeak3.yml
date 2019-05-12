@@ -34,7 +34,15 @@
         - '/opt/appdata/{{pgrole}}/logs'
 
     # LABELS ######################################################################
-    - name: 'Setting PG Volumes'
+######################################################################
+    - name: 'Adding Traefik'
+      set_fact:
+        pg_labels:
+          traefik.enable: 'false'
+          traefik.port: '{{intport}}'
+          traefik.frontend.auth.forward.address: '{{gauth}}'
+          traefik.frontend.rule: 'Host:{{pgrole}}.{{domain.stdout}},{{tldset}}'
+   - name: 'Setting PG Volumes'
       set_fact:
         pg_volumes:
           - '/opt/appdata/{{pgrole}}/data:/data'
