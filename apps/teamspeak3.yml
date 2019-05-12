@@ -34,6 +34,16 @@
         - '/opt/appdata/{{pgrole}}/logs'
 
     # LABELS ######################################################################
+
+    - name: 'Adding Traefik'
+      set_fact:
+        pg_labels:
+          traefik.enable: 'false'
+          traefik.port: '{{intport}}'
+          traefik.frontend.auth.forward.address: '{{gauth}}'
+          traefik.frontend.rule: 'Host:{{pgrole}}.{{domain.stdout}},{{tldset}}'
+    # VOLUMES #########
+
     - name: 'Setting PG Volumes'
       set_fact:
         pg_volumes:
@@ -59,6 +69,7 @@
           - '{{ports.stdout}}{{extport3}}:{{intport3}}'
         volumes: '{{pg_volumes}}'
         env: '{{pg_env}}'
+        command: license_accepted=1
         restart_policy: unless-stopped
         networks:
           - name: plexguide
