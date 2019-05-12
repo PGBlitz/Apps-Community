@@ -55,6 +55,7 @@
         pg_env:
           PUID: '1000'
           PGID: '1000'
+        command: 'license_accepted=1'
 
     # MAIN DEPLOYMENT #############################################################
 
