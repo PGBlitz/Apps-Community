@@ -1,8 +1,8 @@
 #!/bin/bash
 #
-# Title:      PGBlitz (Reference Title File)
-# Author(s):  Admin9705
-# URL:        https://pgblitz.com - http://github.pgblitz.com
+# Title:      CentOS 7 Varken
+# Author(s):  h1f0x
+# URL:        https://github.com/h1f0x/centos-varken
 # GNU:        General Public License v3.0
 ################################################################################
 ---
@@ -10,37 +10,41 @@
   gather_facts: false
   tasks:
     # FACTS #######################################################################
+
     - name: 'Set Known Facts'
       set_fact:
-        pgrole: 'bitwarden'
+        pgrole: 'varken'
         intport: '80'
-        extport: '2489'
-        image: 'mprasil/bitwarden'
+        extport: '5985'
+        image: 'h1f0x/centos-varken'
 
     # CORE (MANDATORY) ############################################################
     - name: 'Including cron job'
       include_tasks: '/opt/communityapps/apps/_core.yml'
+
+    - name: 'Including plugins'
+      include_tasks: '/opt/communityapps/apps/_plugins.yml'
 
     # LABELS ######################################################################
     - name: 'Adding Traefik'
       set_fact:
         pg_labels:
           traefik.enable: 'true'
-          traefik.backend: "{{pgrole}}"
-          traefik.port: '80'
-          traefik.frontend.rule: 'Host:bit.{{domain.stdout}},{{pgrole}}.{{domain.stdout}},{{tldset}}'
+          traefik.port: '{{intport}}'
+          traefik.frontend.auth.forward.address: '{{gauth}}'
+          traefik.frontend.rule: 'Host:{{pgrole}}.{{domain.stdout}},{{tldset}}'
 
     - name: 'Setting PG Volumes'
       set_fact:
         pg_volumes:
-          - '/opt/appdata/{{pgrole}}/data:/data'
-          - '/opt/appdata/{{pgrole}}/database:/database'
+          - '/opt/appdata/{{pgrole}}:/config'
+          - '/etc/localtime:/etc/localtime:ro'
 
     - name: 'Setting PG ENV'
       set_fact:
         pg_env:
-          PUID: '1000'
-          PGID: '1000'
+          UID: '1000'
+          GID: '1000'
 
     # MAIN DEPLOYMENT #############################################################
     - name: 'Deploying {{pgrole}}'
@@ -48,6 +52,8 @@
         name: '{{pgrole}}'
         image: '{{image}}'
         pull: yes
+        published_ports:
+          - '{{ports.stdout}}{{extport}}:{{intport}}'
         volumes: '{{pg_volumes}}'
         env: '{{pg_env}}'
         restart_policy: unless-stopped
@@ -55,5 +61,6 @@
           - name: plexguide
             aliases:
               - '{{pgrole}}'
+        privileged: yes
         state: started
         labels: '{{pg_labels}}'
