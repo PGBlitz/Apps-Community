@@ -55,6 +55,8 @@
         pg_env:
           UID: '1000'
           GID: '1000'
+          DISPLAY_WIDTH: '1920'
+          DISPLAY_HEIGHT: '1080'
 
     # MAIN DEPLOYMENT #############################################################
     - name: 'Deploying {{pgrole}}'
