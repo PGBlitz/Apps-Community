@@ -64,9 +64,9 @@
         image: '{{image}}'
         pull: yes
         published_ports:
-          - '{{ports.stdout}}{{extport}}:{{intport}}'
-          - '{{ports.stdout}}{{extport2}}:{{intport2}}'
-          - '{{ports.stdout}}{{extport3}}:{{intport3}}'
+          - '{{extport}}:{{intport}}'
+          - '{{extport2}}:{{intport2}}'
+          - '{{extport3}}:{{intport3}}'
         volumes: '{{pg_volumes}}'
         env: '{{pg_env}}'
         command: license_accepted=1
