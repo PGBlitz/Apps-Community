@@ -14,7 +14,7 @@
       set_fact:
         pgrole: 'filebot'
         intport: '5800'
-        extport: '5803'
+        extport: '5804'
         intport2: '5900'
         extport2: '5903'
         image: 'jlesage/filebot'
