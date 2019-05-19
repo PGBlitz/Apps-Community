@@ -16,7 +16,7 @@
         pgrole: 'sonarrhdr'
         intport: '8989'
         extport: '8987'
-        image: 'lsiodev/sonarr-preview'
+        image: 'linuxserver/sonarr:preview'
 
     # CORE (MANDATORY) ############################################################
     - name: 'Including cron job'
