@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Title:      PGBlitz (kodi-headless)
+# Title:      PGBlitz (linuxserver/kodi-headless)
 # Author(s):  MrDoob
 # URL:        https://pgblitz.com - http://github.pgblitz.com
 # GNU:        General Public License v3.0
@@ -10,27 +10,25 @@
   gather_facts: false
   tasks:
     # FACTS #######################################################################
-
     - name: 'Set Known Facts'
       set_fact:
-        pgrole: 'kodi-headless'
+        pgrole: 'linuxserver/kodi-headless'
         intport: '8080'
-        extport: '8282'
+        extport: '8088'
         intport2: '9090'
-        extport2: '9292'
+        extport2: '9099'
         intport3: '9777'
-        extport3: '9777/udp'     
+        extport3: '9777/udp'		
         image: 'linuxserver/kodi-headless:latest'
 
     # CORE (MANDATORY) ############################################################
-
     - name: 'Including cron job'
       include_tasks: '/opt/communityapps/apps/_core.yml'
-      
-    # LABELS ######################################################################
 
+    # LABELS ######################################################################
     - name: 'Adding Traefik'
       set_fact:
+        pg_labels:
         pg_labels:
           traefik.enable: 'true'
           traefik.port: '{{intport}}'
@@ -40,8 +38,7 @@
     - name: 'Setting PG Volumes'
       set_fact:
         pg_volumes:
-          - '/opt/appdata/{{pgrole}}:/config/.kodi:rw'
-          - '{{path.stdout}}:{{path.stdout}}'
+          - '/opt/appdata/{{pgrole}}/config:/config/.kodi:rw'
           - '/mnt:/mnt:rw'
           - '/etc/localtime:/etc/localtime:ro'
 
@@ -61,11 +58,10 @@
         published_ports:
           - '{{ports.stdout}}{{extport}}:{{intport}}'
           - '{{ports.stdout}}{{extport2}}:{{intport2}}'
-          - '{{extport3}}:{{intport3}}'
-          
+          - '{{ports.stdout}}{{extport3}}:{{intport3}}'		  
         volumes: '{{pg_volumes}}'
         env: '{{pg_env}}'
-        restart_policy: unless-stopped
+        restart_policy: always
         networks:
           - name: plexguide
             aliases:
