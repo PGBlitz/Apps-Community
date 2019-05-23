@@ -29,7 +29,6 @@
     - name: 'Adding Traefik'
       set_fact:
         pg_labels:
-        pg_labels:
           traefik.enable: 'true'
           traefik.port: '{{intport}}'
           traefik.frontend.auth.forward.address: '{{gauth}}'
