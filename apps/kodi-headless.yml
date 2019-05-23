@@ -18,7 +18,7 @@
         intport2: '9090'
         extport2: '9099'
         intport3: '9777'
-        extport3: '9777/udp'		
+        extport3: '9777/udp'
         image: 'linuxserver/kodi-headless:latest'
 
     # CORE (MANDATORY) ############################################################
