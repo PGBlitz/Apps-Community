@@ -12,7 +12,7 @@
     # FACTS #######################################################################
     - name: 'Set Known Facts'
       set_fact:
-        pgrole: 'linuxserver/kodi-headless'
+        pgrole: 'kodi-headless'
         intport: '8080'
         extport: '8088'
         intport2: '9090'
@@ -55,9 +55,9 @@
         image: '{{image}}'
         pull: yes
         published_ports:
-          - '{{ports.stdout}}{{extport}}:{{intport}}'
-          - '{{ports.stdout}}{{extport2}}:{{intport2}}'
-          - '{{ports.stdout}}{{extport3}}:{{intport3}}'
+          - '{{extport}}:{{intport}}'
+          - '{{extport2}}:{{intport2}}'
+          - '{{extport3}}:{{intport3}}'
         volumes: '{{pg_volumes}}'
         env: '{{pg_env}}'
         restart_policy: always
