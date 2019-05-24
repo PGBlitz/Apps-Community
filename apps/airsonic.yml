@@ -44,14 +44,14 @@
           PUID: '1000'
           PGID: '1000'
           TZ: '${TZ}'
-
+          
     # MAIN DEPLOYMENT #############################################################
     - name: 'Deploying {{pgrole}}'
       docker_container:
         name: '{{pgrole}}'
         image: '{{image}}'
         pull: yes
-        published_ports:
+        published_ports: <<<<not exposed 
           - '{{ports.stdout}}{{extport}}:{{intport}}'
         volumes: '{{pg_volumes}}'
         env: '{{pg_env}}'
