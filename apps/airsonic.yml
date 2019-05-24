@@ -1,9 +1,9 @@
 #!/bin/bash
 #
-# Title:      PGBlitz (Reference Title File)
-# Author(s):  Admin9705
+# Title:      PGBlitz (linuxserver/airsonic)
+# Author(s):  MrDoob
 # URL:        https://pgblitz.com - http://github.pgblitz.com
-# GNU:        General Public License v3.0
+# GNU:        General Public License v3.0 
 ################################################################################
 ---
 - hosts: localhost
@@ -14,8 +14,8 @@
       set_fact:
         pgrole: 'airsonic'
         intport: '4040'
-        extport: '4040'
-        image: 'airsonic/airsonic'
+        extport: '4040'       
+        image: 'linuxserver/airsonic'
 
     # CORE (MANDATORY) ############################################################
     - name: 'Including cron job'
@@ -25,34 +25,33 @@
     - name: 'Adding Traefik'
       set_fact:
         pg_labels:
+          traefik.frontend.auth.forward.address: '{{gauth}}'
           traefik.enable: 'true'
           traefik.port: '{{intport}}'
-          traefik.frontend.auth.forward.address: '{{gauth}}'
           traefik.frontend.rule: 'Host:{{pgrole}}.{{domain.stdout}},{{tldset}}'
 
     - name: 'Setting PG Volumes'
       set_fact:
         pg_volumes:
-          - '/etc/localtime:/etc/localtime:ro'
-          - '/opt/appdata/{{pgrole}}:/airsonic/data'
-          - '/opt/appdata/{{pgrole}}/playlists:/airsonic/playlists'
-          - '/opt/appdata/{{pgrole}}/podcasts:/airsonic/podcasts'
+          - '/opt/appdata/{{pgrole}}/config:/config:rw'
           - '{{path.stdout}}:{{path.stdout}}'
-          - '/mnt:/mnt'
+          - '/mnt/unionfs:/media:ro'         
+          - '/etc/localtime:/etc/localtime:ro'
 
     - name: 'Setting PG ENV'
       set_fact:
         pg_env:
           PUID: '1000'
           PGID: '1000'
-
+          TZ: '${TZ}'
+          
     # MAIN DEPLOYMENT #############################################################
     - name: 'Deploying {{pgrole}}'
       docker_container:
         name: '{{pgrole}}'
         image: '{{image}}'
         pull: yes
-        published_ports:
+        published_ports: <<<<not exposed 
           - '{{ports.stdout}}{{extport}}:{{intport}}'
         volumes: '{{pg_volumes}}'
         env: '{{pg_env}}'
