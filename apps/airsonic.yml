@@ -33,10 +33,12 @@
     - name: 'Setting PG Volumes'
       set_fact:
         pg_volumes:
-          - '/opt/appdata/{{pgrole}}/config:/config:rw'
-          - '{{path.stdout}}:{{path.stdout}}'
-          - '/mnt/unionfs:/media:ro'         
           - '/etc/localtime:/etc/localtime:ro'
+          - '/opt/appdata/{{pgrole}}:/airsonic/data'
+          - '/opt/appdata/{{pgrole}}/playlists:/airsonic/playlists'
+          - '/opt/appdata/{{pgrole}}/podcasts:/airsonic/podcasts'
+          - '{{path.stdout}}:{{path.stdout}}'
+          - '/mnt:/mnt'
 
     - name: 'Setting PG ENV'
       set_fact:
@@ -51,7 +53,7 @@
         name: '{{pgrole}}'
         image: '{{image}}'
         pull: yes
-        published_ports: <<<<not exposed 
+        published_ports:
           - '{{ports.stdout}}{{extport}}:{{intport}}'
         volumes: '{{pg_volumes}}'
         env: '{{pg_env}}'
