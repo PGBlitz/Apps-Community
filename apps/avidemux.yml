@@ -21,7 +21,7 @@
         image: 'jlesage/avidemux'
 
     - name: 'Including cron job'
-      include_tasks: '/opt/plexguide/containers/_core.yml'
+      include_tasks: '/opt/communityapps/apps/_core.yml'
 
     # EXTRA FUNCTIONS REQUIRED BY THE ROLE #####################################
 
