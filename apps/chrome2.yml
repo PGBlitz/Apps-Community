@@ -15,13 +15,8 @@
       set_fact:
         pgrole: 'chrome'
         intport: '80'
-        extport: '2080'
-        intport2: '443'
-        extport2: '2443'
-        intport3: '8080'
-        extport3: '2880'
+        extport: '80'
         image: 'jess/chrome'
-        device: 
 
     - name: 'Including cron job'
       include_tasks: '/opt/communityapps/apps/_core.yml'
@@ -48,7 +43,7 @@
     - name: 'Adding Traefik'
       set_fact:
         pg_labels:
-          traefik.frontend.auth.forward.address: '{{gauth}}'
+          #traefik.frontend.auth.forward.address: '{{gauth}}'
           traefik.enable: 'true'
           traefik.port: '{{intport}}'
           traefik.frontend.rule: 'Host:{{pgrole}}.{{domain.stdout}},{{tldset}}'
