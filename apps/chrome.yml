@@ -15,9 +15,9 @@
       set_fact:
         pgrole: 'chrome'
         intport: '80'
-        extport: '2080'
+        extport: '80'
         intport2: '443'
-        extport2: '2443'
+        extport2: '443'
         intport3: '8080'
         extport3: '2880'
         image: 'jess/chrome'
