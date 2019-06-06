@@ -63,7 +63,7 @@
           - '/opt/appdata/{{pgrole}}/downloads:/root/Downloads:rw'
           - '/opt/appdata/{{pgrole}}/data:/data:rw'
           - '/tmp/.X11-unix:/tmp/.X11-unix'
-          - '/dev/snd:/dev/snd:rw --privileged'
+          - '/dev/snd:/dev/snd:rw'
           - '/dev/dri:/dev/dri:rw'
 
     - name: 'Setting PG ENV'
@@ -92,6 +92,7 @@
             aliases:
               - '{{pgrole}}'
         state: started
+        privileged: yes
         cpuset_cpus: 0
         devices:
           - /dev/dri:/dev/dri:rwm
