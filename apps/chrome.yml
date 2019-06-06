@@ -86,10 +86,10 @@
             aliases:
               - '{{pgrole}}'
         state: started
-        cpuset-cpus: 0
+        cpuset_cpus: 0
         devices:
           - /dev/dri:/dev/dri:rwm
           - /dev/snd:/dev/snd:rwm
         memory: 2G  
-        security-opt: 'seccomp:/opt/appdata/chrome/chrome.json'
+        security_opts: 'seccomp:/opt/appdata/chrome/chrome.json'
         labels: '{{pg_labels}}'
