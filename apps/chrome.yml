@@ -91,5 +91,5 @@
           - /dev/dri:/dev/dri:rwm
           - /dev/snd:/dev/snd:rwm
         memory: 2G  
-        security_opts: 'seccomp:/opt/appdata/chrome/chrome.json'
+      #  security_opts: 'seccomp:/opt/appdata/chrome/chrome.json'
         labels: '{{pg_labels}}'
