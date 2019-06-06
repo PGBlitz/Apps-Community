@@ -14,12 +14,12 @@
     - name: 'Set Known Facts'
       set_fact:
         pgrole: 'chrome'
-        intport: '2080'
+        intport: '80'
         extport: '2080'
-        intport2: '80'
-        extport2: '2088'
-        intport3: '443'
-        extport3: '2443'
+        intport2: '443'
+        extport2: '2443'
+        intport3: '8080'
+        extport3: '2880'
         image: 'jess/chrome'
         device: 
 
