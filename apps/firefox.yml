@@ -18,7 +18,7 @@
         extport: '5810'
 #        intport2: '25565'
 #        extport2: '25565'
-        image: 'jlesage/docker-firefox'
+        image: 'jlesage/firefox'
 
     - name: 'Including cron job'
       include_tasks: '/opt/communityapps/apps/_core.yml'
