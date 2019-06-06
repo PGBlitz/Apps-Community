@@ -14,8 +14,8 @@
     - name: 'Set Known Facts'
       set_fact:
         pgrole: 'chrome'
-        intport: '80'
-        extport: '80'
+        intport: '443'
+        extport: '443'
         image: 'jess/chrome'
 
     - name: 'Including cron job'
@@ -47,8 +47,8 @@
           traefik.enable: 'true'
           traefik.port: '{{intport}}'
           traefik.frontend.rule: 'Host:{{pgrole}}.{{domain.stdout}},{{tldset}}'
-          traefik.frontend.headers.SSLProxyHeaders: 'X-Forwarded-Proto: https'
-          traefik.frontend.headers.SSLRedirect: 'true'
+        #  traefik.frontend.headers.SSLProxyHeaders: 'X-Forwarded-Proto: https'
+        #  traefik.frontend.headers.SSLRedirect: 'true'
 
     - name: 'Setting PG Volumes'
       set_fact:
