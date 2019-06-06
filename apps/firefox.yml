@@ -13,7 +13,7 @@
 
     - name: 'Set Known Facts'
       set_fact:
-        pgrole: 'avidemux'
+        pgrole: 'firefox'
         intport: '5800'
         extport: '5810'
 #        intport2: '25565'
