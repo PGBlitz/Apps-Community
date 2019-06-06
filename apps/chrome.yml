@@ -14,10 +14,12 @@
     - name: 'Set Known Facts'
       set_fact:
         pgrole: 'chrome'
-        intport: '80'
+        intport: '2080'
         extport: '2080'
-        intport2: '443'
-        extport2: '2443'
+        intport2: '80'
+        extport2: '2088'
+        intport3: '443'
+        extport3: '2443'
         image: 'jess/chrome'
         device: 
 
@@ -59,8 +61,10 @@
           - '/mnt:/mnt'
           - '/etc/localtime:/etc/localtime:ro'
           - '/opt/appdata/{{pgrole}}/downloads:/root/Downloads:rw'
-          - '/opt/appdata/{{pgrole}}/.config/google-chrome/:/data:rw'
+          - '/opt/appdata/{{pgrole}}/data:/data:rw'
           - '/tmp/.X11-unix:/tmp/.X11-unix'
+          - '/dev/snd:/dev/snd:privileged'
+          - '/dev/dri:/dev/dri:rw'
 
     - name: 'Setting PG ENV'
       set_fact:
@@ -78,6 +82,8 @@
         pull: yes
         published_ports:
           - '{{ports.stdout}}{{extport}}:{{intport}}'
+          - '{{ports.stdout}}{{extport2}}:{{intport2}}'
+          - '{{extport3}}:{{intport3}}'
         volumes: '{{pg_volumes}}'
         env: '{{pg_env}}'
         restart_policy: unless-stopped
