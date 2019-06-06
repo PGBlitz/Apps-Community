@@ -88,10 +88,10 @@
         env: '{{pg_env}}'
         restart_policy: unless-stopped
         network_mode: 'host'
-        networks:
-          - name: plexguide
-            aliases:
-              - '{{pgrole}}'
+    #    networks:
+    #      - name: plexguide
+    #        aliases:
+    #          - '{{pgrole}}'
         state: started
         privileged: yes
         cpuset_cpus: 0
