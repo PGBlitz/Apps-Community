@@ -1,0 +1,153 @@
+#!/bin/bash
+#
+# Title:      PGBlitz (Reference Title File)
+# https://github.com/pi-hole/docker-pi-hole/blob/master/README.md
+# https://www.smarthomebeginner.com/run-pihole-in-docker-on-ubuntu-with-reverse-proxy/
+# Author(s):  artiume
+# URL:        https://pgblitz.com - http://github.pgblitz.com
+# GNU:        General Public License v3.0
+################################################################################
+---
+- hosts: localhost
+  gather_facts: true
+  tasks:
+    # FACTS #######################################################################
+    
+    - name: 'Set Known Facts'
+      set_fact:
+        pgrole: 'pihole'
+        intport: '80'
+        extport: '9080'
+        intport2: '53/udp'
+        extport2: '53'
+        intport3: '67/udp'
+        extport3: '67'
+        intport4: '53/tcp'
+        extport4: '53'
+        intport5: '443'
+        extport5: '9443'
+        image: 'pihole/pihole:latest'
+
+    - name: Get Host's IP Address
+      setup:
+        filter: ansible_default_ipv4.address
+
+    # UBUNTU SPECIAL ##############################################################
+
+    - name: Disable systemd-resolved.service in Ubuntu OS's
+      service:
+        name: systemd-resolved.service
+        enabled: no
+      when: ansible_distribution == 'Ubuntu'
+
+    - name: Stop systemd-resolved.service in Ubuntu OS's
+      service:
+        name: systemd-resolved.service
+        state: stopped
+      when: ansible_distribution == 'Ubuntu'
+
+    - name: Insert "dns=default" into NetworkManager.cong 
+      lineinfile:
+        path: /etc/NetworkManager/NetworkManager.conf
+        line: dns=default
+        insertafter: plugins=ifupdown,keyfile
+      when: ansible_distribution == 'Ubuntu'
+
+    # CORE (MANDATORY) ############################################################
+    - name: 'Including cron job'
+      include_tasks: '/opt/communityapps/apps/_core.yml'
+
+    # ENVIRONMENT VARIABLES #######################################################
+##Environmental Argument File
+#    - name: 'Adding Environmental Variables'
+#      include_tasks: '/opt/mycontainers/.env'
+#
+#Environmental Arguments.
+#    - name: 'Adding Environmental Variables'
+#      set_fact:
+#        env_args:
+#          --dns=127.0.0.1 --dns=1.1.1.1
+
+    # LABELS ######################################################################
+    - name: 'Adding Traefik'
+      set_fact:
+        pg_labels:
+          traefik.enable: 'true'
+          traefik.backend: "{{pgrole}}"
+          traefik.port: '80'
+          traefik.frontend.auth.forward.address: '{{gauth}}'
+          traefik.frontend.rule: 'HostRegexp:pihole.{{domain.stdout}},{catchall:.*}'
+          traefik.frontend.priority: '1'
+          traefik.frontend.headers.SSLRedirect: 'true'
+          traefik.frontend.headers.STSSeconds: '315360000'
+          traefik.frontend.headers.browserXSSFilter: 'true'
+          traefik.frontend.headers.contentTypeNosniff: 'true'
+          traefik.frontend.headers.forceSTSHeader: 'true'
+          traefik.frontend.headers.SSLHost: '{{domain.stdout}}'
+          traefik.frontend.headers.STSIncludeSubdomains: 'true'
+          traefik.frontend.headers.STSPreload: 'true'
+          #traefik.frontend.headers.frameDeny: 'true'
+
+    # PRETASKS ####################################################################
+
+    - name: Create pihole.log file
+      command: touch /opt/appdata/{{pgrole}}/pihole.log
+      args:
+        creates: /opt/appdata/{{pgrole}}/pihole.log
+
+    - name: 'Setting PG Volumes'
+      set_fact:
+        pg_volumes:
+          - '/opt/appdata/{{pgrole}}/etc-pihole:/etc/pihole'
+          - '/opt/appdata/{{pgrole}}/etc-dnsmasq.d:/etc/dnsmasq.d'
+          - '/opt/appdata/{{pgrole}}/pihole.log:/var/log/pihole.log'
+          
+    - name: 'Setting PG ENV'
+      set_fact:
+        pg_env:
+          PUID: '1000'
+          PGID: '1000'
+          ServerIP: '{{ansible_default_ipv4.address}}'
+          PROXY_LOCATION: 'pihole'
+          VIRTUAL_HOST: 'pihole.{{domain.stdout}}'
+          VIRTUAL_PORT: '80'
+          TZ: '${TZ}'
+          WEBPASSWORD: 'password'
+          DNS1: '127.0.0.1'
+          DNS2: '1.1.1.1'
+
+    - name: 'Cap add'
+      set_fact:
+          cap_add: 'NET_ADMIN'
+          
+    # MAIN DEPLOYMENT #############################################################
+    - name: 'Deploying {{pgrole}}'
+      docker_container:
+        name: '{{pgrole}}'
+        image: '{{image}}'
+        published_ports:
+          - '{{ports.stdout}}{{extport}}:{{intport}}'
+          - '{{extport2}}:{{intport2}}'
+          - '{{extport3}}:{{intport3}}'
+          - '{{extport4}}:{{intport4}}'
+          - '{{extport5}}:{{intport5}}'  
+        #pull: yes
+        volumes: '{{pg_volumes}}'
+        env: '{{pg_env}}'
+        restart_policy: unless-stopped
+        networks:
+          - name: plexguide
+            aliases:
+              - '{{pgrole}}'
+        state: started
+        labels: '{{pg_labels}}'
+        
+    - name: remove and backup /etc/resolv.conf for Ubuntu
+      command: mv /etc/resolv.conf /etc/resolv.conf.bak
+      when: ansible_distribution == 'Ubuntu'
+      
+    - name: Restart NetworkManager in Ubuntu OS's
+      service:
+        name: network-manager.service
+        state: restarted
+      when: ansible_distribution == 'Ubuntu'
