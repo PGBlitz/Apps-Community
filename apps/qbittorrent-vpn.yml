@@ -139,7 +139,7 @@
         state: present
 
     - name: Get latest blocklist
-      shell: /usr/bin/curl -L http://john.bitsurge.net/public/biglist.p2p.gz | /usr/bin/gzip -cdf > /opt/appdata/{{pgrole}}/qBittorrent/config/biglist.p2p
+      shell: curl -L http://john.bitsurge.net/public/biglist.p2p.gz | gzip -cdf > /opt/appdata/{{pgrole}}/qBittorrent/config/biglist.p2p
 
 
     # FIRST TIME CONFIGURATION ####################################################
