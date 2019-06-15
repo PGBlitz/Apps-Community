@@ -150,7 +150,7 @@
       block:
         - name: Create opvn folder
           shell: mkdir /opt/appdata/{{pgrole}}/openvpn && touch mkdir /opt/appdata/{{pgrole}}/openvpn/OPVN\ files\ go\ here > && chown -R {{PUID}}:{{PGID}} /opt/appdata/{{pgrole}}/openvpn
-      when: not opvncheck.stat.exists
+      when: not ovpncheck.stat.exists
 
 
     # FIRST TIME CONFIGURATION ####################################################
