@@ -140,6 +140,17 @@
 
     - name: Get latest blocklist
       shell: curl -L http://john.bitsurge.net/public/biglist.p2p.gz | gzip -cdf > /opt/appdata/{{pgrole}}/qBittorrent/config/biglist.p2p
+    
+    - name: 'Checking for existing openvpn folder'
+      stat:
+        path: '/opt/appdata/{{pgrole}}/openvpn'
+      register: ovpncheck
+
+    - name: Initialize opvn 
+      block:
+        - name: Create opvn folder
+          shell: mkdir /opt/appdata/{{pgrole}}/openvpn && touch mkdir /opt/appdata/{{pgrole}}/openvpn/OPVN\ files\ go\ here > && chown -R {{PUID}}:{{PGID}} /opt/appdata/{{pgrole}}/openvpn
+      when: not opvncheck.stat.exists
 
 
     # FIRST TIME CONFIGURATION ####################################################
