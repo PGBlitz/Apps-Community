@@ -13,7 +13,7 @@
 
     - name: 'Set Known Facts'
       set_fact:
-        pgrole: 'rutorrent-openvpn'
+        pgrole: 'rutorrent-vpn'
         intport: '80'
         extport: '5897'
         image: 'h1f0x/rtorrent-rutorrent-openvpn'
