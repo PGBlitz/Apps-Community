@@ -151,7 +151,7 @@
     - name: Initialize opvn 
       block:
         - name: Create opvn folder
-          shell: mkdir /opt/appdata/{{pgrole}}/openvpn && touch mkdir /opt/appdata/{{pgrole}}/openvpn/OPVN\ files\ go\ here > && chown -R {{puid}}:{{pgid}} /opt/appdata/{{pgrole}}/openvpn
+          shell: mkdir /opt/appdata/{{pgrole}}/openvpn && touch mkdir /opt/appdata/{{pgrole}}/openvpn/OPVN\ files\ go\ here && chown -R {{puid}}:{{pgid}} /opt/appdata/{{pgrole}}/openvpn
       when: not ovpncheck.stat.exists
 
 
