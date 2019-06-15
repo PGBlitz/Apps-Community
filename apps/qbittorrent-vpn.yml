@@ -24,6 +24,8 @@
         dnsserver2: '84.200.69.80'
         dnsserver3: '37.235.1.174'
         dnsserver4: '185.121.177.177'
+        puid: '1000'
+        pgid: '1000'
         image: 'binhex/arch-qbittorrentvpn:latest'
 
     # CORE (MANDATORY) #############################################################
@@ -56,8 +58,8 @@
     - name: 'Setting PG ENV'
       set_fact:
         pg_env:
-          PUID: '1000'
-          PGID: '1000'
+          PUID: '{{puid}}'
+          PGID: '{{pgid}}'
           UMASK: '000'
           VPN_ENABLED: 'no'
           VPN_USER: 'username'
@@ -149,7 +151,7 @@
     - name: Initialize opvn 
       block:
         - name: Create opvn folder
-          shell: mkdir /opt/appdata/{{pgrole}}/openvpn && touch mkdir /opt/appdata/{{pgrole}}/openvpn/OPVN\ files\ go\ here > && chown -R {{PUID}}:{{PGID}} /opt/appdata/{{pgrole}}/openvpn
+          shell: mkdir /opt/appdata/{{pgrole}}/openvpn && touch mkdir /opt/appdata/{{pgrole}}/openvpn/OPVN\ files\ go\ here > && chown -R {{puid}}:{{pgid}} /opt/appdata/{{pgrole}}/openvpn
       when: not ovpncheck.stat.exists
 
 
