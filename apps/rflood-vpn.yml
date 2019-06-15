@@ -13,7 +13,7 @@
 
     - name: 'Set Known Facts'
       set_fact:
-        pgrole: 'rflood-openvpn'
+        pgrole: 'rflood'
         intport: '80'
         extport: '5896'
         image: 'h1f0x/rtorrent-flood-openvpn'
