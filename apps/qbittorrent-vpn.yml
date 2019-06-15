@@ -65,7 +65,7 @@
           VPN_USER: 'username'
           VPN_PASS: 'password'
           VPN_PROV: 'custom'
-          VPN_OPTIONS: '--inactive 3600 --ping 10 --ping-exit 60'
+          VPN_OPTIONS: ''
           STRICT_PORT_FORWARD: 'no'
           ENABLE_PRIVOXY: 'no'
           LAN_NETWORK: '127.20.0.0/16'
@@ -151,7 +151,7 @@
     - name: Initialize opvn 
       block:
         - name: Create opvn folder
-          shell: mkdir /opt/appdata/{{pgrole}}/openvpn && touch mkdir /opt/appdata/{{pgrole}}/openvpn/OPVN\ files\ go\ here && chown -R {{puid}}:{{pgid}} /opt/appdata/{{pgrole}}/openvpn
+          shell: mkdir /opt/appdata/{{pgrole}}/openvpn && touch mkdir /opt/appdata/{{pgrole}}/openvpn/OVPN\ files\ go\ here && chown -R {{puid}}:{{pgid}} /opt/appdata/{{pgrole}}/openvpn
       when: not ovpncheck.stat.exists
 
 
