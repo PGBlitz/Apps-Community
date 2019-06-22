@@ -19,7 +19,6 @@
         extport2: '6144'
         intport3: '1443/tcp'
         extport3: '1443'
-		
         image: 'linuxserver/domoticz:stable'
 
     # CORE (MANDATORY) ############################################################
@@ -47,7 +46,7 @@
           PUID: '1000'
           PGID: '1000'
           TZ: '${TZ}'
-          
+
     # MAIN DEPLOYMENT #############################################################
     - name: 'Deploying {{pgrole}}'
       docker_container:
