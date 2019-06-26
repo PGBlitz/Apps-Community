@@ -21,7 +21,7 @@
     - name: 'Including cron job'
       include_tasks: '/opt/communityapps/apps/_core.yml'
 
-    - name: 'Checking {{pgrole}}'s json existance'
+    - name: 'Checking {{pgrole}} for existing app data'
       stat:
         path: '/opt/communityapps/apps/templates/{{pgrole}}/config.json'
       register: jsoncheck
