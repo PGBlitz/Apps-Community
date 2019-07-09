@@ -9,18 +9,18 @@
 # Generates App List
 ls -la /opt/communityapps/apps/ | sed -e 's/.yml//g' \
 | awk '{print $9}' | \
-sed -i -e "/traefik/d" | \
-sed -i -e "/image*/d" | \
-sed -i -e "/_appsgen.sh/d" | \
-sed -i -e "/_c*/d" | \
-sed -i -e "/_a*/d" | \
-sed -i -e "/_t*/d" | \
-sed -i -e "/templates/d" | \
-sed -i -e "/retry/d" | \
-sed -i "/^test\b/Id" | \
-sed -i -e "/nzbthrottle/d" | \
-sed -i -e "/watchtower/d" | \
-sed -i "/^_templates.yml\b/Id" | \
-sed -i -e "/oauth/d" | \
-sed -i -e "/dockergc/d" | \
-sed -i -e "/pgui/d"
+sed -e "/traefik/d" | \
+sed -e "/image*/d" | \
+sed -e "/_appsgen.sh/d" | \
+sed -e "/_c*/d" | \
+sed -e "/_a*/d" | \
+sed -e "/_t*/d" | \
+sed -e "/templates/d" | \
+sed -e "/retry/d" | \
+sed "/^test\b/Id" | \
+sed -e "/nzbthrottle/d" | \
+sed -e "/watchtower/d" | \
+sed "/^_templates.yml\b/Id" | \
+sed -e "/oauth/d" | \
+sed -e "/dockergc/d" | \
+sed -e "/pgui/d"
