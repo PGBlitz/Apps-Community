@@ -8,19 +8,19 @@
 
 # Generates App List
 ls -la /opt/communityapps/apps/ | sed -e 's/.yml//g' \
-| awk '{print $9}' \
-sed -i -e "/traefik/d" /var/plexguide/app.list \
-sed -i -e "/image*/d" /var/plexguide/app.list \
-sed -i -e "/_appsgen.sh/d" /var/plexguide/app.list \
-sed -i -e "/_c*/d" /var/plexguide/app.list \
-sed -i -e "/_a*/d" /var/plexguide/app.list \
-sed -i -e "/_t*/d" /var/plexguide/app.list \
-sed -i -e "/templates/d" /var/plexguide/app.list \
-sed -i -e "/retry/d" /var/plexguide/app.list \
-sed -i "/^test\b/Id" /var/plexguide/app.list \
-sed -i -e "/nzbthrottle/d" /var/plexguide/app.list \
-sed -i -e "/watchtower/d" /var/plexguide/app.list \
-sed -i "/^_templates.yml\b/Id" /var/plexguide/app.list \
-sed -i -e "/oauth/d" /var/plexguide/app.list \
-sed -i -e "/dockergc/d" /var/plexguide/app.list \
-sed -i -e "/pgui/d" /var/plexguide/app.list
+| awk '{print $9}' | \
+sed -i -e "/traefik/d" | \
+sed -i -e "/image*/d" | \
+sed -i -e "/_appsgen.sh/d" | \
+sed -i -e "/_c*/d" | \
+sed -i -e "/_a*/d" | \
+sed -i -e "/_t*/d" | \
+sed -i -e "/templates/d" | \
+sed -i -e "/retry/d" | \
+sed -i "/^test\b/Id" | \
+sed -i -e "/nzbthrottle/d" | \
+sed -i -e "/watchtower/d" | \
+sed -i "/^_templates.yml\b/Id" | \
+sed -i -e "/oauth/d" | \
+sed -i -e "/dockergc/d" | \
+sed -i -e "/pgui/d"
