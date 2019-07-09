@@ -8,7 +8,7 @@
 
 # Generates App List
 ls -la /opt/communityapps/apps/ | sed -e 's/.yml//g' \
-| awk '{print $9}' | \
+| awk '{print $9}' | tail -n +4 \
 sed -e "/traefik/d" | \
 sed -e "/image*/d" | \
 sed -e "/_appsgen.sh/d" | \
