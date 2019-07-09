@@ -8,7 +8,7 @@
 
 # Generates App List
 ls -la /opt/communityapps/apps/ | sed -e 's/.yml//g' \
-| awk '{print $9}' | tail -n +4 \
+| awk '{print $9}' | \
 sed -e "/traefik/d" | \
 sed -e "/image*/d" | \
 sed -e "/_appsgen.sh/d" | \
@@ -23,4 +23,5 @@ sed -e "/watchtower/d" | \
 sed "/^_templates.yml\b/Id" | \
 sed -e "/oauth/d" | \
 sed -e "/dockergc/d" | \
-sed -e "/pgui/d"
+sed -e "/pgui/d" | \
+tail -n +4 
