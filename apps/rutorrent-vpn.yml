@@ -45,12 +45,11 @@
     - name: 'Setting PG Volumes'
       set_fact:
         pg_volumes:
-          - '/opt/appdata/{{pgrole}}:/config'
-          - '{{path.stdout}}:{{path.stdout}}'
-          - '/mnt/unionfs:/unionfs'
-          - '/mnt/downloads/{{pgrole}}:/output/complete'
-          - '/mnt/incomplete/{{pgrole}}:/output/incomplete'
           - '/etc/localtime:/etc/localtime:ro'
+          - '{{path.stdout}}:{{path.stdout}}'
+          - '/mnt:/mnt'
+          - '/opt/appdata/{{pgrole}}:/config'
+          - '/opt/appdata/{{pgrole}}/sock:/run/php'
 
     - name: 'Setting PG ENV'
       set_fact:
