@@ -138,9 +138,9 @@
       set_fact:
         pg_volumes:
           - '/etc/localtime:/etc/localtime:ro'
-          - '/opt/appdata/{{pgrole}}:/config'
           - '{{path.stdout}}:{{path.stdout}}'
           - '/mnt:/mnt'
+          - '/opt/appdata/{{pgrole}}:/config'
           - '/tmp:/tmp'
           - '/opt/appdata/{{pgrole}}/cont-init.d:/etc/cont-init.d'
           - '/opt/appdata/{{pgrole}}/services.d:/etc/services.d/nzbget'

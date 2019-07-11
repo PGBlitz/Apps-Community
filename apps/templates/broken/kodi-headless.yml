@@ -37,9 +37,10 @@
     - name: 'Setting PG Volumes'
       set_fact:
         pg_volumes:
-          - '/opt/appdata/{{pgrole}}/config:/config/.kodi:rw'
-          - '/mnt:/mnt:rw'
           - '/etc/localtime:/etc/localtime:ro'
+          - '{{path.stdout}}:{{path.stdout}}'
+          - '/mnt:/mnt'
+          - '/opt/appdata/{{pgrole}}/config:/config/.kodi:rw'
 
     - name: 'Setting PG ENV'
       set_fact:
