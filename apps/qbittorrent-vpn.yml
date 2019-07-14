@@ -1,0 +1,356 @@
+#!/bin/bash
+#
+# Title:      qBittorrent (with OpenVPN and Privoxy)
+# Author(s):  Mike Tzou (Chocobo1),  Vladimir Golovnev (glassez), Diego Heras (ngosang), binhex
+# URL:        https://www.qbittorrent.org/ - https://github.com/binhex/arch-qbittorrentvpn
+# GNU:        General Public License v2.0 (w/ exception)
+################################################################################
+---
+- hosts: localhost
+  gather_facts: false
+  tasks:
+    # FACTS #######################################################################
+
+    - name: 'Set Known Facts'
+      set_fact:
+        pgrole: 'qbittorrent'
+        intport: '8998'
+        extport: '8998'
+        intport1: '8118'
+        extport1: '8118'
+        intport2: '6881'
+        extport2: '6881'
+        dnsserver1: '1.1.1.1'
+        dnsserver2: '84.200.69.80'
+        dnsserver3: '37.235.1.174'
+        dnsserver4: '185.121.177.177'
+        puid: '1000'
+        pgid: '1000'
+        image: 'binhex/arch-qbittorrentvpn:latest'
+
+    # CORE (MANDATORY) #############################################################
+    - name: 'Including cron job'
+      include_tasks: '/opt/coreapps/apps/_core.yml'
+
+    - name: 'Including folders'
+      include_tasks: '/opt/coreapps/apps/_downloaders.yml'
+
+    - name: 'Including plugins'
+      include_tasks: '/opt/coreapps/apps/_plugins.yml'
+
+    # LABELS ######################################################################
+    - name: 'Adding Traefik'
+      set_fact:
+        pg_labels:
+          traefik.frontend.auth.forward.address: '{{gauth}}'
+          traefik.enable: 'true'
+          traefik.port: '{{intport}}'
+          traefik.frontend.rule: 'Host:{{pgrole}}.{{domain.stdout}},{{tldset}}'
+
+    - name: 'Setting PG Volumes'
+      set_fact:
+        pg_volumes:
+          - '/etc/localtime:/etc/localtime:ro'
+          - '{{path.stdout}}:{{path.stdout}}'
+          - '/mnt:/mnt'
+          - '/opt/appdata/{{pgrole}}:/config'
+
+    - name: 'Setting PG ENV'
+      set_fact:
+        pg_env:
+          PUID: '{{puid}}'
+          PGID: '{{pgid}}'
+          UMASK: '000'
+          VPN_ENABLED: 'no'
+          VPN_USER: 'username'
+          VPN_PASS: 'password'
+          VPN_PROV: 'custom'
+          VPN_OPTIONS: ''
+          STRICT_PORT_FORWARD: 'no'
+          ENABLE_PRIVOXY: 'no'
+          LAN_NETWORK: '127.20.0.0/16'
+          NAME_SERVERS: '{{dnsserver1}},{{dnsserver2}},{{dnsserver3}},{{dnsserver4}}'
+          DEBUG: 'false'
+          WEBUI_PORT: '{{intport}}'
+          
+
+
+
+    # MAIN DEPLOYMENT #############################################################
+    - name: 'Checking for existing app data'
+      stat:
+        path: '/opt/appdata/{{pgrole}}/qBittorrent/config/qBittorrent.conf'
+      register: confcheck
+
+    - name: 'Deploying {{pgrole}}'
+      docker_container:
+        name: '{{pgrole}}'
+        image: '{{image}}'
+        pull: yes
+        published_ports:
+          - '{{ports.stdout}}{{extport}}:{{intport}}'
+          - '{{ports.stdout}}{{extport1}}:{{intport1}}'
+          - '{{ports.stdout}}{{extport2}}:{{intport2}}'
+        volumes: '{{pg_volumes}}'
+        env: '{{pg_env}}'
+        restart_policy: unless-stopped
+        devices:
+          - '/dev/net/tun:/dev/net/tun:rwm'
+        dns_servers:
+          - '{{dnsserver1}}'
+          - '{{dnsserver2}}'
+          - '{{dnsserver3}}'
+          - '{{dnsserver4}}'
+        capabilities:
+          - NET_ADMIN
+        networks:
+          - name: plexguide
+            aliases:
+              - '{{pgrole}}'
+        state: started
+        labels: '{{pg_labels}}'
+
+    # CONFIGURATION ####################################################
+    - name: 'Waiting for {{pgrole}} to initialize'
+      wait_for:
+        path: '/opt/appdata/{{pgrole}}/qBittorrent/config/qBittorrent.conf'
+        state: present
+        timeout: 15
+        delay: 5
+
+    - name: 'Stopping {{pgrole}}'
+      docker_container:
+        name: '{{pgrole}}'
+        state: stopped
+
+    - name: Set SavePath
+      ini_file:
+        path: '/opt/appdata/{{pgrole}}/qBittorrent/config/qBittorrent.conf'
+        section: Preferences
+        option: Downloads\SavePath
+        value: '{{path.stdout}}/downloads/{{pgrole}}'
+        state: present
+
+
+    - name: Set TempPathEnabled
+      ini_file:
+        path: '/opt/appdata/{{pgrole}}/qBittorrent/config/qBittorrent.conf'
+        section: Preferences
+        option: Downloads\TempPathEnabled
+        value: True
+        state: present
+
+    - name: Get latest blocklist
+      shell: curl -L http://john.bitsurge.net/public/biglist.p2p.gz | gzip -cdf > /opt/appdata/{{pgrole}}/qBittorrent/config/biglist.p2p
+    
+    - name: 'Checking for existing openvpn folder'
+      stat:
+        path: '/opt/appdata/{{pgrole}}/openvpn'
+      register: ovpncheck
+
+    - name: Initialize opvn 
+      block:
+        - name: Create opvn folder
+          shell: mkdir /opt/appdata/{{pgrole}}/openvpn && touch mkdir /opt/appdata/{{pgrole}}/openvpn/OVPN\ files\ go\ here && chown -R {{puid}}:{{pgid}} /opt/appdata/{{pgrole}}/openvpn
+      when: not ovpncheck.stat.exists
+
+
+    # FIRST TIME CONFIGURATION ####################################################
+    - name: 'Configuring {{pgrole}} for first time use'
+      block:
+        - name: Enable AutoRun
+          ini_file:
+            path: '/opt/appdata/{{pgrole}}/qBittorrent/config/qBittorrent.conf'
+            section: AutoRun
+            option: enabled
+            value: True
+            state: present
+
+        - name: Enable Auto UnRar
+          ini_file:
+            path: '/opt/appdata/{{pgrole}}/qBittorrent/config/qBittorrent.conf'
+            section: AutoRun
+            option: program
+            value: '/usr/bin/unrar x -r \"%F/.\" \"%F/\"'
+            state: present
+
+        - name: Disable DHT
+          ini_file:
+            path: '/opt/appdata/{{pgrole}}/qBittorrent/config/qBittorrent.conf'
+            section: Preferences
+            option: Bittorrent\DHT
+            value: false
+            state: present
+
+        - name: Disable PeX
+          ini_file:
+            path: '/opt/appdata/{{pgrole}}/qBittorrent/config/qBittorrent.conf'
+            section: Preferences
+            option: Bittorrent\PeX
+            value: false
+            state: present
+
+        - name: Disable LSD
+          ini_file:
+            path: '/opt/appdata/{{pgrole}}/qBittorrent/config/qBittorrent.conf'
+            section: Preferences
+            option: Bittorrent\LSD
+            value: false
+            state: present
+
+        - name: Enable Encryption
+          ini_file:
+            path: '/opt/appdata/{{pgrole}}/qBittorrent/config/qBittorrent.conf'
+            section: Preferences
+            option: Bittorrent\Encryption
+            value: 1
+            state: present
+
+        - name: Don't use incomplete extension
+          ini_file:
+            path: '/opt/appdata/{{pgrole}}/qBittorrent/config/qBittorrent.conf'
+            section: Preferences
+            option: Downloads\UseIncompleteExtension
+            value: false
+            state: present
+        - name: Ignore slow torrents
+          ini_file:
+            path: '/opt/appdata/{{pgrole}}/qBittorrent/config/qBittorrent.conf'
+            section: Preferences
+            option: Queueing\IgnoreSlowTorrents
+            value: True
+            state: present
+        - name: Set MaxActiveDownloads
+          ini_file:
+            path: '/opt/appdata/{{pgrole}}/qBittorrent/config/qBittorrent.conf'
+            section: Preferences
+            option: Queueing\MaxActiveDownloads
+            value: 10
+            state: present
+        - name: Set MaxActiveTorrents
+          ini_file:
+            path: '/opt/appdata/{{pgrole}}/qBittorrent/config/qBittorrent.conf'
+            section: Preferences
+            option: Queueing\MaxActiveTorrents
+            value: 100
+            state: present
+        - name: Set MaxActiveUploads
+          ini_file:
+            path: '/opt/appdata/{{pgrole}}/qBittorrent/config/qBittorrent.conf'
+            section: Preferences
+            option: Queueing\MaxActiveUploads
+            value: 100
+            state: present
+        - name: Set GlobalMaxSeedingMinutes
+          ini_file:
+            path: '/opt/appdata/{{pgrole}}/qBittorrent/config/qBittorrent.conf'
+            section: BitTorrent
+            option: Session\GlobalMaxSeedingMinutes
+            value: 20160
+            state: present
+        - name: Set MaxRatio
+          ini_file:
+            path: '/opt/appdata/{{pgrole}}/qBittorrent/config/qBittorrent.conf'
+            section: Preferences
+            option: Bittorrent\MaxRatio
+            value: 1
+            state: present
+        - name: pause on MaxRatioAction
+          ini_file:
+            path: '/opt/appdata/{{pgrole}}/qBittorrent/config/qBittorrent.conf'
+            section: Preferences
+            option: Bittorrent\MaxRatioAction
+            value: 1
+            state: present
+        - name: Disable csrf
+          ini_file:
+            path: '/opt/appdata/{{pgrole}}/qBittorrent/config/qBittorrent.conf'
+            section: Preferences
+            option: WebUI\CSRFProtection
+            value: false
+            force: yes
+            state: present
+        - name: Disable HostHeaderValidation
+          ini_file:
+            path: '/opt/appdata/{{pgrole}}/qBittorrent/config/qBittorrent.conf'
+            section: Preferences
+            option: WebUI\HostHeaderValidation
+            value: false
+            force: yes
+            state: present
+        - name: Disable ClickjackingProtection
+          ini_file:
+            path: '/opt/appdata/{{pgrole}}/qBittorrent/config/qBittorrent.conf'
+            section: Preferences
+            option: WebUI\ClickjackingProtection
+            value: false
+            force: yes
+            state: present
+            
+        - name: Set ServerDomains
+          ini_file:
+            path: '/opt/appdata/{{pgrole}}/qBittorrent/config/qBittorrent.conf'
+            section: Preferences
+            option: WebUI\ServerDomains
+            value: '*'
+            force: yes
+            state: present
+        - name: Set Address
+          ini_file:
+            path: '/opt/appdata/{{pgrole}}/qBittorrent/config/qBittorrent.conf'
+            section: Preferences
+            option: WebUI\Address
+            value: '*'
+            force: yes
+            state: present
+
+        - name: Set Port
+          ini_file:
+            path: '/opt/appdata/{{pgrole}}/qBittorrent/config/qBittorrent.conf'
+            section: Preferences
+            option: Connection\PortRangeMin
+            value: '{{intport2}}'
+            force: yes
+            state: present
+
+        - name: Set torrent Watch folder
+          ini_file:
+            path: '/opt/appdata/{{pgrole}}/qBittorrent/config/qBittorrent.conf'
+            section: Preferences
+            option: Downloads\ScanDirsV2
+            value: '@Variant(\0\0\0\x1c\0\0\0\x1\0\0\0$\0/\0m\0n\0t\0/\0t\0o\0r\0r\0\x65\0n\0t\0/\0w\0\x61\0t\0\x63\0h\0\0\0\x2\0\0\0\0)'
+            force: yes
+            state: present
+
+        - name: Set Blocklist enabled
+          ini_file:
+            path: '/opt/appdata/{{pgrole}}/qBittorrent/config/qBittorrent.conf'
+            section: Preferences
+            option: IPFilter\Enabled
+            value: 'true'
+            force: yes
+            state: present
+
+        - name: Set Blocklist location
+          ini_file:
+            path: '/opt/appdata/{{pgrole}}/qBittorrent/config/qBittorrent.conf'
+            section: Preferences
+            option: IPFilter\File
+            value: '/config/qBittorrent/config/biglist.p2p'
+            force: yes
+            state: present
+        
+        - name: Set default login
+          ini_file:
+            path: '/opt/appdata/{{pgrole}}/qBittorrent/config/qBittorrent.conf'
+            section: Preferences
+            option: WebUI\Password_ha1
+            value: '@ByteArray(22f616dbc8cdb4aa96105b1c8f36ea63)'
+            force: yes
+            state: present
+            
+      when: not confcheck.stat.exists
+    - name: Restart {{pgrole}}
+      docker_container:
+        name: '{{pgrole}}'
+        state: started

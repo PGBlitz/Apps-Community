@@ -15,7 +15,7 @@
         pgrole: 'deezloaderremix'
         intport: '1730'
         extport: '1730'
-        image: 'zachawii/deezloaderremix'
+        image: 'bocki/deezloaderrmx'
 
     # CORE (MANDATORY) ############################################################
     - name: 'Always have a backup plan'

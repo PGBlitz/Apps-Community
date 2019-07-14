@@ -1,9 +1,9 @@
 #!/bin/bash
 #
-# Title:      PGBlitz (Reference Title File)
-# Author(s):  Admin9705
+# Title:      PGBlitz (jlesage/mediainfo)
+# Author(s):  MrDoob
 # URL:        https://pgblitz.com - http://github.pgblitz.com
-# GNU:        General Public License v3.0
+# GNU:        General Public License v3.0 
 ################################################################################
 ---
 - hosts: localhost
@@ -12,30 +12,16 @@
     # FACTS #######################################################################
     - name: 'Set Known Facts'
       set_fact:
-        pgrole: 'nzbthrottle'
-        intport: '0'
-        extport: '0'
-        image: 'daghaian/nzbthrottle'
+        pgrole: 'mediainfo'
+        intport: '5800'
+        extport: '5806'
+        intport2: '5900'
+        extport2: '5907'
+        image: 'jlesage/mediainfo:latest'
 
     # CORE (MANDATORY) ############################################################
     - name: 'Including cron job'
       include_tasks: '/opt/communityapps/apps/_core.yml'
-
-    - name: 'Checking {{pgrole}}'s json existance'
-      stat:
-        path: '/opt/communityapps/apps/templates/{{pgrole}}/config.json'
-      register: jsoncheck
-
-    - name: 'Copying file for {{pgrole}}'
-      copy:
-        src: '/opt/communityapps/apps/templates/{{pgrole}}/config.json'
-        dest: '/opt/appdata/{{pgrole}}/{{pgrole}}/config.json'
-        directory_mode: yes
-        force: yes
-        owner: '1000'
-        group: '1000'
-        mode: 0755
-      when: not jsoncheck.stat.exists
 
     # LABELS ######################################################################
     - name: 'Adding Traefik'
@@ -44,21 +30,23 @@
           traefik.frontend.auth.forward.address: '{{gauth}}'
           traefik.enable: 'true'
           traefik.port: '{{intport}}'
-
           traefik.frontend.rule: 'Host:{{pgrole}}.{{domain.stdout}},{{tldset}}'
 
     - name: 'Setting PG Volumes'
       set_fact:
         pg_volumes:
+          - '/opt/appdata/{{pgrole}}:/config'
+          - '{{path.stdout}}:{{path.stdout}}'
+          - '/mnt/unionfs:/unionfs:rw'
+          - '/mnt:/mnt:rw'
           - '/etc/localtime:/etc/localtime:ro'
-          - '/opt/appdata/{{pgrole}}/config.json:/{{pgrole}}/config.json:ro'
 
     - name: 'Setting PG ENV'
       set_fact:
         pg_env:
           PUID: '1000'
           PGID: '1000'
-
+          
     # MAIN DEPLOYMENT #############################################################
     - name: 'Deploying {{pgrole}}'
       docker_container:
@@ -67,6 +55,7 @@
         pull: yes
         published_ports:
           - '{{ports.stdout}}{{extport}}:{{intport}}'
+          - '{{ports.stdout}}{{extport2}}:{{intport2}}'
         volumes: '{{pg_volumes}}'
         env: '{{pg_env}}'
         restart_policy: unless-stopped

@@ -1,7 +1,7 @@
 #!/bin/bash
 #
-# Title:      PGBlitz (Reference Title File)
-# Author(s):  Admin9705
+# Title:      Ombi4k (Reference Title File)
+# Author(s):  Admin9705; timekills mod
 # URL:        https://pgblitz.com - http://github.pgblitz.com
 # GNU:        General Public License v3.0
 ################################################################################
@@ -9,35 +9,50 @@
 - hosts: localhost
   gather_facts: false
   tasks:
-    # CORE (MANDATORY) DO NOT CHANGE ###########################################
+    # FACTS #######################################################################
 
     - name: 'Set Known Facts'
       set_fact:
-        pgrole: 'sonarrhdr'
-        intport: '8989'
-        extport: '8987'
-        image: 'linuxserver/sonarr:preview'
+        pgrole: 'ombi4k'
+        intport: '3579'
+        extport: '3580'
+        image: 'linuxserver/ombi'
 
     # CORE (MANDATORY) ############################################################
     - name: 'Including cron job'
-      include_tasks: '/opt/communityapps/apps/_core.yml'
+      include_tasks: '/opt/coreapps/apps/_core.yml'
 
-    # LABELS #### KEEPS BOTTOM CLEAN ###########################################
+    # PRETASKS ####################################################################
+    - name: Check JSON exists
+      stat:
+        path: '/opt/appdata/{{pgrole}}/appsettings.json'
+      register: jsonfile
+
+    - name: 'Download {{pgrole}} appsettings.json config file'
+      get_url:
+        url: https://raw.githubusercontent.com/tidusjar/Ombi/master/src/Ombi/appsettings.json
+        dest: /opt/appdata/{{pgrole}}/appsettings.json
+        owner: '1000'
+        group: '1000'
+        force: no
+      ignore_errors: True
+      when: jsonfile.stat.exists == False
+
+    # LABELS ######################################################################
     - name: 'Adding Traefik'
       set_fact:
         pg_labels:
-          traefik.frontend.auth.forward.address: '{{gauth}}'
           traefik.enable: 'true'
           traefik.port: '{{intport}}'
+          traefik.frontend.auth.forward.address: '{{gauth}}'
           traefik.frontend.rule: 'Host:{{pgrole}}.{{domain.stdout}},{{tldset}}'
 
     - name: 'Setting PG Volumes'
       set_fact:
         pg_volumes:
           - '/etc/localtime:/etc/localtime:ro'
-          - '{{path.stdout}}:{{path.stdout}}'
-          - '/mnt:/mnt'
           - '/opt/appdata/{{pgrole}}:/config'
+          - '/opt/appdata/{{pgrole}}/appsettings.json:/opt/{{pgrole}}/appsettings.json'
 
     - name: 'Setting PG ENV'
       set_fact:
@@ -45,7 +60,7 @@
           PUID: '1000'
           PGID: '1000'
 
-    # MAIN SCRIPT ##############################################################
+    # MAIN DEPLOYMENT #############################################################
 
     - name: 'Deploying {{pgrole}}'
       docker_container:

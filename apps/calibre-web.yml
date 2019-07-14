@@ -1,7 +1,7 @@
 #!/bin/bash
 #
-# Title:      PGBlitz (Reference Title File)
-# Author(s):  Admin9705
+# Title:      PGBlitz (calibre-web)
+# Author(s):  Sejrup
 # URL:        https://pgblitz.com - http://github.pgblitz.com
 # GNU:        General Public License v3.0
 ################################################################################
@@ -9,44 +9,45 @@
 - hosts: localhost
   gather_facts: false
   tasks:
-    # CORE (MANDATORY) DO NOT CHANGE ###########################################
-
+    # FACTS #######################################################################
     - name: 'Set Known Facts'
       set_fact:
-        pgrole: 'sonarrhdr'
-        intport: '8989'
-        extport: '8987'
-        image: 'linuxserver/sonarr:preview'
+        pgrole: 'calibre-web'
+        intport: '8083'
+        extport: '8083'
+        image: 'technosoft2000/calibre-web'
 
     # CORE (MANDATORY) ############################################################
     - name: 'Including cron job'
-      include_tasks: '/opt/communityapps/apps/_core.yml'
+      include_tasks: '/opt/coreapps/apps/_core.yml'
 
-    # LABELS #### KEEPS BOTTOM CLEAN ###########################################
+    # LABELS ######################################################################
     - name: 'Adding Traefik'
       set_fact:
         pg_labels:
-          traefik.frontend.auth.forward.address: '{{gauth}}'
+        pg_labels:
           traefik.enable: 'true'
           traefik.port: '{{intport}}'
+          traefik.frontend.auth.forward.address: '{{gauth}}'
           traefik.frontend.rule: 'Host:{{pgrole}}.{{domain.stdout}},{{tldset}}'
-
+          
     - name: 'Setting PG Volumes'
       set_fact:
         pg_volumes:
+          - '/opt/appdata/{{pgrole}}:/books'
+          - '/opt/appdata/{{pgrole}}/config:/calibre-web/config'
           - '/etc/localtime:/etc/localtime:ro'
-          - '{{path.stdout}}:{{path.stdout}}'
-          - '/mnt:/mnt'
-          - '/opt/appdata/{{pgrole}}:/config'
 
     - name: 'Setting PG ENV'
       set_fact:
         pg_env:
+          USE_CONFIG_DIR: 'true'
+          SET_CONTAINER_TIMEZONE: 'true'
+          CONTAINER_TIMEZONE: 'Europe/Copenhagen'
           PUID: '1000'
           PGID: '1000'
-
-    # MAIN SCRIPT ##############################################################
-
+          
+    # MAIN DEPLOYMENT #############################################################
     - name: 'Deploying {{pgrole}}'
       docker_container:
         name: '{{pgrole}}'
@@ -56,7 +57,7 @@
           - '{{ports.stdout}}{{extport}}:{{intport}}'
         volumes: '{{pg_volumes}}'
         env: '{{pg_env}}'
-        restart_policy: unless-stopped
+        restart_policy: always
         networks:
           - name: plexguide
             aliases:

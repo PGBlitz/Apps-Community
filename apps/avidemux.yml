@@ -1,8 +1,8 @@
 #!/bin/bash
 #
-# Title:      PGBlitz (Reference Title File)
-# Author(s):  Admin9705
-# URL:        https://pgblitz.com - http://github.pgblitz.com
+# Title:      avidemux
+# Author(s):  timekills
+# URL:        https://plexguide.com - http://github.plexguide.com
 # GNU:        General Public License v3.0
 ################################################################################
 ---
@@ -13,14 +13,33 @@
 
     - name: 'Set Known Facts'
       set_fact:
-        pgrole: 'sonarrhdr'
-        intport: '8989'
-        extport: '8987'
-        image: 'linuxserver/sonarr:preview'
+        pgrole: 'avidemux'
+        intport: '5800'
+        extport: '5806'
+#        intport2: '25565'
+#        extport2: '25565'
+        image: 'jlesage/avidemux'
 
-    # CORE (MANDATORY) ############################################################
     - name: 'Including cron job'
       include_tasks: '/opt/communityapps/apps/_core.yml'
+
+    # EXTRA FUNCTIONS REQUIRED BY THE ROLE #####################################
+
+    - name: 'Create scripts directory for {{pgrole}}'
+      file:
+        path: /opt/appdata/{{pgrole}}/scripts
+        state: directory
+        owner: 1000
+        group: 1000
+        mode: 0755
+
+    - name: 'Create plugins directory for {{pgrole}}'
+      file:
+        path: /opt/appdata/{{pgrole}}/plugins
+        state: directory
+        owner: 1000
+        group: 1000
+        mode: 0755
 
     # LABELS #### KEEPS BOTTOM CLEAN ###########################################
     - name: 'Adding Traefik'
@@ -34,16 +53,20 @@
     - name: 'Setting PG Volumes'
       set_fact:
         pg_volumes:
-          - '/etc/localtime:/etc/localtime:ro'
+          - '/opt/appdata/{{pgrole}}:/config:rw'
           - '{{path.stdout}}:{{path.stdout}}'
           - '/mnt:/mnt'
-          - '/opt/appdata/{{pgrole}}:/config'
+          - '/etc/localtime:/etc/localtime:ro'
 
     - name: 'Setting PG ENV'
       set_fact:
         pg_env:
-          PUID: '1000'
-          PGID: '1000'
+          PUID: 1000
+          PGID: 1000
+          # Default width is 1280  If you comment out the next line it will use 1280.
+          DISPLAY_WIDTH: 1600
+          # Default height is 768. If you comment out the next line it will use 768.
+          DISPLAY_HEIGHT: 960
 
     # MAIN SCRIPT ##############################################################
 

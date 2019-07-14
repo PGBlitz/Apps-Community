@@ -12,7 +12,7 @@
     # FACTS #######################################################################
     - name: 'Set Known Facts'
       set_fact:
-        pgrole: 'transmission'
+        pgrole: 'transmission-vpn'
         pgrole2: 'transmission-rss'
         intport: '9091'
         extport: '9091'
@@ -48,9 +48,9 @@
       set_fact:
         pg_volumes:
           - '/etc/localtime:/etc/localtime:ro'
-          - '/opt/appdata/{{pgrole}}:/config'
           - '{{path.stdout}}:{{path.stdout}}'
           - '/mnt:/mnt'
+          - '/opt/appdata/{{pgrole}}:/config'
 
     - name: 'Setting {{pgrole2}} Volumes'
       set_fact:
@@ -63,7 +63,7 @@
           PUID: '1000'
           PGID: '1000'
           OPENVPN_PROVIDER: 'see available configs at https://git.io/fpCSF'
-          OPENVPN_CONFIG: 'see available configs at https://git.io/fpCSF'
+          OPENVPN_CONFIG: 'default'
           OPENVPN_USERNAME: 'vpnuser'
           OPENVPN_PASSWORD: 'vpnpass'
           OPENVPN_OPTS: '--inactive 3600 --ping 10 --ping-exit 60'
@@ -103,6 +103,11 @@
         restart_policy: unless-stopped
         devices:
           - '/dev/net/tun:/dev/net/tun:rwm'
+        dns_servers:
+          - 1.1.1.1
+          - 84.200.69.80
+          - 45.33.97.5
+          - 208.67.222.222
         capabilities:
           - NET_ADMIN
         networks:

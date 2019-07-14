@@ -63,7 +63,7 @@
         force: yes
         owner: 1000
         group: 1000
-        mode: 0755
+        mode: 0775
 
     - name: 'Copy custom install scripts into directory for {{pgrole}}'
       copy:
@@ -73,7 +73,7 @@
         force: yes
         owner: 1000
         group: 1000
-        mode: 0755
+        mode: 0775
 
     - name: 'Copy custom mp4 config into directory for {{pgrole}}'
       copy:
@@ -83,7 +83,7 @@
         force: yes
         owner: 1000
         group: 1000
-        mode: 0755
+        mode: 0775
 
     - name: 'Copy custom NZBGetPostProcess script config into directory for {{pgrole}}'
       copy:
@@ -93,7 +93,7 @@
         force: yes
         owner: 1000
         group: 1000
-        mode: 0755
+        mode: 0775
 
     - name: 'Copy ffmpeg build script into directory for {{pgrole}}'
       copy:
@@ -103,7 +103,7 @@
         force: yes
         owner: 1000
         group: 1000
-        mode: 0755
+        mode: 0775
 
     - name: 'Copy ffmpeg build script into directory for {{pgrole}}'
       copy:
@@ -113,7 +113,7 @@
         force: yes
         owner: 1000
         group: 1000
-        mode: 0755
+        mode: 0775
 
     - name: 'Copy custom init scripts into directory for {{pgrole}}'
       copy:
@@ -123,7 +123,7 @@
         force: yes
         owner: 1000
         group: 1000
-        mode: 0755
+        mode: 0775
 
     # LABELS ######################################################################
     - name: 'Adding Traefik'
@@ -138,9 +138,9 @@
       set_fact:
         pg_volumes:
           - '/etc/localtime:/etc/localtime:ro'
-          - '/opt/appdata/{{pgrole}}:/config'
           - '{{path.stdout}}:{{path.stdout}}'
           - '/mnt:/mnt'
+          - '/opt/appdata/{{pgrole}}:/config'
           - '/tmp:/tmp'
           - '/opt/appdata/{{pgrole}}/cont-init.d:/etc/cont-init.d'
           - '/opt/appdata/{{pgrole}}/services.d:/etc/services.d/nzbget'

@@ -1,27 +1,47 @@
 #!/bin/bash
 #
-# Title:      PGBlitz (Reference Title File)
-# Author(s):  Admin9705
-# URL:        https://pgblitz.com - http://github.pgblitz.com
+# Title:      firefox
+# Author(s):  timekills
+# URL:        https://plexguide.com - http://github.plexguide.com
 # GNU:        General Public License v3.0
 ################################################################################
 ---
 - hosts: localhost
   gather_facts: false
   tasks:
-    # FACTS #######################################################################
+    # CORE (MANDATORY) DO NOT CHANGE ###########################################
+
     - name: 'Set Known Facts'
       set_fact:
-        pgrole: 'organizr'
-        intport: '80'
-        extport: '8040'
-        image: 'organizrtools/organizr-v2'
+        pgrole: 'firefox'
+        intport: '5800'
+        extport: '5810'
+#        intport2: '25565'
+#        extport2: '25565'
+        image: 'jlesage/firefox'
 
-    # CORE (MANDATORY) ############################################################
     - name: 'Including cron job'
       include_tasks: '/opt/communityapps/apps/_core.yml'
 
-    # LABELS ######################################################################
+    # EXTRA FUNCTIONS REQUIRED BY THE ROLE #####################################
+
+    - name: 'Create scripts directory for {{pgrole}}'
+      file:
+        path: /opt/appdata/{{pgrole}}/scripts
+        state: directory
+        owner: 1000
+        group: 1000
+        mode: 0755
+
+    - name: 'Create plugins directory for {{pgrole}}'
+      file:
+        path: /opt/appdata/{{pgrole}}/plugins
+        state: directory
+        owner: 1000
+        group: 1000
+        mode: 0755
+
+    # LABELS #### KEEPS BOTTOM CLEAN ###########################################
     - name: 'Adding Traefik'
       set_fact:
         pg_labels:
@@ -38,21 +58,27 @@
           traefik.frontend.headers.contentTypeNosniff: 'true'
           traefik.frontend.headers.customResponseHeaders: 'X-Robots-Tag:noindex,nofollow,nosnippet,noarchive,notranslate,noimageindex'
           traefik.frontend.headers.forceSTSHeader: 'true'
-          traefik.frontend.headers.frameDeny: 'true'
+          #traefik.frontend.headers.frameDeny: 'true'
 
     - name: 'Setting PG Volumes'
       set_fact:
         pg_volumes:
-          - '/opt/appdata/{{pgrole}}:/config'
+          - '/opt/appdata/{{pgrole}}:/config:rw'
+          - '{{path.stdout}}:{{path.stdout}}'
+          - '/mnt:/mnt'
           - '/etc/localtime:/etc/localtime:ro'
+          - '/dev/shm:/dev/shm:rw'
 
     - name: 'Setting PG ENV'
       set_fact:
         pg_env:
-          PUID: '1000'
-          PGID: '1000'
+          PUID: 1000
+          PGID: 1000
+          DISPLAY_WIDTH: 1600
+          DISPLAY_HEIGHT: 960
 
-    # MAIN DEPLOYMENT #############################################################
+    # MAIN SCRIPT ##############################################################
+
     - name: 'Deploying {{pgrole}}'
       docker_container:
         name: '{{pgrole}}'

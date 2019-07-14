@@ -1,8 +1,8 @@
 #!/bin/bash
 #
-# Title:      PGBlitz (Reference Title File)
-# Author(s):  Admin9705
-# URL:        https://pgblitz.com - http://github.pgblitz.com
+# Title:      Dozzle
+# Author(s):  Amir Raminfar (amir20)
+# URL:        https://dozzle.dev/ - https://github.com/amir20/dozzle
 # GNU:        General Public License v3.0
 ################################################################################
 ---
@@ -13,12 +13,11 @@
 
     - name: 'Set Known Facts'
       set_fact:
-        pgrole: 'sonarrhdr'
-        intport: '8989'
-        extport: '8987'
-        image: 'linuxserver/sonarr:preview'
+        pgrole: 'dozzle'
+        intport: '8080'
+        extport: '8383'
+        image: 'amir20/dozzle'
 
-    # CORE (MANDATORY) ############################################################
     - name: 'Including cron job'
       include_tasks: '/opt/communityapps/apps/_core.yml'
 
@@ -34,16 +33,16 @@
     - name: 'Setting PG Volumes'
       set_fact:
         pg_volumes:
+          - '/var/run/docker.sock:/var/run/docker.sock'
           - '/etc/localtime:/etc/localtime:ro'
-          - '{{path.stdout}}:{{path.stdout}}'
-          - '/mnt:/mnt'
-          - '/opt/appdata/{{pgrole}}:/config'
 
     - name: 'Setting PG ENV'
       set_fact:
         pg_env:
-          PUID: '1000'
-          PGID: '1000'
+          DOZZLE_ADDR: ':8080'
+          DOZZLE_BASE: '/'
+          DOZZLE_LEVEL: 'info'
+          DOZZLE_TAILSIZE: '300'
 
     # MAIN SCRIPT ##############################################################
 

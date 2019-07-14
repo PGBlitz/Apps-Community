@@ -1,7 +1,7 @@
 #!/bin/bash
 #
-# Title:      PGBlitz (Reference Title File)
-# Author(s):  Admin9705
+# Title:      PGBlitz (rclone browser)
+# Author(s):  MrDoob
 # URL:        https://pgblitz.com - http://github.pgblitz.com
 # GNU:        General Public License v3.0
 ################################################################################
@@ -9,20 +9,21 @@
 - hosts: localhost
   gather_facts: false
   tasks:
-    # CORE (MANDATORY) DO NOT CHANGE ###########################################
-
+    # FACTS #######################################################################
     - name: 'Set Known Facts'
       set_fact:
-        pgrole: 'sonarrhdr'
-        intport: '8989'
-        extport: '8987'
-        image: 'linuxserver/sonarr:preview'
+        pgrole: 'rclonebrowser'
+        intport: '5800'
+        extport: '5808'
+        intport2: '5900'
+        extport2: '5909'
+        image: 'romancin/rclonebrowser:latest'
 
     # CORE (MANDATORY) ############################################################
     - name: 'Including cron job'
       include_tasks: '/opt/communityapps/apps/_core.yml'
 
-    # LABELS #### KEEPS BOTTOM CLEAN ###########################################
+    # LABELS ######################################################################
     - name: 'Adding Traefik'
       set_fact:
         pg_labels:
@@ -34,19 +35,20 @@
     - name: 'Setting PG Volumes'
       set_fact:
         pg_volumes:
-          - '/etc/localtime:/etc/localtime:ro'
-          - '{{path.stdout}}:{{path.stdout}}'
-          - '/mnt:/mnt'
           - '/opt/appdata/{{pgrole}}:/config'
+          - '{{path.stdout}}:{{path.stdout}}'
+          - '/mnt/unionfs:/unionfs:rw'
+          - '/mnt:/mnt:rw'
+          - '/opt/appdata/plexguide:/host_rcloneconf_folder:ro'
+          - '/etc/localtime:/etc/localtime:ro'
 
     - name: 'Setting PG ENV'
       set_fact:
         pg_env:
           PUID: '1000'
           PGID: '1000'
-
-    # MAIN SCRIPT ##############################################################
-
+         
+    # MAIN DEPLOYMENT #############################################################
     - name: 'Deploying {{pgrole}}'
       docker_container:
         name: '{{pgrole}}'

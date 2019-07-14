@@ -1,34 +1,45 @@
 #!/bin/bash
 #
-# Title:      PGBlitz (Reference Title File)
-# Author(s):  Admin9705
-# URL:        https://pgblitz.com - http://github.pgblitz.com
+# Title:      rTorrent + FloodUI integrated OpenVPN
+# Author(s):  h1f0x
+# URL:        https://github.com/h1f0x/rtorrent-flood-openvpn
 # GNU:        General Public License v3.0
 ################################################################################
 ---
 - hosts: localhost
   gather_facts: false
   tasks:
-    # CORE (MANDATORY) DO NOT CHANGE ###########################################
+    # FACTS #######################################################################
 
     - name: 'Set Known Facts'
       set_fact:
-        pgrole: 'sonarrhdr'
-        intport: '8989'
-        extport: '8987'
-        image: 'linuxserver/sonarr:preview'
+        pgrole: 'rflood'
+        intport: '80'
+        extport: '5896'
+        image: 'h1f0x/rtorrent-flood-openvpn'
 
     # CORE (MANDATORY) ############################################################
     - name: 'Including cron job'
       include_tasks: '/opt/communityapps/apps/_core.yml'
 
-    # LABELS #### KEEPS BOTTOM CLEAN ###########################################
+    - name: 'Including plugins'
+      include_tasks: '/opt/communityapps/apps/_plugins.yml'
+
+    - name: 'Including folders'
+      include_tasks: '/opt/communityapps/apps/_downloaders.yml'
+
+    - name: 'Ini Check'
+      stat:
+        path: /opt/appdata/{{pgrole}}/core.conf
+      register: inicheck
+
+    # LABELS ######################################################################
     - name: 'Adding Traefik'
       set_fact:
         pg_labels:
-          traefik.frontend.auth.forward.address: '{{gauth}}'
           traefik.enable: 'true'
           traefik.port: '{{intport}}'
+          traefik.frontend.auth.forward.address: '{{gauth}}'
           traefik.frontend.rule: 'Host:{{pgrole}}.{{domain.stdout}},{{tldset}}'
 
     - name: 'Setting PG Volumes'
@@ -42,11 +53,10 @@
     - name: 'Setting PG ENV'
       set_fact:
         pg_env:
-          PUID: '1000'
-          PGID: '1000'
+          UID: 1000
+          GID: 1000
 
-    # MAIN SCRIPT ##############################################################
-
+    # MAIN DEPLOYMENT #############################################################
     - name: 'Deploying {{pgrole}}'
       docker_container:
         name: '{{pgrole}}'
@@ -61,5 +71,6 @@
           - name: plexguide
             aliases:
               - '{{pgrole}}'
+        privileged: yes
         state: started
         labels: '{{pg_labels}}'

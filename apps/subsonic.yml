@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Title:      PGBlitz (linuxserver/airsonic)
+# Title:      PGBlitz (danisla/subsonic)
 # Author(s):  MrDoob
 # URL:        https://pgblitz.com - http://github.pgblitz.com
 # GNU:        General Public License v3.0 
@@ -12,10 +12,10 @@
     # FACTS #######################################################################
     - name: 'Set Known Facts'
       set_fact:
-        pgrole: 'airsonic'
+        pgrole: 'subsonic'
         intport: '4040'
-        extport: '4040'       
-        image: 'linuxserver/airsonic'
+        extport: '4040'
+        image: 'danisla/subsonic'
 
     # CORE (MANDATORY) ############################################################
     - name: 'Including cron job'
@@ -33,19 +33,17 @@
     - name: 'Setting PG Volumes'
       set_fact:
         pg_volumes:
-          - '/etc/localtime:/etc/localtime:ro'
-          - '/opt/appdata/{{pgrole}}:/airsonic/data'
-          - '/opt/appdata/{{pgrole}}/playlists:/airsonic/playlists'
-          - '/opt/appdata/{{pgrole}}/podcasts:/airsonic/podcasts'
+          - '/opt/appdata/{{pgrole}}/state:/opt/app/state:rw'
           - '{{path.stdout}}:{{path.stdout}}'
-          - '/mnt:/mnt'
+          - '/mnt/unionfs:/mnt/music:ro'
+          - '/etc/localtime:/etc/localtime:ro'
 
     - name: 'Setting PG ENV'
       set_fact:
         pg_env:
           PUID: '1000'
           PGID: '1000'
-          
+
     # MAIN DEPLOYMENT #############################################################
     - name: 'Deploying {{pgrole}}'
       docker_container:
