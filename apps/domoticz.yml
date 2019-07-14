@@ -45,7 +45,6 @@
         pg_env:
           PUID: '1000'
           PGID: '1000'
-          TZ: '${TZ}'
 
     # MAIN DEPLOYMENT #############################################################
     - name: 'Deploying {{pgrole}}'
