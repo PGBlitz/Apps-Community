@@ -1,9 +1,9 @@
 #!/bin/bash
 #
-# Title:      PlexGuide (Reference Title File)
-# Author(s):  Admin9705
-# URL:        https://plexguide.com - http://github.plexguide.com
-# GNU:        General Public License v3.0
+# Title:      PGBlitz (linuxserver/airsonic)
+# Author(s):  MrDoob
+# URL:        https://pgblitz.com - http://github.pgblitz.com
+# GNU:        General Public License v3.0 
 ################################################################################
 ---
 - hosts: localhost
@@ -14,8 +14,8 @@
       set_fact:
         pgrole: 'airsonic'
         intport: '4040'
-        extport: '4040'
-        image: 'airsonic/airsonic'
+        extport: '4040'       
+        image: 'linuxserver/airsonic'
 
     # CORE (MANDATORY) ############################################################
     - name: 'Including cron job'
@@ -25,9 +25,9 @@
     - name: 'Adding Traefik'
       set_fact:
         pg_labels:
+          traefik.frontend.auth.forward.address: '{{gauth}}'
           traefik.enable: 'true'
           traefik.port: '{{intport}}'
-          traefik.frontend.auth.forward.address: '{{gauth}}'
           traefik.frontend.rule: 'Host:{{pgrole}}.{{domain.stdout}},{{tldset}}'
 
     - name: 'Setting PG Volumes'
@@ -45,7 +45,7 @@
         pg_env:
           PUID: '1000'
           PGID: '1000'
-
+          
     # MAIN DEPLOYMENT #############################################################
     - name: 'Deploying {{pgrole}}'
       docker_container:

@@ -18,14 +18,14 @@
         intport2: '10001/udp'
         extport2: '10001'
         intport3: '8080/tcp'
-        extport3: '8080'
+        extport3: '8088'
         intport4: '8081/tcp'
         extport4: '8081'
         intport5: '8443/tcp'
         extport5: '8443'
         intport6: '8880/tcp'
         extport6: '8880'
-        image: 'linuxserver/unifi:latest'
+        image: 'linuxserver/unifi-controller:latest'
 
     # CORE (MANDATORY) ############################################################
     - name: 'Including cron job'
@@ -63,7 +63,6 @@
         pg_env:
           PUID: '1000'
           PGID: '1000'
-          TZ: '${TZ}'
           
     # MAIN DEPLOYMENT #############################################################
     - name: 'Deploying {{pgrole}}'
@@ -72,12 +71,12 @@
         image: '{{image}}'
         pull: yes
         published_ports:
-          - '{{ports.stdout}}{{extport}}:{{intport}}'
-          - '{{ports.stdout}}{{extport2}}:{{intport2}}'
-          - '{{ports.stdout}}{{extport3}}:{{intport3}}'
-          - '{{ports.stdout}}{{extport4}}:{{intport4}}'
-          - '{{ports.stdout}}{{extport5}}:{{intport5}}'
-          - '{{ports.stdout}}{{extport6}}:{{intport6}}'                   
+          - '{{extport}}:{{intport}}'
+          - '{{extport2}}:{{intport2}}'
+          - '{{extport3}}:{{intport3}}'
+          - '{{extport4}}:{{intport4}}'
+          - '{{extport5}}:{{intport5}}'
+          - '{{extport6}}:{{intport6}}'
         volumes: '{{pg_volumes}}'
         env: '{{pg_env}}'
         restart_policy: always

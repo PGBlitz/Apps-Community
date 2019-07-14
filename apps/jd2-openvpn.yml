@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Title:      Jdownloader2 for PlexGuide (OAuth security) with OpenVPN integration
+# Title:      Jdownloader2 for PGBlitz (OAuth security) with OpenVPN integration
 # Author(s):  timekills (mod. h1f0x)
 # URL:        https://hub.docker.com/r/h1f0x/jd2-openvpn
 # GNU:        General Public License v3.0
@@ -49,12 +49,11 @@
     - name: 'Setting PG Volumes'
       set_fact:
         pg_volumes:
-          - '/opt/appdata/{{pgrole}}:/config'
-          - '{{path.stdout}}:{{path.stdout}}'
-          - '/mnt/unionfs:/unionfs'
-          - '/mnt:/mnt'
-          - '{{path.stdout}}/downloads/{{pgrole}}/:/output:rw'
           - '/etc/localtime:/etc/localtime:ro'
+          - '{{path.stdout}}:{{path.stdout}}'
+          - '/mnt:/mnt'
+          - '/opt/appdata/{{pgrole}}:/config'
+          - '{{path.stdout}}/downloads/{{pgrole}}/:/output:rw'
           - '/opt/appdata/{{pgrole}}/vpn:/vpn:rw'
 
     - name: 'Setting PG ENV'
@@ -62,6 +61,8 @@
         pg_env:
           UID: '1000'
           GID: '1000'
+          DISPLAY_WIDTH: '1600'
+          DISPLAY_HEIGHT: '960'
 
     # MAIN DEPLOYMENT #############################################################
     - name: 'Deploying {{pgrole}}'

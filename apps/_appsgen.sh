@@ -1,14 +1,14 @@
 #!/bin/bash
 #
-# Title:      PlexGuide (Reference Title File)
+# Title:      PGBlitz (Reference Title File)
 # Author(s):  Admin9705
-# URL:        https://plexguide.com - http://github.plexguide.com
+# URL:        https://pgblitz.com - http://github.pgblitz.com
 # GNU:        General Public License v3.0
 ################################################################################
 
 # Generates App List
-ls -la /opt/coreapps/apps/ | sed -e 's/.yml//g' \
-| awk '{print $9}' | tail -n +4  > /var/plexguide/app.list
+ls -la /opt/communityapps/apps/ | sed -e 's/.yml//g' \
+| awk '{print $9}' | tail -n +4  >> /var/plexguide/app.list
 
 ls -la /opt/mycontainers/ | sed -e 's/.yml//g' \
 | awk '{print $9}' | tail -n +4  >> /var/plexguide/app.list
