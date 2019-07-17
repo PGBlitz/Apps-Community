@@ -26,17 +26,6 @@
         path: '/opt/communityapps/apps/templates/{{pgrole}}/config.json'
       register: jsoncheck
 
-    - name: 'Copying file for {{pgrole}}'
-      copy:
-        src: '/opt/communityapps/apps/templates/{{pgrole}}/config.json'
-        dest: '/opt/appdata/{{pgrole}}/{{pgrole}}/config.json'
-        directory_mode: yes
-        force: yes
-        owner: '1000'
-        group: '1000'
-        mode: 0775
-      when: not jsoncheck.stat.exists
-
     # LABELS ######################################################################
     - name: 'Adding Traefik'
       set_fact:
@@ -51,7 +40,7 @@
       set_fact:
         pg_volumes:
           - '/etc/localtime:/etc/localtime:ro'
-          - '/opt/appdata/{{pgrole}}/config.json:/{{pgrole}}/config.json:ro'
+          - '/opt/appdata/{{pgrole}}:/{{pgrole}}'
 
     - name: 'Setting PG ENV'
       set_fact:
