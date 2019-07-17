@@ -50,13 +50,13 @@
         pg_env:
           USER_ID: '1000'
           GROUP_ID: '1000'
-          AUTOMATED_CONVERSION_PRESET: "Very Fast 1080p30"
-          AUTOMATED_CONVERSION_FORMAT: "mp4"
-          AUTOMATED_CONVERSION_PRESET_2: "HQ 1080p30 Surround"
-          AUTOMATED_CONVERSION_FORMAT_2: "mp4"
-          AUTOMATED_CONVERSION_PRESET_3: "H.264 MKV 1080p30"
-          AUTOMATED_CONVERSION_FORMAT_3: "mkv"
-#          SECURE_CONNECTION: 1
+          AUTOMATED_CONVERSION_PRESET: 'Very Fast 1080p30'
+          AUTOMATED_CONVERSION_FORMAT: 'mp4'
+          AUTOMATED_CONVERSION_PRESET_2: 'HQ 1080p30 Surround'
+          AUTOMATED_CONVERSION_FORMAT_2: 'mp4'
+          AUTOMATED_CONVERSION_PRESET_3: 'H.264 MKV 1080p30'
+          AUTOMATED_CONVERSION_FORMAT_3: 'mkv'
+    #          SECURE_CONNECTION: 1
 
     # MAIN DEPLOYMENT #############################################################
     - name: 'Create watch directory for {{pgrole}}'

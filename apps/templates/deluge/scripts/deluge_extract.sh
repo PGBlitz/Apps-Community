@@ -11,8 +11,7 @@ torrentid=$1
 torrentname=$2
 torrentpath=$3
 
-log()
-{
+log() {
     logger -t deluge-extractarchives "$@"
 }
 
@@ -24,11 +23,11 @@ for format in "${formats[@]}"; do
         cd "$(dirname "$file")"
         file=$(basename "$file")
         # if extraction_subdir is not empty, extract to subdirectory
-        if [[ ! -z "$extraction_subdir" ]] ; then
+        if [[ ! -z "$extraction_subdir" ]]; then
             mkdir "$extraction_subdir"
             cd "$extraction_subdir"
             file="../$file"
         fi
         ${commands[$format]} "$file"
-    done < <(find "$torrentpath/$torrentname" -iname "*.${format}" )
+    done < <(find "$torrentpath/$torrentname" -iname "*.${format}")
 done

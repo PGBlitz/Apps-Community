@@ -18,8 +18,8 @@ reverse_list = [r"\.\d{2}e\d{2}s\.", r"\.p0612\.", r"\.[pi]0801\.", r"\.p027\.",
 reverse_pattern = re.compile('|'.join(reverse_list), flags=re.IGNORECASE)
 season_pattern = re.compile(r"(.*\.\d{2}e\d{2}s\.)(.*)", flags=re.IGNORECASE)
 word_pattern = re.compile(r"([^A-Z0-9]*[A-Z0-9]+)")
-char_replace = [[r"(\w)1\.(\w)",r"\1i\2"]
-]
+char_replace = [[r"(\w)1\.(\w)", r"\1i\2"]
+                ]
 garbage_name = re.compile(r"^[a-zA-Z0-9]{2,}$")
 media_list = [r"\.s\d{2}e\d{2}\.", r"\.2160p\.", r"\.1080[pi]\.", r"\.720p\.", r"\.576[pi]\.", r"\.480[pi]\.", r"\.360p\.", r"\.[xh]26[45]\b", r"\.bluray\.", r"\.[hp]dtv\.",
               r'\.web(?:[.-]?dl)?\.', r"\.(vhs|vod|dvd|web|bd|br).?rip\.", r"\.dvdr\b", r"\.stv\.", r"\.screener\.", r"\.vcd\.", r"\bhd(cam|rip)\b", r"\.proper\.", r"\.repack\.",
@@ -133,12 +133,14 @@ class ek:
     def ek(func, *args, **kwargs):
         if 'nt' == os.name:
             # convert all str parameter values to unicode
-            args = tuple([x if not isinstance(x, str) else ek.win_encode_unicode(x) for x in args])
+            args = tuple([x if not isinstance(x, str)
+                          else ek.win_encode_unicode(x) for x in args])
             kwargs = {k: x if not isinstance(x, str) else ek.win_encode_unicode(x) for k, x in
                       kwargs.iteritems()}
             func_result = func(*args, **kwargs)
         else:
-            func_result = func(*[ek.encode_item(x) if type(x) == str else x for x in args], **kwargs)
+            func_result = func(
+                *[ek.encode_item(x) if type(x) == str else x for x in args], **kwargs)
 
         if type(func_result) in (list, tuple):
             return ek.fix_list_encoding(func_result)
@@ -164,6 +166,7 @@ def tryInt(s, s_default=0):
     except:
         return s_default
 
+
 # NZBGet V11+
 # Check if the script is called from nzbget 11.0 or later
 nzbget_version = evn.get('NZBOP_VERSION', '0.1')
@@ -174,16 +177,17 @@ if nzbget_version >= 11:
     # NZBGet argv: all passed as environment variables.
     clientAgent = "nzbget"
     # Exit codes used by NZBGet
-    POSTPROCESS_PARCHECK=92
-    POSTPROCESS_SUCCESS=93
-    POSTPROCESS_ERROR=94
-    POSTPROCESS_NONE=95
+    POSTPROCESS_PARCHECK = 92
+    POSTPROCESS_SUCCESS = 93
+    POSTPROCESS_ERROR = 94
+    POSTPROCESS_NONE = 95
 
     # Check nzbget.conf options
     status = 0
 
     if evn['NZBOP_UNPACK'] != 'yes':
-        logger.log("Please enable option \"Unpack\" in nzbget configuration file, exiting")
+        logger.log(
+            "Please enable option \"Unpack\" in nzbget configuration file, exiting")
         sys.exit(POSTPROCESS_NONE)
 
     parstatus = evn['NZBPP_PARSTATUS']
@@ -216,20 +220,24 @@ if nzbget_version >= 11:
                 fileExtension = ek.ek(os.path.splitext, file)[1]
 
                 if fileExtension in ['.par2']:
-                    logger.log("Post-Process: Unpack skipped and par-check skipped (although par2-files exist), setting status \"failed\"g")
+                    logger.log(
+                        "Post-Process: Unpack skipped and par-check skipped (although par2-files exist), setting status \"failed\"g")
                     status = 1
                     break
 
         if ek.ek(os.path.isfile, ek.ek(os.path.join, directory, "_brokenlog.txt")) and not status == 1:
-            logger.log("Post-Process: _brokenlog.txt exists, download is probably damaged, exiting")
+            logger.log(
+                "Post-Process: _brokenlog.txt exists, download is probably damaged, exiting")
             status = 1
 
         if not status == 1:
-            logger.log("Neither par2-files found, _brokenlog.txt doesn't exist, considering download successful")
+            logger.log(
+                "Neither par2-files found, _brokenlog.txt doesn't exist, considering download successful")
 
     # Check if destination directory exists (important for reprocessing of history items)
     if not ek.ek(os.path.isdir, directory):
-        logger.log("Post-Process: Nothing to post-process: destination directory %s doesn't exist" % directory)
+        logger.log(
+            "Post-Process: Nothing to post-process: destination directory %s doesn't exist" % directory)
         status = 1
 
     # All checks done, now launching the script.
@@ -254,33 +262,39 @@ if nzbget_version >= 11:
                     for wp in word_p:
                         if wp[0] == ".":
                             new_words += "."
-                        new_words += re.sub(r"\W","",wp)
+                        new_words += re.sub(r"\W", "", wp)
                     for cr in char_replace:
-                        new_words = re.sub(cr[0],cr[1],new_words)
+                        new_words = re.sub(cr[0], cr[1], new_words)
                     new_filename = new_words[::-1] + na_parts.group(1)[::-1]
                 else:
                     new_filename = fileName[::-1]
-                logger.log("reversing filename from: %s to %s" % (fileName, new_filename))
+                logger.log("reversing filename from: %s to %s" %
+                           (fileName, new_filename))
                 try:
-                    ek.ek(os.rename, filePath, ek.ek(os.path.join, dirpath, new_filename + fileExtension))
+                    ek.ek(os.rename, filePath, ek.ek(os.path.join,
+                                                     dirpath, new_filename + fileExtension))
                     rd = True
-                except Exception,e:
+                except Exception, e:
                     logger.log(e, logger.ERROR)
-                    logger.log("Error: unable to rename file %s" % file, logger.ERROR)
+                    logger.log("Error: unable to rename file %s" %
+                               file, logger.ERROR)
                     pass
             elif (fileExtension.lower() in media_extentions) and (garbage_name.search(fileName) is not None) and (media_pattern.search(base_name) is not None):
                 videos += 1
                 old_name = filePath
-                new_name = ek.ek(os.path.join, dirname, '%s%s' % (base_name, fileExtension))
+                new_name = ek.ek(os.path.join, dirname, '%s%s' %
+                                 (base_name, fileExtension))
 
     if not rd and videos == 1 and old_name is not None and new_name is not None:
-        logger.log("renaming the File %s  to the Dirname %s" % (ek.ek(os.path.basename, old_name), base_name))
+        logger.log("renaming the File %s  to the Dirname %s" %
+                   (ek.ek(os.path.basename, old_name), base_name))
         try:
             ek.ek(os.rename, old_name, new_name)
             rd = True
-        except Exception,e:
+        except Exception, e:
             logger.log(e, logger.ERROR)
-            logger.log("Error unable to rename file %s" % old_name, logger.ERROR)
+            logger.log("Error unable to rename file %s" %
+                       old_name, logger.ERROR)
             pass
 
     if rd:
@@ -289,5 +303,6 @@ if nzbget_version >= 11:
         sys.exit(POSTPROCESS_NONE)
 
 else:
-    logger.log("This script can only be called from NZBGet (11.0 or later).", logger.ERROR)
+    logger.log(
+        "This script can only be called from NZBGet (11.0 or later).", logger.ERROR)
     sys.exit(0)

@@ -33,8 +33,8 @@
       stat:
         path: /opt/appdata/{{pgrole}}/core.conf
       register: confcheck
-      
-     # LABELS ######################################################################
+
+      # LABELS ######################################################################
     - name: 'Adding Traefik'
       set_fact:
         pg_labels:
@@ -57,7 +57,7 @@
         pg_env:
           USER_ID: '1000'
           GROUP_ID: '1000'
-#          SECURE_CONNECTION: 1
+    #          SECURE_CONNECTION: 1
 
     # MAIN DEPLOYMENT #############################################################
 

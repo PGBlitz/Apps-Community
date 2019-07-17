@@ -16,8 +16,8 @@
         pgrole: 'avidemux'
         intport: '5800'
         extport: '5806'
-#        intport2: '25565'
-#        extport2: '25565'
+        #        intport2: '25565'
+        #        extport2: '25565'
         image: 'jlesage/avidemux'
 
     - name: 'Including cron job'

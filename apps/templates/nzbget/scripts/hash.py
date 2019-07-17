@@ -25,21 +25,25 @@ NZBGET_POSTPROCESS_NONE = 95
 # EXTENSION STUFF
 ############################################################
 
+
 def do_check():
     if not os.environ.has_key('NZBOP_SCRIPTDIR'):
         print "This script can only be called from NZBGet (11.0 or later)."
         sys.exit(0)
 
     if os.environ['NZBOP_VERSION'][0:5] < '11.0':
-        print "[ERROR] NZBGet Version %s is not supported. Please update NZBGet." % (str(os.environ['NZBOP_VERSION']))
+        print "[ERROR] NZBGet Version %s is not supported. Please update NZBGet." % (
+            str(os.environ['NZBOP_VERSION']))
         sys.exit(0)
 
-    print "Script triggered from NZBGet Version %s." % (str(os.environ['NZBOP_VERSION']))
+    print "Script triggered from NZBGet Version %s." % (
+        str(os.environ['NZBOP_VERSION']))
 
     status = 0
     if 'NZBPP_TOTALSTATUS' in os.environ:
         if not os.environ['NZBPP_TOTALSTATUS'] == 'SUCCESS':
-            print "[ERROR] Download failed with status %s." % (os.environ['NZBPP_STATUS'])
+            print "[ERROR] Download failed with status %s." % (
+                os.environ['NZBPP_STATUS'])
             status = 1
     else:
         # Check par status
@@ -144,7 +148,8 @@ if not found_files:
     print("[INFO] No files were found in \"%s\"" % directory)
     sys.exit(NZBGET_POSTPROCESS_NONE)
 else:
-    print("[INFO] Found %d files to check for hashed filenames" % len(found_files))
+    print("[INFO] Found %d files to check for hashed filenames" %
+          len(found_files))
     # loop files checking for file hash
     moved_files = 0
     for found_file_path in found_files:
@@ -154,14 +159,18 @@ else:
 
         # is this a file hash
         if is_file_hash(file_name):
-            new_file_path = os.path.join(dir_name, "%s.%s" % (nzb_name, file_ext))
-            print("[INFO] Moving \"%s\" to \"%s\"" % (found_file_path, new_file_path))
+            new_file_path = os.path.join(
+                dir_name, "%s.%s" % (nzb_name, file_ext))
+            print("[INFO] Moving \"%s\" to \"%s\"" %
+                  (found_file_path, new_file_path))
             try:
                 shutil.move(found_file_path, new_file_path)
                 moved_files += 1
             except Exception:
-                print("[ERROR] Failed moving \"%s\" to \"%s\"" % (found_file_path, new_file_path))
+                print("[ERROR] Failed moving \"%s\" to \"%s\"" %
+                      (found_file_path, new_file_path))
 
-    print("[INFO] Finished processing \"%s\", moved %d files" % (directory, moved_files))
+    print("[INFO] Finished processing \"%s\", moved %d files" %
+          (directory, moved_files))
 
 sys.exit(NZBGET_POSTPROCESS_SUCCESS)

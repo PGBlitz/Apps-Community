@@ -3,7 +3,7 @@
 # Title:      PGBlitz (consol/ubuntu-xfce-vnc)
 # Author(s):  MrDoob
 # URL:        https://pgblitz.com - http://github.pgblitz.com
-# GNU:        General Public License v3.0 
+# GNU:        General Public License v3.0
 ################################################################################
 ---
 - hosts: localhost
@@ -44,7 +44,7 @@
         pg_env:
           PUID: '1000'
           PGID: '1000'
-          
+
     # MAIN DEPLOYMENT #############################################################
     - name: 'Deploying {{pgrole}}'
       docker_container:

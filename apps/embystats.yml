@@ -9,23 +9,23 @@
 - hosts: localhost
   gather_facts: false
   tasks:
-# CORE (MANDATORY) DO NOT CHANGE ###########################################
+    # CORE (MANDATORY) DO NOT CHANGE ###########################################
 
     - name: 'Set Known Facts'
       set_fact:
-        pgrole: "embystats"
-        intport: "5432"
-        extport: "9049"
-        image: "uping/embystat:beta-linux"
+        pgrole: 'embystats'
+        intport: '5432'
+        extport: '9049'
+        image: 'uping/embystat:beta-linux'
 
     - name: 'Including cron job'
       include_tasks: '/opt/communityapps/apps/_core.yml'
 
-# EXTRA FUNCTIONS REQUIRED BY THE ROLE #####################################
+    # EXTRA FUNCTIONS REQUIRED BY THE ROLE #####################################
 
-##### NOTHING REQUIRED
+    ##### NOTHING REQUIRED
 
-# LABELS #### KEEPS BOTTOM CLEAN ###########################################
+    # LABELS #### KEEPS BOTTOM CLEAN ###########################################
     - name: 'Adding Traefik'
       set_fact:
         pg_labels:

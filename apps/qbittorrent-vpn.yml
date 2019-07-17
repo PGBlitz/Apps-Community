@@ -72,9 +72,6 @@
           NAME_SERVERS: '{{dnsserver1}},{{dnsserver2}},{{dnsserver3}},{{dnsserver4}}'
           DEBUG: 'false'
           WEBUI_PORT: '{{intport}}'
-          
-
-
 
     # MAIN DEPLOYMENT #############################################################
     - name: 'Checking for existing app data'
@@ -131,7 +128,6 @@
         value: '{{path.stdout}}/downloads/{{pgrole}}'
         state: present
 
-
     - name: Set TempPathEnabled
       ini_file:
         path: '/opt/appdata/{{pgrole}}/qBittorrent/config/qBittorrent.conf'
@@ -142,18 +138,17 @@
 
     - name: Get latest blocklist
       shell: curl -L http://john.bitsurge.net/public/biglist.p2p.gz | gzip -cdf > /opt/appdata/{{pgrole}}/qBittorrent/config/biglist.p2p
-    
+
     - name: 'Checking for existing openvpn folder'
       stat:
         path: '/opt/appdata/{{pgrole}}/openvpn'
       register: ovpncheck
 
-    - name: Initialize opvn 
+    - name: Initialize opvn
       block:
         - name: Create opvn folder
           shell: mkdir /opt/appdata/{{pgrole}}/openvpn && touch mkdir /opt/appdata/{{pgrole}}/openvpn/OVPN\ files\ go\ here && chown -R {{puid}}:{{pgid}} /opt/appdata/{{pgrole}}/openvpn
       when: not ovpncheck.stat.exists
-
 
     # FIRST TIME CONFIGURATION ####################################################
     - name: 'Configuring {{pgrole}} for first time use'
@@ -286,7 +281,7 @@
             value: false
             force: yes
             state: present
-            
+
         - name: Set ServerDomains
           ini_file:
             path: '/opt/appdata/{{pgrole}}/qBittorrent/config/qBittorrent.conf'
@@ -339,7 +334,7 @@
             value: '/config/qBittorrent/config/biglist.p2p'
             force: yes
             state: present
-        
+
         - name: Set default login
           ini_file:
             path: '/opt/appdata/{{pgrole}}/qBittorrent/config/qBittorrent.conf'
@@ -348,7 +343,7 @@
             value: '@ByteArray(22f616dbc8cdb4aa96105b1c8f36ea63)'
             force: yes
             state: present
-            
+
       when: not confcheck.stat.exists
     - name: Restart {{pgrole}}
       docker_container:

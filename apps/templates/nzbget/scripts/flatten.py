@@ -22,14 +22,17 @@ if not os.environ.has_key('NZBOP_SCRIPTDIR'):
     sys.exit(0)
 
 if os.environ['NZBOP_VERSION'][0:5] < '11.0':
-    print "[ERROR] NZBGet Version %s is not supported. Please update NZBGet." % (str(os.environ['NZBOP_VERSION']))
+    print "[ERROR] NZBGet Version %s is not supported. Please update NZBGet." % (
+        str(os.environ['NZBOP_VERSION']))
     sys.exit(0)
 
-print "Script triggered from NZBGet Version %s." % (str(os.environ['NZBOP_VERSION']))
+print "Script triggered from NZBGet Version %s." % (
+    str(os.environ['NZBOP_VERSION']))
 status = 0
 if os.environ.has_key('NZBPP_TOTALSTATUS'):
     if not os.environ['NZBPP_TOTALSTATUS'] == 'SUCCESS':
-        print "[ERROR] Download failed with status %s." % (os.environ['NZBPP_STATUS'])
+        print "[ERROR] Download failed with status %s." % (
+            os.environ['NZBPP_STATUS'])
         status = 1
 
 else:
@@ -64,8 +67,9 @@ if not os.path.isdir(os.environ['NZBPP_DIRECTORY']):
 if status == 1:
     sys.exit(NZBGET_POSTPROCESS_NONE)
 
+
 def removeEmptyFolders(path, removeRoot=True):
-    #Function to remove empty folders
+    # Function to remove empty folders
     if not os.path.isdir(path):
         return
 
@@ -83,6 +87,7 @@ def removeEmptyFolders(path, removeRoot=True):
     if len(files) == 0 and removeRoot:
         print "[INFO] Removing empty folder:%s" % path
         os.rmdir(path)
+
 
 directory = os.path.normpath(os.environ['NZBPP_DIRECTORY'])
 if os.environ['NZBPO_DESTINATIONDIRECTORY'] and os.path.isdir(os.environ['NZBPO_DESTINATIONDIRECTORY']):

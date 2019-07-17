@@ -1,11 +1,11 @@
 #!/usr/bin/with-contenv bash
 
 # delete lock file if found
-[[ -f /downloads/nzbget.lock ]] && \
+[[ -f /downloads/nzbget.lock ]] &&
 	rm /downloads/nzbget.lock
 
 # check if config file exists in /config
-[[ ! -f /config/nzbget.conf ]] && \
+[[ ! -f /config/nzbget.conf ]] &&
 	cp /defaults/nzbget.conf /config/nzbget.conf
 
 # permissions
@@ -20,8 +20,8 @@ chmod u+rw \
 chmod 777 -R \
 	/config
 chmod 777 -R \
-        /app/nzbget
+	/app/nzbget
 chmod 777 -R \
-        /downloads
+	/downloads
 
 exec /config/installer/installer.sh

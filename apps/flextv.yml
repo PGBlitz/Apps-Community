@@ -41,7 +41,7 @@
         pg_env:
           PUID: '1000'
           PGID: '1000'
-         
+
     # MAIN DEPLOYMENT #############################################################
     - name: 'Deploying {{pgrole}}'
       docker_container:

@@ -16,8 +16,8 @@
         pgrole: 'firefox'
         intport: '5800'
         extport: '5810'
-#        intport2: '25565'
-#        extport2: '25565'
+        #        intport2: '25565'
+        #        extport2: '25565'
         image: 'jlesage/firefox'
 
     - name: 'Including cron job'

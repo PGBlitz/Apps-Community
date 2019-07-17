@@ -27,12 +27,12 @@
 
     - name: Checking for existing rss folder
       stat:
-        path: "/opt/appdata/{{pgrole}}/rss"
+        path: '/opt/appdata/{{pgrole}}/rss'
       register: rsscheck
 
     - name: Checking for existing rss config
       stat:
-        path: "/opt/appdata/{{pgrole}}/rss/transmission-rss.conf"
+        path: '/opt/appdata/{{pgrole}}/rss/transmission-rss.conf'
       register: cfgcheck
 
     # LABELS ######################################################################
@@ -120,13 +120,13 @@
     - name: 'RSS feed configuration - Folder'
       block:
         - name: 'Creating RSS folder'
-          shell: "mkdir /opt/appdata/{{pgrole}}/rss"
+          shell: 'mkdir /opt/appdata/{{pgrole}}/rss'
       when: not rsscheck.stat.exists
 
     - name: 'RSS feed configuration - Config'
       block:
         - name: 'Creating configuration file'
-          shell: "touch /opt/appdata/{{pgrole}}/rss/transmission-rss.conf && chown -R 1000:1000 /opt/appdata/{{pgrole}}/rss/ && echo see https://git.io/fhAm2 to configure > /opt/appdata/{{pgrole}}/rss/transmission-rss.conf"
+          shell: 'touch /opt/appdata/{{pgrole}}/rss/transmission-rss.conf && chown -R 1000:1000 /opt/appdata/{{pgrole}}/rss/ && echo see https://git.io/fhAm2 to configure > /opt/appdata/{{pgrole}}/rss/transmission-rss.conf'
       when: not cfgcheck.stat.exists
 
     - name: 'Deploying {{pgrole2}}'
@@ -143,7 +143,7 @@
 
     - name: 'Wait for {{pgrole}} to initialize'
       wait_for: timeout=30
-    
+
     - name: 'Stopping {{pgrole}}. Go configure ENV values.'
       docker_container:
         name: '{{pgrole}}'

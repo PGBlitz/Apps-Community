@@ -3,7 +3,7 @@
 # Title:      PGBlitz (rdp-calibre)
 # Author(s):  MrDoob
 # URL:        https://pgblitz.com - http://github.pgblitz.com
-# GNU:        General Public License v3.0 
+# GNU:        General Public License v3.0
 ################################################################################
 ---
 - hosts: localhost
@@ -49,7 +49,7 @@
           PGID: '1000'
           WIDTH: '1280'
           HEIGHT: '720'
-          
+
     # MAIN DEPLOYMENT #############################################################
     - name: 'Deploying {{pgrole}}'
       docker_container:
@@ -58,7 +58,7 @@
         pull: yes
         published_ports:
           - '{{ports.stdout}}{{extport}}:{{intport}}'
-          - '{{ports.stdout}}{{extport2}}:{{intport2}}'		  
+          - '{{ports.stdout}}{{extport2}}:{{intport2}}'
         volumes: '{{pg_volumes}}'
         env: '{{pg_env}}'
         restart_policy: unless-stopped

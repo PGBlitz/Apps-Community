@@ -9,19 +9,19 @@
 - hosts: localhost
   gather_facts: false
   tasks:
-# CORE (MANDATORY) DO NOT CHANGE ###########################################
+    # CORE (MANDATORY) DO NOT CHANGE ###########################################
 
     - name: 'Set Known Facts'
       set_fact:
-        pgrole: "mariadb"
-        intport: "3306"
-        extport: "6603"
-        image: "mariadb:latest"
+        pgrole: 'mariadb'
+        intport: '3306'
+        extport: '6603'
+        image: 'mariadb:latest'
 
     - name: 'Including cron job'
       include_tasks: '/opt/communityapps/apps/_core.yml'
 
-# LABELS ################################################################
+    # LABELS ################################################################
     - name: 'Adding Traefik'
       set_fact:
         pg_labels:

@@ -15,9 +15,9 @@
         pgrole: 'git'
         intport: '3000'
         extport: '9898'
-        intport2: '22'       ##for SSH
+        intport2: '22' ##for SSH
         extport2: '222'
-        
+
         image: 'gitea/gitea'
 
     # CORE (MANDATORY) ############################################################DONE####
@@ -38,22 +38,22 @@
         pg_volumes:
           - '/opt/appdata/{{pgrole}}:/data'
           - '/etc/localtime:/etc/localtime:ro'
-   ###    - '/opt/appdata/git/gitea-db:/data'
+    ###    - '/opt/appdata/git/gitea-db:/data'
 
     - name: 'Setting PG ENV'
       set_fact:
         pg_env:
           PUID: '1000'
           PGID: '1000'
-     #### DB_PASSWORD: gitea
 
+      #### DB_PASSWORD: gitea
     # MAIN DEPLOYMENT #############################################################
     - name: 'Deploying {{pgrole}}'
       docker_container:
         name: '{{pgrole}}'
         image: '{{image}}'
         pull: yes
-     #   links:
+        #   links:
         #  - "dbgitea:idk?"
         published_ports:
           - '{{ports.stdout}}{{extport}}:{{intport}}'
