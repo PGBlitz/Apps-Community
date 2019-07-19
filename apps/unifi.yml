@@ -50,7 +50,6 @@
           traefik.frontend.headers.SSLHost: '{{domain.stdout}}'
           traefik.frontend.headers.STSIncludeSubdomains: 'true'
           traefik.frontend.headers.STSPreload: 'true'
-          traefik.frontend.headers.frameDeny: 'true'
 
     - name: 'Setting PG Volumes'
       set_fact:
