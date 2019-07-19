@@ -16,7 +16,6 @@ NZBGET_POSTPROCESS_SUCCESS = 93
 NZBGET_POSTPROCESS_ERROR = 94
 NZBGET_POSTPROCESS_NONE = 95
 
-
 def is_sample(filePath, inputName, maxSampleSize, SampleIDs):
     # 200 MB in bytes
     SIZE_CUTOFF = int(maxSampleSize) * 1024 * 1024
@@ -30,18 +29,15 @@ def is_sample(filePath, inputName, maxSampleSize, SampleIDs):
     # Return False if none of these were met.
     return False
 
-
 if not os.environ.has_key('NZBOP_SCRIPTDIR'):
     print "This script can only be called from NZBGet (11.0 or later)."
     sys.exit(0)
 
 if os.environ['NZBOP_VERSION'][0:5] < '11.0':
-    print "NZBGet Version %s is not supported. Please update NZBGet." % (
-        str(os.environ['NZBOP_VERSION']))
+    print "NZBGet Version %s is not supported. Please update NZBGet." % (str(os.environ['NZBOP_VERSION']))
     sys.exit(0)
 
-print "Script triggered from NZBGet Version %s." % (
-    str(os.environ['NZBOP_VERSION']))
+print "Script triggered from NZBGet Version %s." % (str(os.environ['NZBOP_VERSION']))
 status = 0
 if os.environ.has_key('NZBPP_TOTALSTATUS'):
     if not os.environ['NZBPP_TOTALSTATUS'] == 'SUCCESS':
@@ -73,8 +69,7 @@ else:
 
 # Check if destination directory exists (important for reprocessing of history items)
 if not os.path.isdir(os.environ['NZBPP_DIRECTORY']):
-    print "Nothing to post-process: destination directory", os.environ[
-        'NZBPP_DIRECTORY'], "doesn't exist. Setting status \"failed\"."
+    print "Nothing to post-process: destination directory", os.environ['NZBPP_DIRECTORY'], "doesn't exist. Setting status \"failed\"."
     status = 1
 
 # All checks done, now launching the script.
@@ -87,9 +82,8 @@ for dirpath, dirnames, filenames in os.walk(os.environ['NZBPP_DIRECTORY']):
     for file in filenames:
         filePath = os.path.join(dirpath, file)
         fileName, fileExtension = os.path.splitext(file)
-        if fileExtension in mediaContainer or ".*" in mediaContainer:  # If the file is a video file
-            # Ignore samples
-            if is_sample(filePath, os.environ['NZBPP_NZBNAME'], os.environ['NZBPO_MAXSAMPLESIZE'], SampleIDs):
+        if fileExtension in mediaContainer or ".*" in mediaContainer :  # If the file is a video file
+            if is_sample(filePath, os.environ['NZBPP_NZBNAME'], os.environ['NZBPO_MAXSAMPLESIZE'], SampleIDs):  # Ignore samples
                 print "Deleting sample file: ", filePath
                 try:
                     os.unlink(filePath)
