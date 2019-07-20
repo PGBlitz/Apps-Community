@@ -31,7 +31,7 @@
           traefik.enable: 'true'
           traefik.https.port: '443'
           traefik.https.frontend.entryPoints: 'https'
-          traefik.https.frontend.rule: 'Host:{{pgrole}}.{{domain.stdout}},{{tldset}}'
+          traefik.https.frontend.rule: 'Host:{{pgrole}}.{{domain.stdout}}{{tldset}}{{cname}}'
 
     - name: 'Setting PG Volumes'
       set_fact:

@@ -39,7 +39,7 @@
           traefik.tags: 'frontend'
           traefik.frontend.passHostHeader: 'true'
           traefik.backend: '{{pgrole}}'
-          traefik.admin.frontend.rule: 'Host:{{pgrole}}.{{domain.stdout}},{{tldset}}'
+          traefik.admin.frontend.rule: 'Host:{{pgrole}}.{{domain.stdout}}{{tldset}}{{cname}}'
           traefik.admin.port: '{{intport5}}'
           traefik.admin.protocol: 'https'
           traefik.frontend.headers.SSLRedirect: 'true'
