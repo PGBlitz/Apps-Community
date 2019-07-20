@@ -61,7 +61,7 @@
 - name: Set cname
   set_fact:
     cname: ",{{ucname.stdout}}.{{domain.stdout}}"
-  when: ucname is succeeded and ucname.stdout != ""
+  when:  ucname_check.stat.exists == true and ucname.stdout != ""
 
 - name: check if user port file exists
   stat: 
@@ -77,7 +77,7 @@
 - name: Change extport
   set_fact:
     extport: "{{ueport.stdout}}"
-    when: ueport is succeeded and ueport.stdout != ""
+    when: ueport_check.stat.exists and ueport.stdout != ""
 
 - name: Remove {{pgrole}} Container
   docker_container:
