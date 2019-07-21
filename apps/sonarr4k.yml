@@ -47,7 +47,8 @@
           - '{{path.stdout}}:{{path.stdout}}'
           - '/mnt:/mnt'
           - '/opt/appdata/{{pgrole}}:/config'
-
+          - '/opt/appdata/{{pgrole}}/mp4_automator:/config_mp4_automator'
+          
     - name: 'Setting PG ENV'
       set_fact:
         pg_env:
