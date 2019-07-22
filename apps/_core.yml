@@ -45,11 +45,11 @@
 
 - name: check if user cname file exists
   stat: 
-    path: /var/plexguide/{{program.stdout}}.cname
+    path: /var/plexguide/{{pgrole}}.cname
   register: ucname_check
 
 - name: Register user cname
-  shell: 'cat /var/plexguide/{{program.stdout}}.cname'
+  shell: 'cat /var/plexguide/{{pgrole}}.cname'
   register: ucname
   ignore_errors: True
   when: ucname_check.stat.exists == true
@@ -65,11 +65,11 @@
 
 - name: check if user port file exists
   stat: 
-    path: /var/plexguide/{{program.stdout}}.port
+    path: /var/plexguide/{{pgrole}}.port
   register: ueport_check
 
 - name: Register External Port
-  shell: 'cat /var/plexguide/{{program.stdout}}.port'
+  shell: 'cat /var/plexguide/{{pgrole}}.port'
   register: ueport
   ignore_errors: True
   when: ueport_check.stat.exists == true
