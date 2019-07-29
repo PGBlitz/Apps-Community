@@ -18,7 +18,7 @@
         intport2: '10001/udp'
         extport2: '10001'
         intport3: '8080/tcp'
-        extport3: '8088'
+        extport3: '8103'
         intport4: '8081/tcp'
         extport4: '8081'
         intport5: '8443/tcp'

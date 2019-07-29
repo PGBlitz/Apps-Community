@@ -15,7 +15,9 @@
       set_fact:
         pgrole: 'qbittorrent'
         intport: '8080'
-        extport: '8080'
+        extport: '8098'
+        intport2: '8118'
+        extport2: '8118'
         dnsserver1: '1.1.1.1'
         dnsserver2: '84.200.69.80'
         dnsserver3: '37.235.1.174'
@@ -91,6 +93,7 @@
         pull: yes
         published_ports:
           - '{{ports.stdout}}{{extport}}:{{intport}}'
+          - '{{ports.stdout}}{{extport2}}:{{intport2}}'
         volumes: '{{pg_volumes}}'
         env: '{{pg_env}}'
         restart_policy: unless-stopped
@@ -122,6 +125,14 @@
       docker_container:
         name: '{{pgrole}}'
         state: stopped
+
+    - name: Set torrent port
+      ini_file:
+        path: '/opt/appdata/{{pgrole}}/qBittorrent/config/qBittorrent.conf'
+        section: Preferences
+        option: Connection\PortRangeMin
+        value: '7889'
+        state: present
 
     - name: Set SavePath
       ini_file:

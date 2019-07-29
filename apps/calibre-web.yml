@@ -14,7 +14,7 @@
       set_fact:
         pgrole: 'calibre-web'
         intport: '8083'
-        extport: '8083'
+        extport: '8104'
         image: 'technosoft2000/calibre-web'
 
     # CORE (MANDATORY) ############################################################
