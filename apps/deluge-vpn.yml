@@ -19,8 +19,12 @@
         extport2: '58846'
         intport3: '58946'
         extport3: '58946'
-        intport4: '8118'
-        extport4: '8118'
+        intport4: '5418'
+        extport4: '5418'
+        intport5: '5419'
+        extport5: '5419'
+        intport6: '8118'
+        extport6: '8118'
         image: 'binhex/arch-delugevpn'
 
     # CORE (MANDATORY) ############################################################
@@ -84,7 +88,9 @@
           - '{{ports.stdout}}{{extport}}:{{intport}}'
           - '{{ports.stdout}}{{extport2}}:{{intport2}}'
           - '{{ports.stdout}}{{extport3}}:{{intport3}}'
-          - '{{ports.stdout}}{{extport4}}:{{intport4}}'
+          - '{{extport4}}:{{intport4}}'
+          - '{{extport5}}:{{intport5}}'
+          - '{{ports.stdout}}{{extport6}}:{{intport6}}'
         volumes: '{{pg_volumes}}'
         env: '{{pg_env}}'
         restart_policy: unless-stopped
@@ -273,6 +279,41 @@
             path: '/opt/appdata/{{pgrole}}/core.conf'
             regexp: '"seed_time_ratio_limit".*'
             line: '"seed_time_ratio_limit": 1.0,'
+            state: present
+
+        - name: set outgoing_ports
+          lineinfile:
+            path: '/opt/appdata/{{pgrole}}/core.conf'
+            regexp: '"outgoing_ports".*'
+            line: '"outgoing_ports": [{{intport5}}, {{intport5}}],'
+            state: present
+
+        - name: set random_port
+          lineinfile:
+            path: '/opt/appdata/{{pgrole}}/core.conf'
+            regexp: '"random_port".*'
+            line: '"random_port": false,'
+            state: present
+
+        - name: set random_outgoing_ports
+          lineinfile:
+            path: '/opt/appdata/{{pgrole}}/core.conf'
+            regexp: '"random_outgoing_ports".*'
+            line: '"random_outgoing_ports": false,'
+            state: present
+
+        - name: set listen_random_port
+          lineinfile:
+            path: '/opt/appdata/{{pgrole}}/core.conf'
+            regexp: '"listen_random_port".*'
+            line: '"listen_random_port": null,'
+            state: present
+
+        - name: set listen_ports
+          lineinfile:
+            path: '/opt/appdata/{{pgrole}}/core.conf'
+            regexp: '"listen_ports".*'
+            line: '"listen_ports": [{{intport4}},{{intport4}}],'
             state: present
       when: not confcheck.stat.exists
 
