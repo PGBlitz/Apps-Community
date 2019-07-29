@@ -14,12 +14,8 @@
     - name: 'Set Known Facts'
       set_fact:
         pgrole: 'qbittorrent'
-        intport: '8998'
-        extport: '8998'
-        intport1: '8118'
-        extport1: '8118'
-        intport2: '6881'
-        extport2: '6881'
+        intport: '8080'
+        extport: '8080'
         dnsserver1: '1.1.1.1'
         dnsserver2: '84.200.69.80'
         dnsserver3: '37.235.1.174'
@@ -95,8 +91,6 @@
         pull: yes
         published_ports:
           - '{{ports.stdout}}{{extport}}:{{intport}}'
-          - '{{ports.stdout}}{{extport1}}:{{intport1}}'
-          - '{{ports.stdout}}{{extport2}}:{{intport2}}'
         volumes: '{{pg_volumes}}'
         env: '{{pg_env}}'
         restart_policy: unless-stopped
