@@ -13,7 +13,7 @@
 
     - name: 'Set Known Facts'
       set_fact:
-        pgrole: 'jd2-openvpn'
+        pgrole: 'jdownloader2-vpn'
         intport: '5800'
         extport: '5802'
         intport2: '5902'

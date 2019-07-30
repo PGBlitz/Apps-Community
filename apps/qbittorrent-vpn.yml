@@ -13,7 +13,7 @@
 
     - name: 'Set Known Facts'
       set_fact:
-        pgrole: 'qbittorrent'
+        pgrole: 'qbittorrent-vpn'
         intport: '8080'
         extport: '8098'
         intport2: '8118'

@@ -12,7 +12,7 @@
     # FACTS #######################################################################
     - name: 'Set Known Facts'
       set_fact:
-        pgrole: 'deluge'
+        pgrole: 'deluge-vpn'
         intport: '8112'
         extport: '8112'
         intport2: '8118'
@@ -161,7 +161,7 @@
       lineinfile:
         path: '/opt/appdata/{{pgrole}}/plugins/extractor.conf'
         regexp: '"extract_path".*'
-        line: '"extract_path": "{{path.stdout}}/downloads/deluge"'
+        line: '"extract_path": "{{path.stdout}}/downloads/{{pgrole}}"'
         state: present
 
     # FIRST TIME CONFIGURATION ####################################################

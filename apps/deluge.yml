@@ -151,7 +151,7 @@
       lineinfile:
         path: '/opt/appdata/{{pgrole}}/plugins/extractor.conf'
         regexp: '"extract_path".*'
-        line: '"extract_path": "{{path.stdout}}/downloads/deluge"'
+        line: '"extract_path": "{{path.stdout}}/downloads/{{pgrole}}"'
         state: present
 
     # FIRST TIME CONFIGURATION ####################################################
