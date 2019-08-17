@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 # Title:      PGBlitz (Reference Title File)
-# Author(s):  Admin9705
+# Authors:    Admin9705, Deiteq, and many PGBlitz Contributors
 # URL:        https://pgblitz.com - http://github.pgblitz.com
 # GNU:        General Public License v3.0
 ################################################################################
@@ -15,10 +15,6 @@
         pgrole: 'deluge'
         intport: '8112'
         extport: '8112'
-        intport2: '58846'
-        extport2: '58846'
-        intport3: '58946'
-        extport3: '58946'
         image: 'linuxserver/deluge'
 
     # CORE (MANDATORY) ############################################################
@@ -43,7 +39,16 @@
           traefik.frontend.auth.forward.address: '{{gauth}}'
           traefik.enable: 'true'
           traefik.port: '{{intport}}'
-          traefik.frontend.rule: 'Host:{{pgrole}}.{{domain.stdout}},{{tldset}}'
+          traefik.frontend.rule: 'Host:{{pgrole}}.{{domain.stdout}}{{tldset}}{{cname}}'
+          traefik.frontend.headers.SSLHost: '{{domain.stdout}}'
+          traefik.frontend.headers.SSLRedirect: 'true'
+          traefik.frontend.headers.STSIncludeSubdomains: 'true'
+          traefik.frontend.headers.STSPreload: 'true'
+          traefik.frontend.headers.STSSeconds: '315360000'
+          traefik.frontend.headers.browserXSSFilter: 'true'
+          traefik.frontend.headers.contentTypeNosniff: 'true'
+          traefik.frontend.headers.customResponseHeaders: 'X-Robots-Tag:noindex,nofollow,nosnippet,noarchive,notranslate,noimageindex'
+          traefik.frontend.headers.forceSTSHeader: 'true'
 
     - name: 'Setting PG Volumes'
       set_fact:
@@ -67,8 +72,6 @@
         pull: yes
         published_ports:
           - '{{ports.stdout}}{{extport}}:{{intport}}'
-          - '{{ports.stdout}}{{extport2}}:{{intport2}}'
-          - '{{extport3}}:{{intport3}}'
         volumes: '{{pg_volumes}}'
         env: '{{pg_env}}'
         restart_policy: unless-stopped
@@ -94,7 +97,7 @@
         path: '/opt/appdata/{{pgrole}}/core.conf'
         state: present
         delay: 5
-        
+
     - name: Setting plugins directory
       lineinfile:
         path: '/opt/appdata/{{pgrole}}/core.conf'
@@ -134,38 +137,37 @@
       lineinfile:
         path: '/opt/appdata/{{pgrole}}/core.conf'
         regexp: '"move_completed".*'
-        line: '"move_completed": True,'
+        line: '"move_completed": true,'
         state: present
 
     - name: Setting extractor folder
       lineinfile:
         path: '/opt/appdata/{{pgrole}}/plugins/extractor.conf'
         regexp: '"use_name_folder".*'
-        line: '"use_name_folder": True,'
+        line: '"use_name_folder": true,'
         state: present
 
     - name: Setting extractor
       lineinfile:
         path: '/opt/appdata/{{pgrole}}/plugins/extractor.conf'
         regexp: '"extract_path".*'
-        line: '"extract_path": "{{path.stdout}}/downloads/deluge"'
+        line: '"extract_path": "{{path.stdout}}/downloads/{{pgrole}}"'
         state: present
 
     # FIRST TIME CONFIGURATION ####################################################
     - name: 'Configuring {{pgrole}} for first time use'
       block:
         - name: set enabled_plugins
-          lineinfile:
-            path: '/opt/appdata/{{pgrole}}/core.conf'
+          replace:
+            dest: '/opt/appdata/{{pgrole}}/core.conf'
             regexp: '"enabled_plugins".*'
-            line: '"enabled_plugins": ["Extractor", "Label"],'
-            state: present
+            replace: '"enabled_plugins": ["Extractor", "Label"],'
 
         - name: set compact_allocation
           lineinfile:
             path: '/opt/appdata/{{pgrole}}/core.conf'
             regexp: '"compact_allocation".*'
-            line: '"compact_allocation": True,'
+            line: '"compact_allocation": true,'
             state: present
 
         - name: set stop_seed_ratio
@@ -186,14 +188,14 @@
           lineinfile:
             path: '/opt/appdata/{{pgrole}}/core.conf'
             regexp: '"remove_seed_at_ratio".*'
-            line: '"remove_seed_at_ratio": True,'
+            line: '"remove_seed_at_ratio": true,'
             state: present
 
         - name: set enc_prefer_rc4
           lineinfile:
             path: '/opt/appdata/{{pgrole}}/core.conf'
             regexp: '"enc_prefer_rc4".*'
-            line: '"enc_prefer_rc4": True,'
+            line: '"enc_prefer_rc4": true,'
             state: present
 
         - name: set enc_level
@@ -228,7 +230,7 @@
           lineinfile:
             path: '/opt/appdata/{{pgrole}}/core.conf'
             regexp: '"dont_count_slow_torrents".*'
-            line: '"dont_count_slow_torrents": True,'
+            line: '"dont_count_slow_torrents": true,'
             state: present
 
         - name: set max_active_seeding

@@ -38,6 +38,47 @@
   register: auth
   ignore_errors: True
 
+- name: Register Program Name
+  shell: 'cat /tmp/program_var'
+  register: program
+  ignore_errors: True
+
+- name: check if user cname file exists
+  stat: 
+    path: /var/plexguide/{{pgrole}}.cname
+  register: ucname_check
+
+- name: Register user cname
+  shell: 'cat /var/plexguide/{{pgrole}}.cname'
+  register: ucname
+  ignore_errors: True
+  when: ucname_check.stat.exists == true
+
+- name: Register CName
+  set_fact:
+    cname: ""
+
+- name: Set cname
+  set_fact:
+    cname: ",{{ucname.stdout}}.{{domain.stdout}}"
+  when:  ucname_check.stat.exists == true and ucname.stdout != ""
+
+- name: check if user port file exists
+  stat: 
+    path: /var/plexguide/{{pgrole}}.port
+  register: ueport_check
+
+- name: Register External Port
+  shell: 'cat /var/plexguide/{{pgrole}}.port'
+  register: ueport
+  ignore_errors: True
+  when: ueport_check.stat.exists == true
+
+- name: Change extport
+  set_fact:
+    extport: "{{ueport.stdout}}"
+  when: ueport_check.stat.exists and ueport.stdout != ""
+
 - name: Remove {{pgrole}} Container
   docker_container:
     name: '{{pgrole}}'
@@ -49,7 +90,6 @@
   ignore_errors: True
 
   # APPDATA
-
 - name: 'Creating appdata folder if it does not exist.'
   shell: 'mkdir -p /opt/appdata/{{pgrole}}'
 
@@ -68,7 +108,6 @@
 - name: 'Setting permissions on appdata recursivley (this can take a while!)'
   shell: 'chmod -R 775 /opt/appdata/{{pgrole}}'
   when: '"plex" not in pgrole'
-
 
 # OVERWRITE IMAGES #############################################################
 - name: Check if Image Variable Exists
@@ -92,7 +131,7 @@
 
 - name: 'If Fact Matches - Enable TLD'
   set_fact:
-    tldset: '{{domain.stdout}}'
+    tldset: ',{{domain.stdout}},www.{{domain.stdout}}'
   when: 'toplevel.stdout == pgrole'
 
 - debug: msg="TLDSET is now for {{toplevel.stdout}}"

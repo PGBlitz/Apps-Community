@@ -18,7 +18,7 @@
         intport2: '10001/udp'
         extport2: '10001'
         intport3: '8080/tcp'
-        extport3: '8088'
+        extport3: '8103'
         intport4: '8081/tcp'
         extport4: '8081'
         intport5: '8443/tcp'
@@ -35,23 +35,22 @@
     - name: 'Adding Traefik'
       set_fact:
         pg_labels:
-           traefik.enable: 'true'
-           traefik.tags: 'frontend'
-           traefik.frontend.passHostHeader: 'true'
-           traefik.backend: '{{pgrole}}'
-           traefik.admin.frontend.rule: 'Host:{{pgrole}}.{{domain.stdout}},{{tldset}}'
-           traefik.admin.port: '{{intport5}}'
-           traefik.admin.protocol: 'https'
-           traefik.frontend.headers.SSLRedirect: 'true'
-           traefik.frontend.headers.STSSeconds: '315360000'
-           traefik.frontend.headers.browserXSSFilter: 'true'
-           traefik.frontend.headers.contentTypeNosniff: 'true'
-           traefik.frontend.headers.forceSTSHeader: 'true'
-           traefik.frontend.headers.SSLHost: '{{domain.stdout}}'
-           traefik.frontend.headers.STSIncludeSubdomains: 'true'
-           traefik.frontend.headers.STSPreload: 'true'
-           traefik.frontend.headers.frameDeny: 'true'     
-              
+          traefik.enable: 'true'
+          traefik.tags: 'frontend'
+          traefik.frontend.passHostHeader: 'true'
+          traefik.backend: '{{pgrole}}'
+          traefik.admin.frontend.rule: 'Host:{{pgrole}}.{{domain.stdout}}{{tldset}}{{cname}}'
+          traefik.admin.port: '{{intport5}}'
+          traefik.admin.protocol: 'https'
+          traefik.frontend.headers.SSLRedirect: 'true'
+          traefik.frontend.headers.STSSeconds: '315360000'
+          traefik.frontend.headers.browserXSSFilter: 'true'
+          traefik.frontend.headers.contentTypeNosniff: 'true'
+          traefik.frontend.headers.forceSTSHeader: 'true'
+          traefik.frontend.headers.SSLHost: '{{domain.stdout}}'
+          traefik.frontend.headers.STSIncludeSubdomains: 'true'
+          traefik.frontend.headers.STSPreload: 'true'
+
     - name: 'Setting PG Volumes'
       set_fact:
         pg_volumes:
@@ -63,8 +62,7 @@
         pg_env:
           PUID: '1000'
           PGID: '1000'
-          TZ: '${TZ}'
-          
+
     # MAIN DEPLOYMENT #############################################################
     - name: 'Deploying {{pgrole}}'
       docker_container:
