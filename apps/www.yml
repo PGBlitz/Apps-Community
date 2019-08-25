@@ -19,8 +19,8 @@
 
     # CORE (MANDATORY) ############################################################
     - name: 'Including cron job'
-      include_tasks: '/opt/plexguide/containers/_core.yml'
-
+      include_tasks: '/opt/communityapps/apps/_core.yml'
+      
     - name: 'Including folders'
       include_tasks: '/opt/plexguide/containers/_downloaders.yml'
 
