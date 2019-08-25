@@ -18,7 +18,7 @@
         image: 'plehr/docker-php-sqlsrv-curl'
 
     # CORE (MANDATORY) ############################################################
-     - name: 'Including cron job'
+    - name: 'Including cron job'
       include_tasks: '/opt/plexguide/containers/_core.yml'
 
     - name: 'Including folders'
