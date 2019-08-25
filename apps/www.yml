@@ -37,7 +37,7 @@
     - name: 'Setting PG Volumes'
       set_fact:
         pg_volumes:
-          - '/mnt/unionfs/Football:/var/www/html'
+          - '/opt/appdata/{{pgrole}}:/var/www/html'
           - '/mnt:/mnt'
           - '/etc/localtime:/etc/localtime:ro'
 
