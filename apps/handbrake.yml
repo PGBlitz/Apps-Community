@@ -29,7 +29,16 @@
           traefik.enable: 'true'
           traefik.port: '{{intport}}'
           traefik.frontend.auth.forward.address: '{{gauth}}'
-          traefik.frontend.rule: 'Host:{{pgrole}}.{{domain.stdout}},{{tldset}}'
+          traefik.frontend.rule: 'Host:{{pgrole}}.{{domain.stdout}}{{tldset}}{{cname}}'
+          traefik.frontend.headers.SSLHost: '{{domain.stdout}}'
+          traefik.frontend.headers.SSLRedirect: 'true'
+          traefik.frontend.headers.STSIncludeSubdomains: 'true'
+          traefik.frontend.headers.STSPreload: 'true'
+          traefik.frontend.headers.STSSeconds: '315360000'
+          traefik.frontend.headers.browserXSSFilter: 'true'
+          traefik.frontend.headers.contentTypeNosniff: 'true'
+          traefik.frontend.headers.customResponseHeaders: 'X-Robots-Tag:noindex,nofollow,nosnippet,noarchive,notranslate,noimageindex'
+          traefik.frontend.headers.forceSTSHeader: 'true'
 
     - name: 'Setting PG Volumes'
       set_fact:
@@ -50,13 +59,13 @@
         pg_env:
           USER_ID: '1000'
           GROUP_ID: '1000'
-          AUTOMATED_CONVERSION_PRESET: "Very Fast 1080p30"
-          AUTOMATED_CONVERSION_FORMAT: "mp4"
-          AUTOMATED_CONVERSION_PRESET_2: "HQ 1080p30 Surround"
-          AUTOMATED_CONVERSION_FORMAT_2: "mp4"
-          AUTOMATED_CONVERSION_PRESET_3: "H.264 MKV 1080p30"
-          AUTOMATED_CONVERSION_FORMAT_3: "mkv"
-#          SECURE_CONNECTION: 1
+          AUTOMATED_CONVERSION_PRESET: 'Very Fast 1080p30'
+          AUTOMATED_CONVERSION_FORMAT: 'mp4'
+          AUTOMATED_CONVERSION_PRESET_2: 'HQ 1080p30 Surround'
+          AUTOMATED_CONVERSION_FORMAT_2: 'mp4'
+          AUTOMATED_CONVERSION_PRESET_3: 'H.264 MKV 1080p30'
+          AUTOMATED_CONVERSION_FORMAT_3: 'mkv'
+    #          SECURE_CONNECTION: 1
 
     # MAIN DEPLOYMENT #############################################################
     - name: 'Create watch directory for {{pgrole}}'

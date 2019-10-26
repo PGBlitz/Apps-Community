@@ -13,13 +13,11 @@
 
     - name: 'Set Known Facts'
       set_fact:
-        pgrole: 'qbittorrent'
-        intport: '8998'
-        extport: '8998'
-        intport1: '8118'
-        extport1: '8118'
-        intport2: '6881'
-        extport2: '6881'
+        pgrole: 'qbittorrent-vpn'
+        intport: '8080'
+        extport: '8098'
+        intport2: '8118'
+        extport2: '8118'
         dnsserver1: '1.1.1.1'
         dnsserver2: '84.200.69.80'
         dnsserver3: '37.235.1.174'
@@ -45,15 +43,24 @@
           traefik.frontend.auth.forward.address: '{{gauth}}'
           traefik.enable: 'true'
           traefik.port: '{{intport}}'
-          traefik.frontend.rule: 'Host:{{pgrole}}.{{domain.stdout}},{{tldset}}'
+          traefik.frontend.rule: 'Host:{{pgrole}}.{{domain.stdout}}{{tldset}}{{cname}}'
+          traefik.frontend.headers.SSLHost: '{{domain.stdout}}'
+          traefik.frontend.headers.SSLRedirect: 'true'
+          traefik.frontend.headers.STSIncludeSubdomains: 'true'
+          traefik.frontend.headers.STSPreload: 'true'
+          traefik.frontend.headers.STSSeconds: '315360000'
+          traefik.frontend.headers.browserXSSFilter: 'true'
+          traefik.frontend.headers.contentTypeNosniff: 'true'
+          traefik.frontend.headers.customResponseHeaders: 'X-Robots-Tag:noindex,nofollow,nosnippet,noarchive,notranslate,noimageindex'
+          traefik.frontend.headers.forceSTSHeader: 'true'
 
     - name: 'Setting PG Volumes'
       set_fact:
         pg_volumes:
           - '/etc/localtime:/etc/localtime:ro'
-          - '/opt/appdata/{{pgrole}}:/config'
           - '{{path.stdout}}:{{path.stdout}}'
           - '/mnt:/mnt'
+          - '/opt/appdata/{{pgrole}}:/config'
 
     - name: 'Setting PG ENV'
       set_fact:
@@ -72,9 +79,6 @@
           NAME_SERVERS: '{{dnsserver1}},{{dnsserver2}},{{dnsserver3}},{{dnsserver4}}'
           DEBUG: 'false'
           WEBUI_PORT: '{{intport}}'
-          
-
-
 
     # MAIN DEPLOYMENT #############################################################
     - name: 'Checking for existing app data'
@@ -89,7 +93,6 @@
         pull: yes
         published_ports:
           - '{{ports.stdout}}{{extport}}:{{intport}}'
-          - '{{ports.stdout}}{{extport1}}:{{intport1}}'
           - '{{ports.stdout}}{{extport2}}:{{intport2}}'
         volumes: '{{pg_volumes}}'
         env: '{{pg_env}}'
@@ -123,6 +126,14 @@
         name: '{{pgrole}}'
         state: stopped
 
+    - name: Set torrent port
+      ini_file:
+        path: '/opt/appdata/{{pgrole}}/qBittorrent/config/qBittorrent.conf'
+        section: Preferences
+        option: Connection\PortRangeMin
+        value: '7889'
+        state: present
+
     - name: Set SavePath
       ini_file:
         path: '/opt/appdata/{{pgrole}}/qBittorrent/config/qBittorrent.conf'
@@ -130,7 +141,6 @@
         option: Downloads\SavePath
         value: '{{path.stdout}}/downloads/{{pgrole}}'
         state: present
-
 
     - name: Set TempPathEnabled
       ini_file:
@@ -142,18 +152,17 @@
 
     - name: Get latest blocklist
       shell: curl -L http://john.bitsurge.net/public/biglist.p2p.gz | gzip -cdf > /opt/appdata/{{pgrole}}/qBittorrent/config/biglist.p2p
-    
+
     - name: 'Checking for existing openvpn folder'
       stat:
         path: '/opt/appdata/{{pgrole}}/openvpn'
       register: ovpncheck
 
-    - name: Initialize opvn 
+    - name: Initialize opvn
       block:
         - name: Create opvn folder
           shell: mkdir /opt/appdata/{{pgrole}}/openvpn && touch mkdir /opt/appdata/{{pgrole}}/openvpn/OVPN\ files\ go\ here && chown -R {{puid}}:{{pgid}} /opt/appdata/{{pgrole}}/openvpn
       when: not ovpncheck.stat.exists
-
 
     # FIRST TIME CONFIGURATION ####################################################
     - name: 'Configuring {{pgrole}} for first time use'
@@ -286,7 +295,7 @@
             value: false
             force: yes
             state: present
-            
+
         - name: Set ServerDomains
           ini_file:
             path: '/opt/appdata/{{pgrole}}/qBittorrent/config/qBittorrent.conf'
@@ -339,7 +348,7 @@
             value: '/config/qBittorrent/config/biglist.p2p'
             force: yes
             state: present
-        
+
         - name: Set default login
           ini_file:
             path: '/opt/appdata/{{pgrole}}/qBittorrent/config/qBittorrent.conf'
@@ -348,7 +357,7 @@
             value: '@ByteArray(22f616dbc8cdb4aa96105b1c8f36ea63)'
             force: yes
             state: present
-            
+
       when: not confcheck.stat.exists
     - name: Restart {{pgrole}}
       docker_container:

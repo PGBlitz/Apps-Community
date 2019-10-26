@@ -26,9 +26,9 @@
       set_fact:
         pg_labels:
           traefik.enable: 'true'
-          traefik.backend: "{{pgrole}}"
+          traefik.backend: '{{pgrole}}'
           traefik.port: '80'
-          traefik.frontend.rule: 'Host:bit.{{domain.stdout}},{{pgrole}}.{{domain.stdout}},{{tldset}}'
+          traefik.frontend.rule: 'Host:{{pgrole}}.{{domain.stdout}}{{tldset}}{{cname}}'
 
     - name: 'Setting PG Volumes'
       set_fact:

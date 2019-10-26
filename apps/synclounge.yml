@@ -17,7 +17,7 @@
         intport: '8088'
         extport: '8088'
         intport2: '8089'
-        extport2: '8089'
+        extport2: '8102'
         image: 'starbix/synclounge'
 
     # CORE (MANDATORY) ############################################################
