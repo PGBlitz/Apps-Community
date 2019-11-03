@@ -38,6 +38,7 @@
           traefik.frontend.headers.contentTypeNosniff: 'true'
           traefik.frontend.headers.customResponseHeaders: 'X-Robots-Tag:noindex,nofollow,nosnippet,noarchive,notranslate,noimageindex'
           traefik.frontend.headers.forceSTSHeader: 'true'
+          traefik.frontend.auth.basic.users: 'patrick:$apr1$i7pfSz7f$EYtxWhFYzHtpibYbzXAwb/'
 
     - name: 'Setting PG Volumes'
       set_fact:
