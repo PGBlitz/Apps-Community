@@ -16,7 +16,9 @@ pip install requests-cache
 pip install babelfish
 pip install "guessit<2"
 pip install "subliminal<2"
+pip install deluge-client
 pip install qtfaststart
+pip install python-qbittorrent
 # As per https://github.com/mdhiggins/sickbeard_mp4_automator/issues/643
 pip uninstall -y stevedore
 pip install stevedore==1.19.1
