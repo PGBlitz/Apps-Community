@@ -36,8 +36,8 @@
       set_fact:
         pg_volumes:
           - '/etc/localtime:/etc/localtime:ro'
-#          - '/opt/appdata/nextcloud/data:/data'
-          - '/media/data:/data'
+          - '/opt/appdata/nextcloud/data:/data'
+          - '/media/data:/media/data
           - '/opt/appdata/{{pgrole}}/conf:/config'
           - '{{path.stdout}}:{{path.stdout}}'
           - '/mnt:/mnt'
