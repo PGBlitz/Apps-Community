@@ -14,8 +14,8 @@
     - name: 'Set Known Facts'
       set_fact:
         pgrole: 'embystats'
-        intport: '5432'
-        extport: '9049'
+        intport: '6555'
+        extport: '6555'
         image: 'linuxserver/embystat'
 
     - name: 'Including cron job'
