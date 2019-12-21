@@ -45,6 +45,7 @@
       set_fact:
         pg_volumes:
           - '/opt/appdata/{{pgrole}}:/config'
+          - '/opt/appdata/{{pgrole}}/data:/data'
           - '{{path.stdout}}:{{path.stdout}}'
           - '/mnt:/storage:rw'
           - '/etc/localtime:/etc/localtime:ro'
