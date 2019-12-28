@@ -1,9 +1,9 @@
 #!/bin/bash
 #
-# Title:      PGBlitz (jlesage/filebot)
-# Author(s):  MrDoob
-# URL:        https://pgblitz.com - http://github.pgblitz.com
-# GNU:        General Public License v3.0
+# Title:      Unmanic
+# Author(s):  Josh Sunnex (Josh5)
+# URL:        https://github.com/Josh5/unmanic
+# GNU:        GPL-3.0
 ################################################################################
 ---
 - hosts: localhost
@@ -12,12 +12,10 @@
     # FACTS #######################################################################
     - name: 'Set Known Facts'
       set_fact:
-        pgrole: 'filebot'
-        intport: '5800'
-        extport: '5804'
-        intport2: '5900'
-        extport2: '5903'
-        image: 'jlesage/filebot'
+        pgrole: 'unmanic'
+        intport: '8888'
+        extport: '7777'
+        image: 'josh5/unmanic:latest'
 
     # CORE (MANDATORY) ############################################################
     - name: 'Including cron job'
@@ -44,17 +42,18 @@
     - name: 'Setting PG Volumes'
       set_fact:
         pg_volumes:
-          - '/opt/appdata/{{pgrole}}:/config'
-          - '/opt/appdata/{{pgrole}}/data:/data'
-          - '{{path.stdout}}:{{path.stdout}}'
-          - '/mnt:/storage:rw'
           - '/etc/localtime:/etc/localtime:ro'
-
+          - '/opt/appdata/{{pgrole}}:/config'
+          - '/tmp/unmanic:/tmp/unmanic'
+          - '{{path.stdout}}:{{path.stdout}}'
+          - '/mnt:/mnt'
+          
     - name: 'Setting PG ENV'
       set_fact:
         pg_env:
           PUID: '1000'
           PGID: '1000'
+          TZ: 'UTC'
 
     # MAIN DEPLOYMENT #############################################################
     - name: 'Deploying {{pgrole}}'
@@ -64,7 +63,6 @@
         pull: yes
         published_ports:
           - '{{ports.stdout}}{{extport}}:{{intport}}'
-          - '{{ports.stdout}}{{extport2}}:{{intport2}}'
         volumes: '{{pg_volumes}}'
         env: '{{pg_env}}'
         restart_policy: unless-stopped
