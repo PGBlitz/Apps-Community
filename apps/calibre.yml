@@ -12,7 +12,7 @@
     # FACTS #######################################################################
     - name: 'Set Known Facts'
       set_fact:
-        pgrole: 'rdp-calibre'
+        pgrole: 'calibre'
         intport: '8080'
         extport: '8089'
         intport2: '8081'
