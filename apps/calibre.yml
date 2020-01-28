@@ -1,8 +1,8 @@
 #!/bin/bash
 #
-# Title:      PGBlitz (rdp-calibre)
-# Author(s):  MrDoob
-# URL:        https://pgblitz.com - http://github.pgblitz.com
+# Title:      docker-calibre
+# Author(s):  Kovid Goyal & Contributors, linuxserver.io
+# URL:        https://calibre-ebook.com/ - https://github.com/linuxserver/docker-calibre
 # GNU:        General Public License v3.0
 ################################################################################
 ---
@@ -12,12 +12,12 @@
     # FACTS #######################################################################
     - name: 'Set Known Facts'
       set_fact:
-        pgrole: 'rdp-calibre'
+        pgrole: 'calibre'
         intport: '8080'
         extport: '8089'
         intport2: '8081'
         extport2: '8090'
-        image: 'aptalca/docker-rdp-calibre:latest'
+        image: 'linuxserver/calibre:latest'
 
     # CORE (MANDATORY) ############################################################
     - name: 'Including cron job'
@@ -46,7 +46,6 @@
         pg_volumes:
           - '/opt/appdata/{{pgrole}}:/config:rw'
           - '{{path.stdout}}:{{path.stdout}}'
-          - '/mnt/unionfs:/unionfs:rw'
           - '/mnt:/mnt:rw'
           - '/etc/localtime:/etc/localtime:ro'
           - '/mnt/unionfs/libary:/library:rw'
@@ -56,8 +55,6 @@
         pg_env:
           PUID: '1000'
           PGID: '1000'
-          WIDTH: '1280'
-          HEIGHT: '720'
 
     # MAIN DEPLOYMENT #############################################################
     - name: 'Deploying {{pgrole}}'
