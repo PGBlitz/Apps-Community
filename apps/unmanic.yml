@@ -1,9 +1,9 @@
 #!/bin/bash
 #
-# Title:      PGBlitz (rdp-calibre)
-# Author(s):  MrDoob
-# URL:        https://pgblitz.com - http://github.pgblitz.com
-# GNU:        General Public License v3.0
+# Title:      Unmanic
+# Author(s):  Josh Sunnex (Josh5)
+# URL:        https://github.com/Josh5/unmanic
+# GNU:        GPL-3.0
 ################################################################################
 ---
 - hosts: localhost
@@ -12,12 +12,10 @@
     # FACTS #######################################################################
     - name: 'Set Known Facts'
       set_fact:
-        pgrole: 'rdp-calibre'
-        intport: '8080'
-        extport: '8089'
-        intport2: '8081'
-        extport2: '8090'
-        image: 'aptalca/docker-rdp-calibre:latest'
+        pgrole: 'unmanic'
+        intport: '8888'
+        extport: '7777'
+        image: 'josh5/unmanic:latest'
 
     # CORE (MANDATORY) ############################################################
     - name: 'Including cron job'
@@ -44,20 +42,18 @@
     - name: 'Setting PG Volumes'
       set_fact:
         pg_volumes:
-          - '/opt/appdata/{{pgrole}}:/config:rw'
-          - '{{path.stdout}}:{{path.stdout}}'
-          - '/mnt/unionfs:/unionfs:rw'
-          - '/mnt:/mnt:rw'
           - '/etc/localtime:/etc/localtime:ro'
-          - '/mnt/unionfs/libary:/library:rw'
-
+          - '/opt/appdata/{{pgrole}}:/config'
+          - '/tmp/unmanic:/tmp/unmanic'
+          - '{{path.stdout}}:{{path.stdout}}'
+          - '/mnt:/mnt'
+          
     - name: 'Setting PG ENV'
       set_fact:
         pg_env:
           PUID: '1000'
           PGID: '1000'
-          WIDTH: '1280'
-          HEIGHT: '720'
+          TZ: 'UTC'
 
     # MAIN DEPLOYMENT #############################################################
     - name: 'Deploying {{pgrole}}'
@@ -67,7 +63,6 @@
         pull: yes
         published_ports:
           - '{{ports.stdout}}{{extport}}:{{intport}}'
-          - '{{ports.stdout}}{{extport2}}:{{intport2}}'
         volumes: '{{pg_volumes}}'
         env: '{{pg_env}}'
         restart_policy: unless-stopped

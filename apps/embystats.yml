@@ -16,7 +16,7 @@
         pgrole: 'embystats'
         intport: '6555'
         extport: '6555'
-        image: 'linuxserver/embystat'
+        image: 'linuxserver/embystat:latest'
 
     - name: 'Including cron job'
       include_tasks: '/opt/communityapps/apps/_core.yml'
