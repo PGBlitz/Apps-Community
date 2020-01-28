@@ -14,9 +14,9 @@
     - name: 'Set Known Facts'
       set_fact:
         pgrole: 'embystats'
-        intport: '5432'
-        extport: '9049'
-        image: ' linuxserver/embystat'
+        intport: '6555'
+        extport: '6555'
+        image: 'linuxserver/embystat:latest'
 
     - name: 'Including cron job'
       include_tasks: '/opt/communityapps/apps/_core.yml'
