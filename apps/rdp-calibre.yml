@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 # Title:      docker-calibre
-# Author(s):  Kovid Goyal & Contributors
+# Author(s):  Kovid Goyal & Contributors, linuxserver.io
 # URL:        https://calibre-ebook.com/ - https://github.com/linuxserver/docker-calibre
 # GNU:        General Public License v3.0
 ################################################################################
