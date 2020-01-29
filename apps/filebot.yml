@@ -47,6 +47,7 @@
           - '/opt/appdata/{{pgrole}}:/config'
           - '/opt/appdata/{{pgrole}}/data:/data'
           - '{{path.stdout}}:{{path.stdout}}'
+          - '/mnt:/mnt'
           - '/mnt:/storage:rw'
           - '/etc/localtime:/etc/localtime:ro'
 
