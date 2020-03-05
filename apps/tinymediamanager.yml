@@ -12,7 +12,7 @@
     # FACTS #######################################################################
     - name: 'Set Known Facts'
       set_fact:
-        pgrole: 'tinymediamanager'
+        pgrole: 'tmm'
         intport: '5800'
         extport: '5800'
         image: 'romancin/tinymediamanager:latest'
