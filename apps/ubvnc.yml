@@ -88,5 +88,6 @@
               - '{{pgrole}}'
         expose:
           - 5900
+          - 6080
         state: started
         labels: '{{pg_labels}}'
