@@ -74,8 +74,8 @@
           DISPLAY_WIDTH: 1600
           DISPLAY_HEIGHT: 900
           USER: "apps"
-          VNC_PASSWORD: {{ VNC_PASSWORD }}
-          PASSWORD: {{ PASSWORD }}
+          VNC_PASSWORD: '{{VNC_PASSWORD}}'
+          PASSWORD: '{{PASSWORD}}'
           ALSADEV: "hw:2,0"
 #          SECURE_CONNECTION: 1
 
