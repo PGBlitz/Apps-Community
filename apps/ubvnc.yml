@@ -94,4 +94,5 @@
         labels: '{{pg_labels}}'
     - debug:
         msg: 'VNC_PASSWORD is {{ VNC_PASSWORD }}'
+    - debug:
         msg: 'User PASSWORD is {{ PASSWORD }}'
