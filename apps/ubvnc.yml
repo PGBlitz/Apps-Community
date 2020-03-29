@@ -17,8 +17,6 @@
         pgrole: 'ubvnc'
         intport: '80'
         extport: '6080'
-        intport2: '5900'
-        extport2: '5900'
         image: 'dorowu/ubuntu-desktop-lxde-vnc:bionic-lxqt'
 
     # CORE (MANDATORY) ############################################################
@@ -79,6 +77,7 @@
         pull: yes
         published_ports:
           - '{{ports.stdout}}{{extport}}:{{intport}}'
+          - '5900:5900/tcp'
         volumes: '{{pg_volumes}}'
         env: '{{pg_env}}'
         restart_policy: unless-stopped
