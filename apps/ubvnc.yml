@@ -8,6 +8,18 @@
 ################################################################################
 ---
 - hosts: localhost
+  vars_prompt:
+  
+  - name: "VNC_PASSWORD"
+    prompt: "What do you want to use for the VNC access password?"
+    unsafe: yes
+    private: no
+
+  - name: "PASSWORD"
+    prompt: "What do you want to use for the default linux user and sudo password?"
+    unsafe: yes
+    private: no
+
   gather_facts: false
   tasks:
     # FACTS #######################################################################
@@ -62,8 +74,8 @@
           DISPLAY_WIDTH: 1600
           DISPLAY_HEIGHT: 900
           USER: "apps"
-          VNC_PASSWORD: "test!"
-          PASSWORD: "!test!"
+          VNC_PASSWORD: {{VNC_PASSWORD}}
+          PASSWORD: {{PASSWORD}}
           ALSADEV: "hw:2,0"
 #          SECURE_CONNECTION: 1
 
