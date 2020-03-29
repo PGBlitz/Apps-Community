@@ -22,7 +22,7 @@
 
   gather_facts: false
   tasks:
-    # FACTS #######################################################################
+    # CORE (MANDATORY) DO NOT CHANGE ###########################################
 
     - name: 'Set Known Facts'
       set_fact:
@@ -31,22 +31,12 @@
         extport: '6080'
         image: 'dorowu/ubuntu-desktop-lxde-vnc:bionic-lxqt'
 
-    # CORE (MANDATORY) ############################################################
     - name: 'Including cron job'
       include_tasks: '/opt/communityapps/apps/_core.yml'
 
-    - name: 'Including plugins'
-      include_tasks: '/opt/communityapps/apps/_plugins.yml'
+    # EXTRA FUNCTIONS REQUIRED BY THE ROLE #####################################
 
-    - name: 'Including folders'
-      include_tasks: '/opt/communityapps/apps/_downloaders.yml'
-
-    - name: 'Ini Check'
-      stat:
-        path: /opt/appdata/{{pgrole}}/core.conf
-      register: inicheck
-      
-     # LABELS ######################################################################
+    # LABELS #### KEEPS BOTTOM CLEAN ###########################################
     - name: 'Adding Traefik'
       set_fact:
         pg_labels:
@@ -102,3 +92,6 @@
           - 6080
         state: started
         labels: '{{pg_labels}}'
+    - debug:
+        msg: 'VNC_PASSWORD is {{ VNC_PASSWORD }}'
+        msg: 'User PASSWORD is {{ PASSWORD }}'
