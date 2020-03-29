@@ -1,0 +1,101 @@
+#!/bin/bash
+#
+# Title:      UbuntuGUI
+# Author(s):  timekills
+# URL:        https://plexguide.com - http://github.plexguide.com
+# GNU:        General Public License v3.0
+# Info:       https://github.com/fcwu/docker-ubuntu-vnc-desktop
+# Use: Change default passwords in lines 16 and 22 if desired.
+################################################################################
+---
+- hosts: localhost
+  vars_prompt:
+  
+  - name: "VNC_PASSWORD"
+    prompt: "What do you want to use for the VNC access password?"
+    default: "!PGtest!"
+    unsafe: yes
+    private: no
+
+  - name: "PASSWORD"
+    prompt: "What do you want to use for the default linux user and sudo password?"
+    default: "!PGtest!"
+    unsafe: yes
+    private: no
+
+  gather_facts: false
+  tasks:
+    # CORE (MANDATORY) DO NOT CHANGE ###########################################
+
+    - name: 'Set Known Facts'
+      set_fact:
+        pgrole: 'ubvnc'
+        intport: '80'
+        extport: '6080'
+        image: 'dorowu/ubuntu-desktop-lxde-vnc:bionic-lxqt'
+
+    - name: 'Including cron job'
+      include_tasks: '/opt/communityapps/apps/_core.yml'
+
+    # EXTRA FUNCTIONS REQUIRED BY THE ROLE #####################################
+
+    # LABELS #### KEEPS BOTTOM CLEAN ###########################################
+    - name: 'Adding Traefik'
+      set_fact:
+        pg_labels:
+          traefik.frontend.auth.forward.address: '{{gauth}}'
+          traefik.enable: 'true'
+          traefik.port: '{{intport}}'
+          traefik.frontend.rule: 'Host:{{pgrole}}.{{domain.stdout}},{{tldset}}'
+
+    - name: 'Setting default Volumes'
+      set_fact:
+        pg_volumes:
+          - '/opt/appdata/{{pgrole}}:/home/apps:rw'
+          - '{{path.stdout}}:{{path.stdout}}'
+          - '/etc/localtime:/etc/localtime:ro'
+          - '/mnt:/mnt'
+          - '/dev/shm:/dev/shm'
+          - '/dev/snd:/dev/snd:rw'
+          - '/dev/dri:/dev/dri:rw'
+
+    - name: 'Setting default ENV'
+      set_fact:
+        pg_env:
+          USER_ID: 1000
+          GROUP_ID: 1000
+          DISPLAY_WIDTH: 1600
+          DISPLAY_HEIGHT: 900
+          USER: "apps"
+          VNC_PASSWORD: '{{VNC_PASSWORD}}'
+          PASSWORD: '{{PASSWORD}}'
+          ALSADEV: "hw:2,0"
+#          SECURE_CONNECTION: 1
+
+
+    # MAIN DEPLOYMENT #############################################################
+
+    - name: 'Deploying {{pgrole}}'
+      docker_container:
+        name: '{{pgrole}}'
+        image: '{{image}}'
+        pull: yes
+        published_ports:
+          - '{{ports.stdout}}{{extport}}:{{intport}}'
+          - '5900:5900/tcp'
+        volumes: '{{pg_volumes}}'
+        env: '{{pg_env}}'
+        restart_policy: unless-stopped
+        networks:
+          - name: plexguide
+            aliases:
+              - '{{pgrole}}'
+        expose:
+          - 5900
+          - 6080
+        state: started
+        labels: '{{pg_labels}}'
+    - debug:
+        msg: 'VNC_PASSWORD is {{ VNC_PASSWORD }}'
+    - debug:
+        msg: 'User PASSWORD is {{ PASSWORD }}'
