@@ -1,7 +1,7 @@
 #!/bin/bash
 #
-# Title:      PGBlitz (jlesage/filebot)
-# Author(s):  MrDoob
+# Title:      PGBlitz (Reference Title File)
+# Author(s):  ayush6624
 # URL:        https://pgblitz.com - http://github.pgblitz.com
 # GNU:        General Public License v3.0
 ################################################################################
@@ -12,12 +12,10 @@
     # FACTS #######################################################################
     - name: 'Set Known Facts'
       set_fact:
-        pgrole: 'filebot'
-        intport: '5800'
-        extport: '5804'
-        intport2: '5900'
-        extport2: '5903'
-        image: 'jlesage/filebot'
+        pgrole: 's3'
+        intport: '9000'
+        extport: '7655'
+        image: 'minio/minio'
 
     # CORE (MANDATORY) ############################################################
     - name: 'Including cron job'
@@ -27,9 +25,10 @@
     - name: 'Adding Traefik'
       set_fact:
         pg_labels:
-          traefik.frontend.auth.forward.address: '{{gauth}}'
+          #traefik.frontend.auth.forward.address: '{{gauth}}'
           traefik.enable: 'true'
           traefik.port: '{{intport}}'
+
           traefik.frontend.rule: 'Host:{{pgrole}}.{{domain.stdout}}{{tldset}}{{cname}}'
           traefik.frontend.headers.SSLHost: '{{domain.stdout}}'
           traefik.frontend.headers.SSLRedirect: 'true'
@@ -44,11 +43,7 @@
     - name: 'Setting PG Volumes'
       set_fact:
         pg_volumes:
-          - '/opt/appdata/{{pgrole}}:/config'
-          - '/opt/appdata/{{pgrole}}/data:/data'
-          - '{{path.stdout}}:{{path.stdout}}'
-          - '/mnt:/mnt'
-          - '/mnt:/storage:rw'
+          - '/opt/appdata/{{pgrole}}:/data'
           - '/etc/localtime:/etc/localtime:ro'
 
     - name: 'Setting PG ENV'
@@ -65,7 +60,6 @@
         pull: yes
         published_ports:
           - '{{ports.stdout}}{{extport}}:{{intport}}'
-          - '{{ports.stdout}}{{extport2}}:{{intport2}}'
         volumes: '{{pg_volumes}}'
         env: '{{pg_env}}'
         restart_policy: unless-stopped
