@@ -12,11 +12,13 @@
   
   - name: "VNC_PASSWORD"
     prompt: "What do you want to use for the VNC access password?"
+    default: "!PGtest!"
     unsafe: yes
     private: no
 
   - name: "PASSWORD"
     prompt: "What do you want to use for the default linux user and sudo password?"
+    default: "!PGtest!"
     unsafe: yes
     private: no
 
