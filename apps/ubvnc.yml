@@ -54,6 +54,7 @@
           - '{{path.stdout}}:{{path.stdout}}'
           - '/etc/localtime:/etc/localtime:ro'
           - '/mnt:/mnt'
+          - '/mnt/unionfs/ubvnc:/home/apps/copytohost:rw'
           - '/dev/shm:/dev/shm'
           - '/dev/snd:/dev/snd:rw'
           - '/dev/dri:/dev/dri:rw'
