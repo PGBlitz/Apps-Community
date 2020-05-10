@@ -5,7 +5,8 @@
 # URL:        https://plexguide.com - http://github.plexguide.com
 # GNU:        General Public License v3.0
 # Info:       https://github.com/fcwu/docker-ubuntu-vnc-desktop
-# Use: Change default passwords in lines 16 and 22 if desired.
+# Use: Change default passwords in lines 1 and 22 if desired.
+# Automated password change: from SU at prompt type without quotes "ansible-playbook /opt/communitytapps/apps/ubvnc.yml"
 # Docker:     Docker image is available at: https://github.com/fcwu/docker-ubuntu-vnc-desktop
 ################################################################################
 ---
@@ -63,10 +64,10 @@
     - name: 'Setting default ENV'
       set_fact:
         pg_env:
-          USER_ID: 1000
-          GROUP_ID: 1000
-          DISPLAY_WIDTH: 1600
-          DISPLAY_HEIGHT: 900
+          USER_ID: '1000'
+          GROUP_ID: '1000'
+          DISPLAY_WIDTH: '1600'
+          DISPLAY_HEIGHT: '900'
           USER: "apps"
           VNC_PASSWORD: '{{VNC_PASSWORD}}'
           PASSWORD: '{{PASSWORD}}'
