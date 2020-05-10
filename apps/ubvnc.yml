@@ -6,7 +6,6 @@
 # GNU:        General Public License v3.0
 # Info:       https://github.com/fcwu/docker-ubuntu-vnc-desktop
 # Use: Change default passwords in lines 16 and 22 if desired.
-=======
 # Docker:     Docker image is available at: https://github.com/fcwu/docker-ubuntu-vnc-desktop
 ################################################################################
 ---
