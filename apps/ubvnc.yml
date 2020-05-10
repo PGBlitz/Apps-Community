@@ -6,7 +6,7 @@
 # GNU:        General Public License v3.0
 # Info:       https://github.com/fcwu/docker-ubuntu-vnc-desktop
 # Use: Change default passwords in lines 1 and 22 if desired.
-# Automated password change: from SU at prompt type without quotes "ansible-playbook /opt/communityapps/apps/ubvnc.yml"
+# Automated password change: from SU at prompt type (without quotes) "ansible-playbook /opt/communityapps/apps/ubvnc.yml"
 # Docker:     Docker image is available at: https://github.com/fcwu/docker-ubuntu-vnc-desktop
 ################################################################################
 ---
