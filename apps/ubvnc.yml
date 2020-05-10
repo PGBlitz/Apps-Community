@@ -12,16 +12,16 @@
 - hosts: localhost
   vars_prompt:
   
-  - name: "VNC_PASSWORD"
-    prompt: "What do you want to use for the VNC access password?"
+  - name: VNC_PASSWORD
+    prompt: What do you want to use for the VNC access password?
     default: "!PGtest!"
-    unsafe: yes
+#    unsafe: yes
     private: no
 
-  - name: "PASSWORD"
-    prompt: "What do you want to use for the default linux user and sudo password?"
+  - name: PASSWORD
+    prompt: What do you want to use for the default linux user and sudo password?
     default: "!PGtest!"
-    unsafe: yes
+#    unsafe: yes
     private: no
 
   gather_facts: false
@@ -97,6 +97,6 @@
         state: started
         labels: '{{pg_labels}}'
     - debug:
-        msg: 'VNC_PASSWORD is {{ VNC_PASSWORD }}'
+        msg: 'VNC password is {{ VNC_PASSWORD }}'
     - debug:
-        msg: 'User PASSWORD is {{ PASSWORD }}'
+        msg: 'User and SUDO password is {{ PASSWORD }}'
