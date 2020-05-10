@@ -4,6 +4,9 @@
 # Author(s):  timekills
 # URL:        https://plexguide.com - http://github.plexguide.com
 # GNU:        General Public License v3.0
+# Info:       https://github.com/fcwu/docker-ubuntu-vnc-desktop
+# Use: Change default passwords in lines 16 and 22 if desired.
+=======
 # Docker:     Docker image is available at: https://github.com/fcwu/docker-ubuntu-vnc-desktop
 ################################################################################
 ---
@@ -54,7 +57,6 @@
           - '{{path.stdout}}:{{path.stdout}}'
           - '/etc/localtime:/etc/localtime:ro'
           - '/mnt:/mnt'
-          - '/mnt/unionfs/ubvnc:/home/apps/copytohost:rw'
           - '/dev/shm:/dev/shm'
           - '/dev/snd:/dev/snd:rw'
           - '/dev/dri:/dev/dri:rw'
