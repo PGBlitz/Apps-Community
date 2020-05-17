@@ -34,7 +34,7 @@
         pgrole: 'ubvnc'
         intport: '80'
         extport: '6080'
-        image: 'dorowu/ubuntu-desktop-lxde-vnc:bionic-lxqt'
+        image: 'dorowu/ubuntu-desktop-lxde-vnc:bionic'
 
     - name: 'Including cron job'
       include_tasks: '/opt/communityapps/apps/_core.yml'
