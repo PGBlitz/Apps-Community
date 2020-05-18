@@ -52,7 +52,7 @@
         image: '{{image}}'
         pull: yes
         published_ports:
-          - '127.0.0.0.1:1112:443'
+          - '127.0.0.1:1112:443'
           - '{{ports.stdout}}1111:80'
         volumes: '{{pg_volumes}}'
         env: '{{pg_env}}'
