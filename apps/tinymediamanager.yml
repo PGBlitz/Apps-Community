@@ -1,7 +1,7 @@
 #!/bin/bash
 #
-# Title:      PGBlitz (jlesage/filebot)
-# Author(s):  MrDoob
+# Title:      PGBlitz (Reference Title File)
+# Author(s):  Admin9705
 # URL:        https://pgblitz.com - http://github.pgblitz.com
 # GNU:        General Public License v3.0
 ################################################################################
@@ -12,50 +12,41 @@
     # FACTS #######################################################################
     - name: 'Set Known Facts'
       set_fact:
-        pgrole: 'filebot'
+        pgrole: 'tmm'
         intport: '5800'
-        extport: '5804'
-        intport2: '5900'
-        extport2: '5903'
-        image: 'jlesage/filebot'
+        extport: '5810'
+        image: 'romancin/tinymediamanager:latest'
 
     # CORE (MANDATORY) ############################################################
     - name: 'Including cron job'
-      include_tasks: '/opt/communityapps/apps/_core.yml'
+      include_tasks: '/opt/coreapps/apps/_core.yml'
 
     # LABELS ######################################################################
     - name: 'Adding Traefik'
       set_fact:
         pg_labels:
-          traefik.frontend.auth.forward.address: '{{gauth}}'
           traefik.enable: 'true'
           traefik.port: '{{intport}}'
-          traefik.frontend.rule: 'Host:{{pgrole}}.{{domain.stdout}}{{tldset}}{{cname}}'
-          traefik.frontend.headers.SSLHost: '{{domain.stdout}}'
-          traefik.frontend.headers.SSLRedirect: 'true'
-          traefik.frontend.headers.STSIncludeSubdomains: 'true'
-          traefik.frontend.headers.STSPreload: 'true'
-          traefik.frontend.headers.STSSeconds: '315360000'
-          traefik.frontend.headers.browserXSSFilter: 'true'
-          traefik.frontend.headers.contentTypeNosniff: 'true'
-          traefik.frontend.headers.customResponseHeaders: 'X-Robots-Tag:noindex,nofollow,nosnippet,noarchive,notranslate,noimageindex'
-          traefik.frontend.headers.forceSTSHeader: 'true'
+          traefik.frontend.auth.forward.address: '{{gauth}}'
+          traefik.frontend.rule: 'Host:{{pgrole}}.{{domain.stdout}},{{tldset}}'
 
     - name: 'Setting PG Volumes'
       set_fact:
         pg_volumes:
           - '/opt/appdata/{{pgrole}}:/config'
-          - '/opt/appdata/{{pgrole}}/data:/data'
-          - '{{path.stdout}}:{{path.stdout}}'
-          - '/mnt:/mnt'
-          - '/mnt:/storage:rw'
+          - '/mnt/unionfs:/media:rw'
           - '/etc/localtime:/etc/localtime:ro'
 
     - name: 'Setting PG ENV'
       set_fact:
         pg_env:
-          PUID: '1000'
-          PGID: '1000'
+          TZ: '${TZ}'
+          GROUP_ID: '1000'
+          USER_ID: '1000'
+          DISPLAY_WIDTH: '1920'
+          DISPLAY_HEIGHT: '1080'
+        #   SECURE_CONNECTION: '1'
+
 
     # MAIN DEPLOYMENT #############################################################
     - name: 'Deploying {{pgrole}}'
@@ -65,7 +56,6 @@
         pull: yes
         published_ports:
           - '{{ports.stdout}}{{extport}}:{{intport}}'
-          - '{{ports.stdout}}{{extport2}}:{{intport2}}'
         volumes: '{{pg_volumes}}'
         env: '{{pg_env}}'
         restart_policy: unless-stopped

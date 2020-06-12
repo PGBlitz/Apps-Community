@@ -1,8 +1,8 @@
 #!/bin/bash
 #
-# Title:      PGBlitz (jlesage/filebot)
-# Author(s):  MrDoob
-# URL:        https://pgblitz.com - http://github.pgblitz.com
+# Title:      docker-calibre
+# Author(s):  Kovid Goyal & Contributors, linuxserver.io
+# URL:        https://calibre-ebook.com/ - https://github.com/linuxserver/docker-calibre
 # GNU:        General Public License v3.0
 ################################################################################
 ---
@@ -12,12 +12,12 @@
     # FACTS #######################################################################
     - name: 'Set Known Facts'
       set_fact:
-        pgrole: 'filebot'
-        intport: '5800'
-        extport: '5804'
-        intport2: '5900'
-        extport2: '5903'
-        image: 'jlesage/filebot'
+        pgrole: 'calibre'
+        intport: '8080'
+        extport: '8089'
+        intport2: '8081'
+        extport2: '8090'
+        image: 'linuxserver/calibre:latest'
 
     # CORE (MANDATORY) ############################################################
     - name: 'Including cron job'
@@ -44,12 +44,11 @@
     - name: 'Setting PG Volumes'
       set_fact:
         pg_volumes:
-          - '/opt/appdata/{{pgrole}}:/config'
-          - '/opt/appdata/{{pgrole}}/data:/data'
+          - '/opt/appdata/{{pgrole}}:/config:rw'
           - '{{path.stdout}}:{{path.stdout}}'
-          - '/mnt:/mnt'
-          - '/mnt:/storage:rw'
+          - '/mnt:/mnt:rw'
           - '/etc/localtime:/etc/localtime:ro'
+          - '/mnt/unionfs/libary:/library:rw'
 
     - name: 'Setting PG ENV'
       set_fact:

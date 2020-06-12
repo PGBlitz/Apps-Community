@@ -16,7 +16,7 @@
         pgrole: 'varken'
         intport: '80'
         extport: '5985'
-        image: 'h1f0x/centos-varken'
+        image: 'vflagr/centos-varken'
 
     # CORE (MANDATORY) ############################################################
     - name: 'Including cron job'

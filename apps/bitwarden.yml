@@ -15,7 +15,7 @@
         pgrole: 'bitwarden'
         intport: '80'
         extport: '2489'
-        image: 'mprasil/bitwarden'
+        image: 'bitwardenrs/server'
 
     # CORE (MANDATORY) ############################################################
     - name: 'Including cron job'

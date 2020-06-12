@@ -1,7 +1,7 @@
 #!/bin/bash
 #
-# Title:      PGBlitz (rdp-calibre)
-# Author(s):  MrDoob
+# Title:      PGBlitz (Reference Title File)
+# Author(s):  Admin9705 , n1ghtshade
 # URL:        https://pgblitz.com - http://github.pgblitz.com
 # GNU:        General Public License v3.0
 ################################################################################
@@ -12,12 +12,10 @@
     # FACTS #######################################################################
     - name: 'Set Known Facts'
       set_fact:
-        pgrole: 'rdp-calibre'
+        pgrole: 'trilium'
         intport: '8080'
-        extport: '8089'
-        intport2: '8081'
-        extport2: '8090'
-        image: 'aptalca/docker-rdp-calibre:latest'
+        extport: '8477'
+        image: 'zadam/trilium'
 
     # CORE (MANDATORY) ############################################################
     - name: 'Including cron job'
@@ -30,6 +28,7 @@
           traefik.frontend.auth.forward.address: '{{gauth}}'
           traefik.enable: 'true'
           traefik.port: '{{intport}}'
+
           traefik.frontend.rule: 'Host:{{pgrole}}.{{domain.stdout}}{{tldset}}{{cname}}'
           traefik.frontend.headers.SSLHost: '{{domain.stdout}}'
           traefik.frontend.headers.SSLRedirect: 'true'
@@ -44,20 +43,14 @@
     - name: 'Setting PG Volumes'
       set_fact:
         pg_volumes:
-          - '/opt/appdata/{{pgrole}}:/config:rw'
-          - '{{path.stdout}}:{{path.stdout}}'
-          - '/mnt/unionfs:/unionfs:rw'
-          - '/mnt:/mnt:rw'
-          - '/etc/localtime:/etc/localtime:ro'
-          - '/mnt/unionfs/libary:/library:rw'
+          - '/opt/appdata/{{pgrole}}/trilium-data:/root/trilium-data'
+
 
     - name: 'Setting PG ENV'
       set_fact:
         pg_env:
           PUID: '1000'
           PGID: '1000'
-          WIDTH: '1280'
-          HEIGHT: '720'
 
     # MAIN DEPLOYMENT #############################################################
     - name: 'Deploying {{pgrole}}'
@@ -67,7 +60,6 @@
         pull: yes
         published_ports:
           - '{{ports.stdout}}{{extport}}:{{intport}}'
-          - '{{ports.stdout}}{{extport2}}:{{intport2}}'
         volumes: '{{pg_volumes}}'
         env: '{{pg_env}}'
         restart_policy: unless-stopped

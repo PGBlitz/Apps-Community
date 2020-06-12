@@ -1,7 +1,7 @@
 #!/bin/bash
 #
-# Title:      PGBlitz (jlesage/filebot)
-# Author(s):  MrDoob
+# Title:      requestrr (Reference Title File)
+# Author(s):  Admin9705; timekills mod
 # URL:        https://pgblitz.com - http://github.pgblitz.com
 # GNU:        General Public License v3.0
 ################################################################################
@@ -10,26 +10,27 @@
   gather_facts: false
   tasks:
     # FACTS #######################################################################
+
     - name: 'Set Known Facts'
       set_fact:
-        pgrole: 'filebot'
-        intport: '5800'
-        extport: '5804'
-        intport2: '5900'
-        extport2: '5903'
-        image: 'jlesage/filebot'
+        pgrole: 'requestrr'
+        intport: '4545'
+        extport: '4545'
+        image: 'darkalfx/requestrr'
 
     # CORE (MANDATORY) ############################################################
     - name: 'Including cron job'
-      include_tasks: '/opt/communityapps/apps/_core.yml'
+      include_tasks: '/opt/coreapps/apps/_core.yml'
+
+    
 
     # LABELS ######################################################################
     - name: 'Adding Traefik'
       set_fact:
         pg_labels:
-          traefik.frontend.auth.forward.address: '{{gauth}}'
           traefik.enable: 'true'
           traefik.port: '{{intport}}'
+          #traefik.frontend.auth.forward.address: '{{gauth}}'
           traefik.frontend.rule: 'Host:{{pgrole}}.{{domain.stdout}}{{tldset}}{{cname}}'
           traefik.frontend.headers.SSLHost: '{{domain.stdout}}'
           traefik.frontend.headers.SSLRedirect: 'true'
@@ -44,12 +45,9 @@
     - name: 'Setting PG Volumes'
       set_fact:
         pg_volumes:
-          - '/opt/appdata/{{pgrole}}:/config'
-          - '/opt/appdata/{{pgrole}}/data:/data'
-          - '{{path.stdout}}:{{path.stdout}}'
-          - '/mnt:/mnt'
-          - '/mnt:/storage:rw'
           - '/etc/localtime:/etc/localtime:ro'
+          - '/opt/appdata/{{pgrole}}:/root/config \'
+          
 
     - name: 'Setting PG ENV'
       set_fact:
@@ -58,6 +56,7 @@
           PGID: '1000'
 
     # MAIN DEPLOYMENT #############################################################
+
     - name: 'Deploying {{pgrole}}'
       docker_container:
         name: '{{pgrole}}'
@@ -65,7 +64,6 @@
         pull: yes
         published_ports:
           - '{{ports.stdout}}{{extport}}:{{intport}}'
-          - '{{ports.stdout}}{{extport2}}:{{intport2}}'
         volumes: '{{pg_volumes}}'
         env: '{{pg_env}}'
         restart_policy: unless-stopped
@@ -75,3 +73,5 @@
               - '{{pgrole}}'
         state: started
         labels: '{{pg_labels}}'
+
+##PG-Community
