@@ -48,6 +48,7 @@
           - '/opt/appdata/{{pgrole}}/Media:/home/Tdarr/Media'
           - '{{path.stdout}}:{{path.stdout}}'
           - '/mnt:/mnt'
+          - '/media:/media'
           
     - name: 'Setting PG ENV'
       set_fact:
