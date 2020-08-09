@@ -49,13 +49,12 @@
         pg_env:
           SIAB_ADDUSER: "true"
           SIAB_USER: "tkadmin"
-          SIAB_USERID: 1000
           SIAB_GROUP: "guest"
-          SIAB_GROUPID: 1000
           SIAB_PASSWORD: "!test!"
           SIAB_SHELL: "/bin/bash"
           SIAB_HOME: "/home/tkadmin"
           SIAB_SUDO: "true"
+          SIAB_SSL: "false"
           ALSADEV: "hw:2,0"
 #          SECURE_CONNECTION: 1
 
