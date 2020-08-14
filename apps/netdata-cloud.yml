@@ -13,7 +13,7 @@
 
     - name: 'Set Known Facts'
       set_fact:
-        pgrole: 'netdata_cloud'
+        pgrole: 'netdata-cloud'
         pgurl: 'netdata'
         intport: '19999'
         extport: '19999'
