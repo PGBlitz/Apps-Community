@@ -22,7 +22,6 @@
       include_tasks: '/opt/communityapps/apps/_core.yml'
 
     # EXTRA FUNCTIONS REQUIRED BY THE ROLE #####################################
-
     - name: 'Create scripts directory for {{pgrole}}'
       file:
         path: /opt/appdata/{{pgrole}}/scripts
@@ -85,6 +84,9 @@
         name: '{{pgrole}}'
         image: '{{image}}'
         pull: yes
+        hostname: '{{domain.stdout}}'
+        capabilities:
+          - SYS_PTRACE
         published_ports:
           - '{{ports.stdout}}{{extport}}:{{intport}}'
         volumes: '{{pg_volumes}}'
