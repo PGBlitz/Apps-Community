@@ -1,0 +1,106 @@
+#!/bin/bash
+#
+# Title:      Netdata Cloud
+# Author(s):  timekills
+# URL:        https://plexguide.com - http://github.plexguide.com
+# GNU:        General Public License v3.0
+################################################################################
+---
+- hosts: localhost
+  gather_facts: false
+  tasks:
+    # CORE (MANDATORY) DO NOT CHANGE ###########################################
+
+    - name: 'Set Known Facts'
+      set_fact:
+        pgrole: 'netdata_cloud'
+        pgurl: 'netdata'
+        intport: '19999'
+        extport: '19999'
+        image: 'netdata/netdata:latest'
+
+    - name: 'Including cron job'
+      include_tasks: '/opt/communityapps/apps/_core.yml'
+
+    # EXTRA FUNCTIONS REQUIRED BY THE ROLE #####################################
+
+    - name: 'Create netdatalib directory for {{pgrole}}'
+      file:
+        path: /opt/appdata/{{pgrole}}/netdatalib
+        state: directory
+        owner: 1000
+        group: 1000
+        mode: 0755
+
+    - name: 'Create netdatacache directory for {{pgrole}}'
+      file:
+        path: /opt/appdata/{{pgrole}}/netdatacache
+        state: directory
+        owner: 1000
+        group: 1000
+        mode: 0755
+
+    # LABELS #### KEEPS BOTTOM CLEAN ###########################################
+    - name: 'Adding Traefik'
+      set_fact:
+        pg_labels:
+          traefik.frontend.auth.forward.address: '{{gauth}}'
+          traefik.enable: 'true'
+          traefik.port: '{{intport}}'
+          traefik.frontend.rule: 'Host:{{pgurl}}.{{domain.stdout}},{{tldset}}'
+          traefik.enable: 'true'
+          traefik.port: '{{intport}}'
+          traefik.frontend.auth.forward.address: '{{gauth}}'
+          traefik.frontend.rule: 'Host:{{pgrole}}.{{domain.stdout}}{{tldset}}{{cname}}'
+          traefik.frontend.headers.SSLHost: '{{domain.stdout}}'
+          traefik.frontend.headers.SSLRedirect: 'true'
+          traefik.frontend.headers.STSIncludeSubdomains: 'true'
+          traefik.frontend.headers.STSPreload: 'true'
+          traefik.frontend.headers.STSSeconds: '315360000'
+          traefik.frontend.headers.browserXSSFilter: 'true'
+          traefik.frontend.headers.contentTypeNosniff: 'true'
+          traefik.frontend.headers.customResponseHeaders: 'X-Robots-Tag:noindex,nofollow,nosnippet,noarchive,notranslate,noimageindex'
+          traefik.frontend.headers.forceSTSHeader: 'true'
+
+    - name: 'Setting PG Volumes'
+      set_fact:
+        pg_volumes:
+          - '/opt/appdata/{{pgrole}}/netdatalib:/var/lib/netdata:rw'          
+          - '/opt/appdata/{{pgrole}}/netdatacache:/var/cache/netdata:rw'
+          - '{{path.stdout}}:{{path.stdout}}'
+          - '/etc/passwd:/host/etc/passwd:ro'
+          - '/etc/group:/host/etc/group:ro'
+          - '/proc:/host/proc:ro'
+          - '/sys:/host/sys:ro'
+          - '/etc/os-release:/host/etc/os-release:ro'
+
+    - name: 'Setting PG ENV'
+      set_fact:
+        pg_env:
+          PUID: 1000
+          PGID: 1000
+          NETDATA_PORT: 19999
+          ARCH: 'X86_64'
+          ALPINE_REL: 'v3.12'
+          DOCKER_GRP: 'netdata'
+          DOCKER_USR: 'netdata'
+
+    # MAIN SCRIPT ##############################################################
+
+    - name: 'Deploying {{pgrole}}'
+      docker_container:
+        name: '{{pgrole}}'
+        image: '{{image}}'
+        pull: yes
+        published_ports:
+          - '{{ports.stdout}}{{extport}}:{{intport}}'
+        volumes: '{{pg_volumes}}'
+        env: '{{pg_env}}'
+        restart_policy: unless-stopped
+        networks:
+          - name: plexguide
+            aliases:
+              - '{{pgrole}}'
+        state: started
+        security_opts: 'apparmor:unconfined'
+        labels: '{{pg_labels}}'
