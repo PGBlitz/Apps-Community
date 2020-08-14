@@ -90,7 +90,7 @@
         volumes: '{{pg_volumes}}'
         env: '{{pg_env}}'
         restart_policy: unless-stopped
-        network_mode: 'host'
+        #network_mode: 'host'
         networks:
            - name: plexguide
              aliases:
