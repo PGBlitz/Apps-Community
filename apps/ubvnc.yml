@@ -33,9 +33,9 @@
     - name: 'Set Known Facts'
       set_fact:
         pgrole: 'ubvnc'
-        intport: '80'
-        extport: '6080'
-        image: 'dorowu/ubuntu-desktop-lxde-vnc:bionic'
+        intport: '443'
+        extport: '6081'
+        image: 'dorowu/ubuntu-desktop-lxde-vnc'
 
     - name: 'Including cron job'
       include_tasks: '/opt/communityapps/apps/_core.yml'
@@ -74,6 +74,8 @@
           PASSWORD: '{{PASSWORD}}'
           ALSADEV: "hw:2,0"
 #          SECURE_CONNECTION: 1
+          SSL_PORT: '443'
+          shm-size: '4g'
 
 
     # MAIN DEPLOYMENT #############################################################
