@@ -33,8 +33,8 @@
     - name: 'Set Known Facts'
       set_fact:
         pgrole: 'ubvnc'
-        intport: '443'
-        extport: '6081'
+        intport: '80'
+        extport: '6080'
         image: 'dorowu/ubuntu-desktop-lxde-vnc'
 
     - name: 'Including cron job'
