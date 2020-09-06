@@ -16,7 +16,7 @@
         intport: '8080'
         extport: '8089'
         intport2: '8081'
-        extport2: '8090'
+        extport2: '8091'
         image: 'linuxserver/calibre:latest'
 
     # CORE (MANDATORY) ############################################################
