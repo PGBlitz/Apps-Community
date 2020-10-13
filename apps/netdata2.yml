@@ -1,40 +1,33 @@
 #!/bin/bash
 #
-# Title:      Shell In A Box (siab)
-# Author(s):  timekills/sspreitzer
+# Title:      Netdata Cloud
+# Author(s):  timekills
 # URL:        https://plexguide.com - http://github.plexguide.com
 # GNU:        General Public License v3.0
-# Docker:     Docker image is available at: https://github.com/sspreitzer/shellinabox
 ################################################################################
 ---
 - hosts: localhost
   gather_facts: false
-  tasks:
-    # CORE (MANDATORY) DO NOT CHANGE ###########################################
-
+  tasks:  
+    # FACTS #######################################################################
     - name: 'Set Known Facts'
       set_fact:
-        pgrole: 'siab'
-        intport: '4200'
-        extport: '4200'
-        image: 'sspreitzer/shellinabox:latest'
+        pgrole: 'netdata2'
+        intport: '19999'
+        extport: '19999'
+        image: 'netdata/netdata'
 
+    # CORE (MANDATORY) ############################################################
     - name: 'Including cron job'
       include_tasks: '/opt/communityapps/apps/_core.yml'
 
-    # EXTRA FUNCTIONS REQUIRED BY THE ROLE #####################################
-
-    # LABELS #### KEEPS BOTTOM CLEAN ###########################################
+    # LABELS ######################################################################
     - name: 'Adding Traefik'
       set_fact:
         pg_labels:
           traefik.frontend.auth.forward.address: '{{gauth}}'
           traefik.enable: 'true'
           traefik.port: '{{intport}}'
-          traefik.frontend.rule: 'Host:{{pgrole}}.{{domain.stdout}},{{tldset}}'
-          traefik.enable: 'true'
-          traefik.port: '{{intport}}'
-          traefik.frontend.auth.forward.address: '{{gauth}}'
           traefik.frontend.rule: 'Host:{{pgrole}}.{{domain.stdout}}{{tldset}}{{cname}}'
           traefik.frontend.headers.SSLHost: '{{domain.stdout}}'
           traefik.frontend.headers.SSLRedirect: 'true'
@@ -45,30 +38,33 @@
           traefik.frontend.headers.contentTypeNosniff: 'true'
           traefik.frontend.headers.customResponseHeaders: 'X-Robots-Tag:noindex,nofollow,nosnippet,noarchive,notranslate,noimageindex'
           traefik.frontend.headers.forceSTSHeader: 'true'
+          com.docker.compose.project: 'netdata2'
 
-    - name: 'Setting default Volumes'
+    - name: 'Setting PG Volumes'
       set_fact:
         pg_volumes:
-          - '/opt/appdata/{{pgrole}}:/home/:rw'
+          - '/opt/appdata/{{pgrole}}/netdatalib:/var/lib/netdata:rw'          
+          - '/opt/appdata/{{pgrole}}/netdatacache:/var/cache/netdata:rw'
           - '{{path.stdout}}:{{path.stdout}}'
+          - '/etc/passwd:/host/etc/passwd:ro'
+          - '/etc/group:/host/etc/group:ro'
+          - '/proc:/host/proc:ro'
+          - '/sys:/host/sys:ro'
+          - '/etc/os-release:/host/etc/os-release:ro'
           - '/etc/localtime:/etc/localtime:ro'
-          - '/mnt:/mnt'
-    - name: 'Setting default ENV'
+
+    - name: 'Setting PG ENV'
       set_fact:
         pg_env:
-          SIAB_ADDUSER: "true"
-          SIAB_USER: "tkadmin"
-          SIAB_GROUP: "guest"
-          SIAB_PASSWORD: "!test!"
-          SIAB_SHELL: "/bin/bash"
-          SIAB_HOME: "/home/tkadmin"
-          SIAB_SUDO: "true"
-          SIAB_SSL: "false"
-          ALSADEV: "hw:2,0"
-#          SECURE_CONNECTION: 1
+          PUID: 1000
+          PGID: 1000
+          #NETDATA_PORT: 19999
+          #ARCH: 'X86_64'
+          #ALPINE_REL: 'v3.12'
+          #DOCKER_GRP: 'netdata'
+          #DOCKER_USR: 'netdata'
 
     # MAIN DEPLOYMENT #############################################################
-
     - name: 'Deploying {{pgrole}}'
       docker_container:
         name: '{{pgrole}}'
@@ -76,7 +72,6 @@
         pull: yes
         published_ports:
           - '{{ports.stdout}}{{extport}}:{{intport}}'
-          - '4200:4200/tcp'
         volumes: '{{pg_volumes}}'
         env: '{{pg_env}}'
         restart_policy: unless-stopped
@@ -84,7 +79,5 @@
           - name: plexguide
             aliases:
               - '{{pgrole}}'
-        expose:
-          - 4200
         state: started
         labels: '{{pg_labels}}'

@@ -2,6 +2,7 @@
 #
 # Title:      UbuntuGUI
 # Author(s):  timekills
+# Version: 1.01
 # URL:        https://plexguide.com - http://github.plexguide.com
 # GNU:        General Public License v3.0
 # Info:       https://github.com/fcwu/docker-ubuntu-vnc-desktop
@@ -34,7 +35,7 @@
         pgrole: 'ubvnc'
         intport: '80'
         extport: '6080'
-        image: 'dorowu/ubuntu-desktop-lxde-vnc:bionic'
+        image: 'dorowu/ubuntu-desktop-lxde-vnc'
 
     - name: 'Including cron job'
       include_tasks: '/opt/communityapps/apps/_core.yml'
@@ -73,6 +74,8 @@
           PASSWORD: '{{PASSWORD}}'
           ALSADEV: "hw:2,0"
 #          SECURE_CONNECTION: 1
+          SSL_PORT: '443'
+          shm-size: '4g'
 
 
     # MAIN DEPLOYMENT #############################################################
