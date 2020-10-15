@@ -48,7 +48,7 @@
           - '{{path.stdout}}:{{path.stdout}}'
           - '/mnt:/mnt:rw'
           - '/etc/localtime:/etc/localtime:ro'
-          - '/mnt/unionfs/libary:/library:rw'
+          - '/mnt/unionfs/libary:/libary:rw'
 
     - name: 'Setting PG ENV'
       set_fact:
