@@ -14,7 +14,7 @@
       set_fact:
         pgrole: 'home-assistant-super'
         intport: '8123'
-        extport: '8123'
+        extport: '8125'
         image: 'homeassistant/amd64-hassio-supervisor'
 
     # CORE (MANDATORY) ############################################################
@@ -34,7 +34,7 @@
       set_fact:
         pg_volumes:
           - '/etc/localtime:/etc/localtime:ro'
-          - '/opt/appdata/homeassistant:/config'
+          - '/opt/appdata/homeassistantsuper:/config'
 
     - name: 'Setting PG ENV'
       set_fact:
