@@ -53,19 +53,19 @@
           - '{{path.stdout}}:{{path.stdout}}'
           - '/etc/localtime:/etc/localtime:ro'
           - '/mnt:/mnt'
-
     - name: 'Setting default ENV'
       set_fact:
         pg_env:
           SIAB_ADDUSER: "true"
-          SIAB_USER: "siab"
+          SIAB_USER: "tkadmin"
           SIAB_GROUP: "guest"
-          SIAB_PASSWORD: "!plexguide!"
+          SIAB_PASSWORD: "!test!"
           SIAB_SHELL: "/bin/bash"
-          SIAB_HOME: "/home/siab"
+          SIAB_HOME: "/home/tkadmin"
           SIAB_SUDO: "true"
           SIAB_SSL: "false"
-
+          ALSADEV: "hw:2,0"
+#          SECURE_CONNECTION: 1
 
     # MAIN DEPLOYMENT #############################################################
 

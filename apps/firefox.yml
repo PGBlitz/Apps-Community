@@ -15,7 +15,7 @@
       set_fact:
         pgrole: 'firefox'
         intport: '5800'
-        extport: '5810'
+        extport: '5811'
         #        intport2: '25565'
         #        extport2: '25565'
         image: 'jlesage/firefox'

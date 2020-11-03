@@ -1,23 +1,21 @@
 #!/bin/bash
 #
-# Title:      docker-calibre
-# Author(s):  Kovid Goyal & Contributors, linuxserver.io
-# URL:        https://calibre-ebook.com/ - https://github.com/linuxserver/docker-calibre
+# Title:      Netdata Cloud
+# Author(s):  timekills
+# URL:        https://plexguide.com - http://github.plexguide.com
 # GNU:        General Public License v3.0
 ################################################################################
 ---
 - hosts: localhost
   gather_facts: false
-  tasks:
+  tasks:  
     # FACTS #######################################################################
     - name: 'Set Known Facts'
       set_fact:
-        pgrole: 'calibre'
-        intport: '8080'
-        extport: '8089'
-        intport2: '8081'
-        extport2: '8091'
-        image: 'linuxserver/calibre:latest'
+        pgrole: 'netdata2'
+        intport: '19999'
+        extport: '19999'
+        image: 'netdata/netdata'
 
     # CORE (MANDATORY) ############################################################
     - name: 'Including cron job'
@@ -30,7 +28,7 @@
           traefik.frontend.auth.forward.address: '{{gauth}}'
           traefik.enable: 'true'
           traefik.port: '{{intport}}'
-          traefik.frontend.rule: 'Host:{{pgrole}}.{{domain.stdout}}{{tldset}}'
+          traefik.frontend.rule: 'Host:{{pgrole}}.{{domain.stdout}}{{tldset}}{{cname}}'
           traefik.frontend.headers.SSLHost: '{{domain.stdout}}'
           traefik.frontend.headers.SSLRedirect: 'true'
           traefik.frontend.headers.STSIncludeSubdomains: 'true'
@@ -40,21 +38,31 @@
           traefik.frontend.headers.contentTypeNosniff: 'true'
           traefik.frontend.headers.customResponseHeaders: 'X-Robots-Tag:noindex,nofollow,nosnippet,noarchive,notranslate,noimageindex'
           traefik.frontend.headers.forceSTSHeader: 'true'
+          com.docker.compose.project: 'netdata2'
 
     - name: 'Setting PG Volumes'
       set_fact:
         pg_volumes:
-          - '/opt/appdata/{{pgrole}}:/config:rw'
+          - '/opt/appdata/{{pgrole}}/netdatalib:/var/lib/netdata:rw'          
+          - '/opt/appdata/{{pgrole}}/netdatacache:/var/cache/netdata:rw'
           - '{{path.stdout}}:{{path.stdout}}'
-          - '/mnt:/mnt:rw'
+          - '/etc/passwd:/host/etc/passwd:ro'
+          - '/etc/group:/host/etc/group:ro'
+          - '/proc:/host/proc:ro'
+          - '/sys:/host/sys:ro'
+          - '/etc/os-release:/host/etc/os-release:ro'
           - '/etc/localtime:/etc/localtime:ro'
-          - '/mnt/unionfs/libary:/library:rw'
 
     - name: 'Setting PG ENV'
       set_fact:
         pg_env:
-          PUID: '1000'
-          PGID: '1000'
+          PUID: 1000
+          PGID: 1000
+          #NETDATA_PORT: 19999
+          #ARCH: 'X86_64'
+          #ALPINE_REL: 'v3.12'
+          #DOCKER_GRP: 'netdata'
+          #DOCKER_USR: 'netdata'
 
     # MAIN DEPLOYMENT #############################################################
     - name: 'Deploying {{pgrole}}'
@@ -64,7 +72,6 @@
         pull: yes
         published_ports:
           - '{{ports.stdout}}{{extport}}:{{intport}}'
-          - '{{ports.stdout}}{{extport2}}:{{intport2}}'
         volumes: '{{pg_volumes}}'
         env: '{{pg_env}}'
         restart_policy: unless-stopped

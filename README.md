@@ -9,7 +9,9 @@
 * 📂 [**[Click Here]**](https://goo.gl/7NR3Da) - Google G-Suite (Unlimited Hard Drive Space & Storage)
 * 📂 [**[Click Here]**](https://controlpanel.newshosting.com/signup/index.php?promo=partners&a_aid=5a65169240efd&a_bid=5ecfe99b) - Top Performance NewsHost! - Blitz Members Receive a 58% Discount
 ----
-### **Reference Shortcut -** http://wiki.pgblitz.com
+### **Reference Shortcut -** https://plexguide.com/wiki/
+
+### **Port use tracker - PLEASE REFER and update prior to ensure port deconfliction -** https://docs.google.com/spreadsheets/d/1RHu_Huq9DNIGB4wQV1nTBtR9oJSXpE4rO68yOodlJfM
 ----
 
 ## 1. PG YouTube
