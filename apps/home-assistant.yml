@@ -15,7 +15,7 @@
         pgrole: 'home-assistant'
         intport: '8123'
         extport: '8123'
-        image: 'homeassistant/home-assistant'
+        image: 'homeassistant/home-assistant:beta'
 
     # CORE (MANDATORY) ############################################################
     - name: 'Including cron job'
