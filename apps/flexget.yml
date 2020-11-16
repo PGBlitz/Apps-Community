@@ -15,7 +15,7 @@
         pgrole: 'flexget'
         intport: '5050'
         extport: '6060'
-        image: 'cpoppema/docker-flexget:latest'
+        image: 'wiserain/flexget:latest'
 
     # CORE (MANDATORY) ############################################################
     - name: 'Including cron job'
