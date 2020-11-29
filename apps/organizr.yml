@@ -15,7 +15,7 @@
         pgrole: 'organizr'
         intport: '80'
         extport: '8040'
-        image: 'organizrtools/organizr-v2'
+        image: 'organizr/organizr:latest'
 
     # CORE (MANDATORY) ############################################################
     - name: 'Including cron job'
