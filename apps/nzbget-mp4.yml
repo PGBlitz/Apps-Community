@@ -20,7 +20,7 @@
         pgrole: 'nzbget'
         intport: '6789'
         extport: '6789'
-        image: 'linuxserver/nzbget'
+        image: 'ghcr.io/linuxserver/nzbget'
 
     # CORE (MANDATORY) ############################################################
     - name: 'Including cron job'

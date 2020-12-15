@@ -15,7 +15,7 @@
         pgrole: 'mylar'
         intport: '8090'
         extport: '8090'
-        image: 'linuxserver/mylar'
+        image: 'ghcr.io/linuxserver/mylar'
 
     # CORE (MANDATORY) ############################################################
     - name: 'Including cron job'

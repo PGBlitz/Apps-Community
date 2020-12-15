@@ -1,2 +1,2 @@
-linuxserver/nzbget
-linuxserver/nzbget:testing
+ghcr.io/linuxserver/nzbget
+ghcr.io/linuxserver/nzbget:testing

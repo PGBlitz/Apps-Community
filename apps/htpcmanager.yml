@@ -15,7 +15,7 @@
         pgrole: 'htpcmanager'
         intport: '8085'
         extport: '8085'
-        image: 'linuxserver/htpcmanager'
+        image: 'ghcr.io/linuxserver/htpcmanager'
 
     # CORE (MANDATORY) ############################################################
     - name: 'Including cron job'

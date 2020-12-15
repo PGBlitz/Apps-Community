@@ -2,7 +2,7 @@
 #
 # Title:      docker-calibre
 # Author(s):  Kovid Goyal & Contributors, linuxserver.io
-# URL:        https://calibre-ebook.com/ - https://github.com/linuxserver/docker-calibre
+# URL:        https://calibre-ebook.com/ - https://github.com/ghcr.io/linuxserver/docker-calibre
 # GNU:        General Public License v3.0
 ################################################################################
 ---
@@ -17,7 +17,7 @@
         extport: '8089'
         intport2: '8081'
         extport2: '8091'
-        image: 'linuxserver/calibre:latest'
+        image: 'ghcr.io/linuxserver/calibre:latest'
 
     # CORE (MANDATORY) ############################################################
     - name: 'Including cron job'

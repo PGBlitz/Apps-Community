@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Title:      PGBlitz (linuxserver/airsonic)
+# Title:      PGBlitz (ghcr.io/linuxserver/airsonic)
 # Author(s):  MrDoob
 # URL:        https://pgblitz.com - http://github.pgblitz.com
 # GNU:        General Public License v3.0
@@ -15,7 +15,7 @@
         pgrole: 'airsonic'
         intport: '4040'
         extport: '4040'
-        image: 'linuxserver/airsonic'
+        image: 'ghcr.io/linuxserver/airsonic'
 
     # CORE (MANDATORY) ############################################################
     - name: 'Including cron job'

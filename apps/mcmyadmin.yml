@@ -16,7 +16,7 @@
         pgrole: 'mcmyadmin'
         intport: '8080'
         extport: '8087'
-        image: 'linuxserver/mcmyadmin2'
+        image: 'ghcr.io/linuxserver/mcmyadmin2'
 
     - name: 'Including cron job'
       include_tasks: '/opt/communityapps/apps/_core.yml'

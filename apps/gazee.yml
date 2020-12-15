@@ -16,7 +16,7 @@
         pgrole: 'gazee'
         intport: '4242'
         extport: '4242'
-        image: 'linuxserver/gazee'
+        image: 'ghcr.io/linuxserver/gazee'
 
     - name: 'Including cron job'
       include_tasks: '/opt/communityapps/apps/_core.yml'

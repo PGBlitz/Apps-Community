@@ -16,7 +16,7 @@
         pgrole: 'medusa'
         intport: '8081'
         extport: '8081'
-        image: 'linuxserver/medusa'
+        image: 'ghcr.io/linuxserver/medusa'
 
     - name: 'Including cron job'
       include_tasks: '/opt/communityapps/apps/_core.yml'

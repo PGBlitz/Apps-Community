@@ -15,7 +15,7 @@
         pgrole: 'ubooquity'
         intport: '2202'
         extport: '2202'
-        image: 'linuxserver/ubooquity'
+        image: 'ghcr.io/linuxserver/ubooquity'
 
     # CORE (MANDATORY) ############################################################
     - name: 'Including cron job'

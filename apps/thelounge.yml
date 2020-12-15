@@ -15,7 +15,7 @@
         pgrole: 'thelounge'
         intport: '9000'
         extport: '9100'
-        image: 'linuxserver/thelounge'
+        image: 'ghcr.io/linuxserver/thelounge'
 
     # CORE (MANDATORY) ############################################################
     - name: 'Including cron job'

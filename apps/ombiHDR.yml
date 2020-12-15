@@ -16,7 +16,7 @@
         pgrole: 'ombiHDR'
         intport: '3579'
         extport: '3581'
-        image: 'linuxserver/ombi'
+        image: 'ghcr.io/linuxserver/ombi'
 
     # CORE (MANDATORY) ############################################################
     - name: 'Including cron job'

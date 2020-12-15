@@ -15,7 +15,7 @@
         pgrole: 'bazarr'
         intport: '6767'
         extport: '6767'
-        image: 'linuxserver/bazarr:latest'
+        image: 'ghcr.io/linuxserver/bazarr:latest'
 
     # CORE (MANDATORY) ############################################################
     - name: 'Including cron job'

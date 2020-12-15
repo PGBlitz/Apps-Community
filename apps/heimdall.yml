@@ -16,7 +16,7 @@
         pgrole: 'heimdall'
         intport: '443'
         extport: '1111'
-        image: 'linuxserver/heimdall'
+        image: 'ghcr.io/linuxserver/heimdall'
 
     # CORE (MANDATORY) ############################################################
     - name: 'Including cron job'

@@ -15,7 +15,7 @@
         pgrole: 'duplicati'
         intport: '8200'
         extport: '8200'
-        image: 'linuxserver/duplicati'
+        image: 'ghcr.io/linuxserver/duplicati'
 
     # CORE (MANDATORY) ############################################################
     - name: 'Including cron job'

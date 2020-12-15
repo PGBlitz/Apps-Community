@@ -15,7 +15,7 @@
         pgrole: 'nextcloud'
         intport: '443'
         extport: '4645'
-        image: 'linuxserver/nextcloud'
+        image: 'ghcr.io/linuxserver/nextcloud'
 
     # CORE (MANDATORY) ############################################################
     - name: 'Including cron job'
@@ -50,7 +50,7 @@
     - name: Create and start nextcloud container
       docker_container:
         name: nextcloud
-        image: 'linuxserver/nextcloud'
+        image: 'ghcr.io/linuxserver/nextcloud'
         pull: yes
         published_ports:
           - '127.0.0.0.1:4645:443'

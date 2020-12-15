@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Title:      PGBlitz (linuxserver/domoticz)
+# Title:      PGBlitz (ghcr.io/linuxserver/domoticz)
 # Author(s):  Admin9705
 # URL:        https://pgblitz.com - http://github.pgblitz.com
 # GNU:        General Public License v3.0
@@ -19,7 +19,7 @@
         extport2: '6144'
         intport3: '1443/tcp'
         extport3: '1443'
-        image: 'linuxserver/domoticz:stable'
+        image: 'ghcr.io/linuxserver/domoticz:stable'
 
     # CORE (MANDATORY) ############################################################
     - name: 'Including cron job'

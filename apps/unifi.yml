@@ -25,7 +25,7 @@
         extport5: '8443'
         intport6: '8880/tcp'
         extport6: '8880'
-        image: 'linuxserver/unifi-controller:latest'
+        image: 'ghcr.io/linuxserver/unifi-controller:latest'
 
     # CORE (MANDATORY) ############################################################
     - name: 'Including cron job'

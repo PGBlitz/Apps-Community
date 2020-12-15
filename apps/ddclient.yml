@@ -15,7 +15,7 @@
         pgrole: 'ddclient'
         intport: '0'
         extport: '0'
-        image: 'linuxserver/ddclient'
+        image: 'ghcr.io/linuxserver/ddclient'
 
     # CORE (MANDATORY) ############################################################
     - name: 'Including cron job'

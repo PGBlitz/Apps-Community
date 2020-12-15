@@ -3,8 +3,8 @@
 # Title:      MusicBrainz Picard
 # Author(s):  linuxserver.io; timekills mod
 # URL:        https://pgblitz.com - http://github.pgblitz.com 
-# Docker:     https://hub.docker.com/r/linuxserver/musicbrainz
-# Github:     https://github.com/linuxserver/docker-musicbrainz
+# Docker:     https://hub.docker.com/r/ghcr.io/linuxserver/musicbrainz
+# Github:     https://github.com/ghcr.io/linuxserver/docker-musicbrainz
 # BRAINZCODE: https://metabrainz.org/supporters/account-type
 # GNU:        General Public License v3.0
 ################################################################################
@@ -19,7 +19,7 @@
         pgrole: 'musicbrainz'
         intport: '5000'
         extport: '5050'
-        image: 'linuxserver/musicbrainz'
+        image: 'ghcr.io/linuxserver/musicbrainz'
 
     # CORE (MANDATORY) ############################################################
     - name: 'Including cron job'

@@ -15,7 +15,7 @@
         pgrole: 'headphones'
         intport: '8181'
         extport: '8281'
-        image: 'linuxserver/headphones'
+        image: 'ghcr.io/linuxserver/headphones'
 
     # CORE (MANDATORY) ############################################################
     - name: 'Including cron job'

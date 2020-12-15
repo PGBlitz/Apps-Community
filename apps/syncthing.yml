@@ -19,7 +19,7 @@
         extport2: '22000'
         intport3: '21027'
         extport3: '21027'
-        image: 'linuxserver/syncthing'
+        image: 'ghcr.io/linuxserver/syncthing'
 
     # CORE (MANDATORY) ############################################################
     - name: 'Including cron job'

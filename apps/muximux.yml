@@ -15,7 +15,7 @@
         pgrole: 'muximux'
         intport: '80'
         extport: '8015'
-        image: 'linuxserver/muximux'
+        image: 'ghcr.io/linuxserver/muximux'
 
     # CORE (MANDATORY) ############################################################
     - name: 'Including cron job'

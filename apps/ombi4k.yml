@@ -16,7 +16,7 @@
         pgrole: 'ombi4k'
         intport: '3579'
         extport: '3580'
-        image: 'linuxserver/ombi'
+        image: 'ghcr.io/linuxserver/ombi'
 
     # CORE (MANDATORY) ############################################################
     - name: 'Including cron job'
