@@ -16,7 +16,7 @@
         pgrole: 'prowlarr'
         intport: '9696'
         extport: '9696'
-        image: 'linuxserver/prowlarr'
+        image: 'linuxserver/prowlarr:nightly'
 
     # CORE (MANDATORY) ############################################################
     - name: 'Including cron job'
